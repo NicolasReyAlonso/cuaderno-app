@@ -2,9 +2,15 @@ import uuid
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic_core import PydanticCustomError
 
 Meal = Literal["desayuno", "almuerzo", "merienda", "cena", "picoteo"]
+
+
+def _invalid(msg: str) -> PydanticCustomError:
+    # Sin el prefijo «Value error,» que añade Pydantic a los ValueError: la app muestra msg tal cual
+    return PydanticCustomError("invalid", msg)
 
 
 class ORM(BaseModel):
@@ -33,6 +39,7 @@ class UserOut(ORM):
     kcal_target: int
     protein_target_g: int
     program_id: str | None
+    program_started_on: date | None
 
 
 class UserPatch(BaseModel):
@@ -42,7 +49,6 @@ class UserPatch(BaseModel):
     start_body_fat_pct: float | None = Field(None, ge=3, le=70)
     kcal_target: int | None = Field(None, ge=800, le=6000)
     protein_target_g: int | None = Field(None, ge=20, le=400)
-    program_id: str | None = None
 
 
 # ---------------------------------------------------------------- catálogo
@@ -57,6 +63,26 @@ class ExerciseOut(ORM):
     default_rep_min: int | None
     default_rep_max: int | None
     figure: dict
+    mine: bool = False
+
+
+class ExerciseIn(BaseModel):
+    name: str = Field(min_length=1, max_length=160)
+    muscle_group: str = Field(min_length=1, max_length=80)
+    cue: str = Field("", max_length=1000)
+    unit: Literal["reps", "seconds"] = "reps"
+    load_mode: Literal["kg", "extra"] = "kg"
+    is_compound: bool = False
+    default_rep_min: int | None = Field(None, ge=1, le=600)
+    default_rep_max: int | None = Field(None, ge=1, le=600)
+
+    @model_validator(mode="after")
+    def _range(self):
+        if (self.default_rep_min is None) != (self.default_rep_max is None):
+            raise _invalid("Pon el rango completo (mínimo y máximo) o déjalo vacío.")
+        if self.default_rep_min is not None and self.default_rep_min > self.default_rep_max:
+            raise _invalid("El mínimo del rango no puede ser mayor que el máximo.")
+        return self
 
 
 class SlotOut(BaseModel):
@@ -70,6 +96,7 @@ class SlotOut(BaseModel):
 
 
 class DayOut(BaseModel):
+    week: int
     key: str
     position: int
     weekday: int | None
@@ -83,7 +110,85 @@ class DayOut(BaseModel):
 class ProgramOut(BaseModel):
     id: str
     name: str
+    weeks: int
+    mine: bool  # False = plantilla: no se edita, se duplica
     days: list[DayOut]
+
+
+class ProgramSummaryOut(BaseModel):
+    id: str
+    name: str
+    weeks: int
+    days_per_week: int
+    mine: bool
+    active: bool
+
+
+class SlotIn(BaseModel):
+    exercise_id: str = Field(min_length=1, max_length=64)
+    sets: int = Field(ge=1, le=12)
+    rep_min: int = Field(ge=1, le=600)
+    rep_max: int = Field(ge=1, le=600)
+    rest: str = Field("", max_length=20)
+    is_core: bool = False
+
+    @model_validator(mode="after")
+    def _range(self):
+        if self.rep_min > self.rep_max:
+            raise _invalid(f"En «{self.exercise_id}» el mínimo del rango es mayor que el máximo.")
+        return self
+
+
+class DayIn(BaseModel):
+    week: int = Field(1, ge=1, le=4)
+    key: str = Field(pattern=r"^[A-Za-z0-9_-]{1,40}$")
+    weekday: int | None = Field(None, ge=1, le=7)  # 1 = lunes … 7 = domingo
+    name: str = Field(min_length=1, max_length=80)
+    short: str = Field("", max_length=12)
+    focus: str = Field("", max_length=160)
+    color: str = Field("grey", max_length=20)
+    slots: list[SlotIn] = Field(max_length=20)
+
+    @model_validator(mode="after")
+    def _unique_exercises(self):
+        seen: set[str] = set()
+        for s in self.slots:
+            if s.exercise_id in seen:
+                raise _invalid(f"«{s.exercise_id}» está dos veces en «{self.name}». Cada ejercicio, una vez por día.")
+            seen.add(s.exercise_id)
+        return self
+
+
+class ProgramIn(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    weeks: int = Field(1, ge=1, le=4)
+    days: list[DayIn] = Field(default_factory=list, max_length=28)
+
+    @model_validator(mode="after")
+    def _days(self):
+        keys: set[tuple[int, str]] = set()
+        weekdays: set[tuple[int, int]] = set()
+        for d in self.days:
+            if d.week > self.weeks:
+                raise _invalid(f"«{d.name}» está en la semana {d.week}, pero el plan tiene {_weeks(self.weeks)}.")
+            if d.key == "today":
+                raise _invalid("«today» está reservado. Usa otra clave para el día.")
+            if (d.week, d.key) in keys:
+                raise _invalid(f"La clave «{d.key}» se repite en la semana {d.week}.")
+            keys.add((d.week, d.key))
+            if d.weekday is not None:
+                if (d.week, d.weekday) in weekdays:
+                    raise _invalid(f"En la semana {d.week} hay dos días el mismo día de la semana.")
+                weekdays.add((d.week, d.weekday))
+        return self
+
+
+def _weeks(n: int) -> str:
+    return "1 semana" if n == 1 else f"{n} semanas"
+
+
+class ActivateIn(BaseModel):
+    started_on: date
 
 
 class CatalogOut(BaseModel):
@@ -121,6 +226,8 @@ class SlotLogOut(BaseModel):
 class SessionOut(BaseModel):
     date: date
     day_key: str
+    program_id: str | None
+    week: int
     slots: list[SlotLogOut]
 
 
@@ -151,8 +258,19 @@ class PlannedSlot(BaseModel):
 class DayPlanOut(BaseModel):
     date: date
     day_key: str
+    week: int
     saved: bool
     slots: list[PlannedSlot]
+
+
+class TodayOut(BaseModel):
+    date: date
+    program_id: str
+    program_name: str
+    weeks: int
+    week: int
+    day_key: str | None  # el día con ese día de la semana; None = descanso
+    days: list[DayOut]  # los días de esa semana, para elegir otro
 
 
 # ---------------------------------------------------------------- cuerpo

@@ -21,11 +21,20 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
+    # Los tests pasan su propia conexión (p. ej. con otro search_path)
+    connection = config.attributes.get("connection")
+    if connection is not None:
+        _run(connection)
+        return
     connectable = engine_from_config(config.get_section(config.config_ini_section, {}), prefix="sqlalchemy.", poolclass=pool.NullPool)
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
-        with context.begin_transaction():
-            context.run_migrations()
+        _run(connection)
+
+
+def _run(connection) -> None:
+    context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
+    with context.begin_transaction():
+        context.run_migrations()
 
 
 if context.is_offline_mode():

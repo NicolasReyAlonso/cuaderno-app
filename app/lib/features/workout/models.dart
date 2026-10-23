@@ -5,6 +5,7 @@ double? _d(dynamic v) => (v as num?)?.toDouble();
 class Exercise {
   final String id, name, muscleGroup, cue, unit, loadMode;
   final bool isCompound;
+  final bool mine; // ejercicio propio (figura genérica)
   final FigureSpec figure;
 
   const Exercise({
@@ -16,6 +17,7 @@ class Exercise {
     required this.loadMode,
     required this.isCompound,
     required this.figure,
+    this.mine = false,
   });
 
   bool get isSeconds => unit == 'seconds';
@@ -29,17 +31,19 @@ class Exercise {
         unit: j['unit'] as String,
         loadMode: j['load_mode'] as String,
         isCompound: j['is_compound'] as bool,
+        mine: j['mine'] as bool? ?? false,
         figure: FigureSpec.fromJson(j['figure'] as Map<String, dynamic>),
       );
 }
 
 class ProgramDay {
   final String key, name, short, focus, color;
-  final int position;
+  final int week, position;
   final int? weekday;
-  const ProgramDay({required this.key, required this.name, required this.short, required this.focus, required this.color, required this.position, this.weekday});
+  const ProgramDay({required this.week, required this.key, required this.name, required this.short, required this.focus, required this.color, required this.position, this.weekday});
 
   factory ProgramDay.fromJson(Map<String, dynamic> j) => ProgramDay(
+        week: j['week'] as int,
         key: j['key'] as String,
         name: j['name'] as String,
         short: j['short'] as String,
@@ -50,18 +54,33 @@ class ProgramDay {
       );
 }
 
+/// Ejercicios visibles y el plan activo (con los días de todas sus semanas).
 class Catalog {
   final Map<String, Exercise> exercises;
+  final String programName;
+  final int weeks;
   final List<ProgramDay> days;
-  const Catalog(this.exercises, this.days);
+  const Catalog(this.exercises, this.programName, this.weeks, this.days);
 
-  factory Catalog.fromJson(Map<String, dynamic> j) => Catalog(
-        {for (final e in j['exercises'] as List) (e['id'] as String): Exercise.fromJson(e as Map<String, dynamic>)},
-        [for (final d in (j['program'] as Map)['days'] as List) ProgramDay.fromJson(d as Map<String, dynamic>)],
-      );
+  factory Catalog.fromJson(Map<String, dynamic> j) {
+    final program = j['program'] as Map<String, dynamic>;
+    return Catalog(
+      {for (final e in j['exercises'] as List) (e['id'] as String): Exercise.fromJson(e as Map<String, dynamic>)},
+      program['name'] as String,
+      program['weeks'] as int,
+      [for (final d in program['days'] as List) ProgramDay.fromJson(d as Map<String, dynamic>)],
+    );
+  }
 
-  /// Día que toca según el día de la semana (lunes → primer día).
-  ProgramDay dayFor(DateTime date) => days.firstWhere((d) => d.weekday == date.weekday, orElse: () => days.first);
+  List<ProgramDay> daysOf(int week) => [for (final d in days) if (d.week == week) d];
+}
+
+/// Lo que toca en una fecha según el plan activo: semana y día (null = descanso).
+class Today {
+  final int week, weeks;
+  final String? dayKey;
+  const Today(this.week, this.weeks, this.dayKey);
+  factory Today.fromJson(Map<String, dynamic> j) => Today(j['week'] as int, j['weeks'] as int, j['day_key'] as String?);
 }
 
 class SetEntry {
@@ -128,13 +147,15 @@ class PlannedSlot {
 class DayPlan {
   final DateTime date;
   final String dayKey;
+  final int week;
   final bool saved;
   final List<PlannedSlot> slots;
-  const DayPlan(this.date, this.dayKey, this.saved, this.slots);
+  const DayPlan(this.date, this.dayKey, this.week, this.saved, this.slots);
 
   factory DayPlan.fromJson(Map<String, dynamic> j) => DayPlan(
         DateTime.parse(j['date'] as String),
         j['day_key'] as String,
+        j['week'] as int,
         j['saved'] as bool,
         [for (final s in j['slots'] as List) PlannedSlot.fromJson(s as Map<String, dynamic>)],
       );

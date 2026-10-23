@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import get_settings
-from .routers import auth, body, catalog, importer, nutrition, workouts
+from .routers import auth, body, catalog, importer, nutrition, programs, workouts
 
 
 @asynccontextmanager
@@ -22,7 +22,7 @@ app = FastAPI(title="Cuaderno de definición", version="0.1.0", lifespan=lifespa
 app.add_middleware(CORSMiddleware, allow_origins=get_settings().cors_origins, allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
 
-for r in (auth.router, catalog.router, workouts.router, body.router, nutrition.router, importer.router):
+for r in (auth.router, catalog.router, programs.router, workouts.router, body.router, nutrition.router, importer.router):
     app.include_router(r)
 
 

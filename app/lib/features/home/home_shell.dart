@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth/auth_controller.dart';
+import '../programs/programs_page.dart';
 import '../workout/workout_page.dart';
 
 class HomeShell extends ConsumerStatefulWidget {
@@ -36,6 +37,11 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       appBar: AppBar(
         title: Text(_titles[_tab]),
         actions: [
+          IconButton(
+            tooltip: 'Planes',
+            icon: const Icon(Icons.calendar_view_week),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ProgramsPage())),
+          ),
           IconButton(
             tooltip: 'Cerrar sesión',
             icon: const Icon(Icons.logout),

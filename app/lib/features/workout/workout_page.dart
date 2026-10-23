@@ -24,6 +24,7 @@ class WorkoutPage extends ConsumerStatefulWidget {
 class _WorkoutPageState extends ConsumerState<WorkoutPage> {
   DateTime _date = _today();
   String? _dayKey; // null = el que toca por día de la semana
+  int? _week; // null = la que toca por fecha
   String? _draftKey;
   Map<String, SlotDraft> _drafts = {};
   bool _saving = false;
@@ -39,7 +40,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
   }
 
   void _ensureDrafts(DayPlan plan) {
-    final key = '${isoDate(plan.date)}_${plan.dayKey}';
+    final key = '${isoDate(plan.date)}_${plan.week}_${plan.dayKey}';
     if (_draftKey == key) return;
     for (final d in _drafts.values) {
       d.dispose();
@@ -55,6 +56,20 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
         _draftKey = null;
       });
 
+  void _changeWeek(int week) => setState(() {
+        _week = week;
+        _draftKey = null;
+      });
+
+  /// Día elegido; si no, el que toca hoy; si no está en esta semana, el de ese día de la semana o el primero.
+  ProgramDay _dayFor(List<ProgramDay> days, Today today) {
+    for (final key in [_dayKey, today.dayKey]) {
+      final d = days.where((d) => d.key == key);
+      if (d.isNotEmpty) return d.first;
+    }
+    return days.firstWhere((d) => d.weekday == _date.weekday, orElse: () => days.first);
+  }
+
   Future<void> _pickDate() async {
     final d = await showDatePicker(
       context: context,
@@ -65,6 +80,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     if (d != null) {
       setState(() {
         _date = DateTime(d.year, d.month, d.day);
+        _week = null; // la semana depende de la fecha
         _draftKey = null;
       });
     }
@@ -79,7 +95,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     ];
   }
 
-  Future<void> _swap(SlotDraft d, String dayKey, Map<String, Exercise> exercises) async {
+  Future<void> _swap(SlotDraft d, String dayKey, int week, Map<String, Exercise> exercises) async {
     final options = _optionsFor(d);
     final picked = await showModalBottomSheet<String>(
       context: context,
@@ -106,7 +122,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
       d.loading = true;
     });
     try {
-      final next = await ref.read(workoutRepositoryProvider).slot(_date, dayKey, d.info.slotExerciseId, picked);
+      final next = await ref.read(workoutRepositoryProvider).slot(_date, dayKey, week, d.info.slotExerciseId, picked);
       if (!mounted) return;
       setState(() {
         d.replaceInfo(next);
@@ -124,7 +140,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     }
   }
 
-  Future<void> _save(String dayKey) async {
+  Future<void> _save(String dayKey, int week) async {
     final slots = <({String slot, String exercise, List<SetEntry> sets})>[];
     for (final d in _drafts.values) {
       final sets = <SetEntry>[];
@@ -154,7 +170,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     }
     setState(() => _saving = true);
     try {
-      await ref.read(workoutRepositoryProvider).save(_date, dayKey, slots);
+      await ref.read(workoutRepositoryProvider).save(_date, dayKey, week, slots);
       if (!mounted) return;
       setState(() {
         _saving = false;
@@ -177,27 +193,36 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     return catalog.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => _ErrorView(message: apiMessage(e), onRetry: () => ref.invalidate(catalogProvider)),
-      data: (cat) {
-        final day = _dayKey == null ? cat.dayFor(_date) : cat.days.firstWhere((d) => d.key == _dayKey);
-        final planAsync = ref.watch(dayPlanProvider((date: _date, day: day.key)));
-        return Column(children: [
-          Expanded(
-            child: planAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => _ErrorView(message: apiMessage(e), onRetry: () => ref.invalidate(dayPlanProvider((date: _date, day: day.key)))),
-              data: (plan) {
-                _ensureDrafts(plan);
-                return _content(context, cat, day);
-              },
-            ),
+      data: (cat) => ref.watch(todayProvider(_date)).when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, _) => _ErrorView(message: apiMessage(e), onRetry: () => ref.invalidate(todayProvider(_date))),
+            data: (today) {
+              final week = (_week ?? today.week).clamp(1, cat.weeks);
+              final days = cat.daysOf(week);
+              if (days.isEmpty) {
+                return _EmptyWeek(cat: cat, week: week, todayWeek: today.week, onWeek: _changeWeek);
+              }
+              final day = _dayFor(days, today);
+              final k = (date: _date, day: day.key, week: week);
+              return Column(children: [
+                Expanded(
+                  child: ref.watch(dayPlanProvider(k)).when(
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (e, _) => _ErrorView(message: apiMessage(e), onRetry: () => ref.invalidate(dayPlanProvider(k))),
+                        data: (plan) {
+                          _ensureDrafts(plan);
+                          return _content(context, cat, today, week, days, day);
+                        },
+                      ),
+                ),
+                _bottomBar(context, day.key, week),
+              ]);
+            },
           ),
-          _bottomBar(context, day.key),
-        ]);
-      },
     );
   }
 
-  Widget _content(BuildContext context, Catalog cat, ProgramDay day) {
+  Widget _content(BuildContext context, Catalog cat, Today today, int week, List<ProgramDay> days, ProgramDay day) {
     final t = Theme.of(context);
     final cs = t.colorScheme;
     final accent = dayColor(context, day.color);
@@ -209,8 +234,15 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 820),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              if (cat.weeks > 1) ...[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: WeekSelector(weeks: cat.weeks, selected: week, current: today.week, onChanged: _changeWeek),
+                ),
+                const SizedBox(height: 10),
+              ],
               Wrap(spacing: 6, runSpacing: 6, children: [
-                for (final d in cat.days)
+                for (final d in days)
                   ChoiceChip(
                     selected: d.key == day.key,
                     onSelected: (_) => _changeDay(d.key),
@@ -226,6 +258,9 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
                         style: t.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900, color: accent, height: 1)),
                     const SizedBox(height: 4),
                     Text(day.focus, style: t.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant)),
+                    if (today.dayKey == null && _dayKey == null)
+                      Text('Hoy no toca entreno en tu plan. Si quieres entrenar, elige un día.',
+                          style: t.textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                   ]),
                 ),
                 TextButton.icon(
@@ -251,7 +286,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
                 ExerciseCard(
                   draft: d,
                   exercises: cat.exercises,
-                  onSwapPressed: _optionsFor(d).length > 1 && !d.loading ? () => _swap(d, day.key, cat.exercises) : null,
+                  onSwapPressed: _optionsFor(d).length > 1 && !d.loading ? () => _swap(d, day.key, week, cat.exercises) : null,
                 ),
                 const SizedBox(height: 12),
               ],
@@ -262,7 +297,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
     );
   }
 
-  Widget _bottomBar(BuildContext context, String dayKey) {
+  Widget _bottomBar(BuildContext context, String dayKey, int week) {
     final cs = Theme.of(context).colorScheme;
     return Material(
       color: cs.surface,
@@ -273,7 +308,7 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
           child: Row(children: [
             FilledButton(
-              onPressed: _saving || _drafts.isEmpty ? null : () => _save(dayKey),
+              onPressed: _saving || _drafts.isEmpty ? null : () => _save(dayKey, week),
               child: _saving
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Text('Guardar sesión'),
@@ -290,6 +325,48 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
       ),
     );
   }
+}
+
+/// «Semana 1 · Semana 2 …»; la que toca por fecha lleva un punto.
+class WeekSelector extends StatelessWidget {
+  const WeekSelector({super.key, required this.weeks, required this.selected, required this.current, required this.onChanged});
+  final int weeks, selected, current;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) => SegmentedButton<int>(
+        showSelectedIcon: false,
+        segments: [
+          for (var w = 1; w <= weeks; w++)
+            ButtonSegment(value: w, label: Text(w == current ? 'Semana $w ·' : 'Semana $w'), tooltip: w == current ? 'La que toca' : null),
+        ],
+        selected: {selected},
+        onSelectionChanged: (s) => onChanged(s.first),
+      );
+}
+
+class _EmptyWeek extends StatelessWidget {
+  const _EmptyWeek({required this.cat, required this.week, required this.todayWeek, required this.onWeek});
+  final Catalog cat;
+  final int week, todayWeek;
+  final ValueChanged<int> onWeek;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            if (cat.weeks > 1) WeekSelector(weeks: cat.weeks, selected: week, current: todayWeek, onChanged: onWeek),
+            const SizedBox(height: 16),
+            Text(
+              cat.weeks > 1
+                  ? 'La semana $week de «${cat.programName}» no tiene días. Añádelos en Planes.'
+                  : '«${cat.programName}» no tiene días. Añádelos en Planes.',
+              textAlign: TextAlign.center,
+            ),
+          ]),
+        ),
+      );
 }
 
 class _ErrorView extends StatelessWidget {

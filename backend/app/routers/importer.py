@@ -12,6 +12,8 @@ from sqlalchemy import delete, select
 from ..models import BodyEntry, DiaryItem, Dish, DishIngredient, Exercise, Food, WorkoutSession, WorkoutSet
 from ..schemas import ImportReport
 from ..security import DB, CurrentUser
+from ..seed import DEFAULT_PROGRAM
+from .catalog import visible_exercises
 
 router = APIRouter(prefix="/import", tags=["importar"])
 MEALS = {"desayuno", "almuerzo", "merienda", "cena", "picoteo"}
@@ -92,7 +94,7 @@ def import_cuaderno(payload: dict, user: CurrentUser, db: DB):
         rep.body_entries += 1
 
     # --- sesiones
-    known = set(db.scalars(select(Exercise.id)))
+    known = set(db.scalars(select(Exercise.id).where(visible_exercises(user))))
     for sid, s in (payload.get("sesiones") or {}).items():
         d = date.fromisoformat(s["fecha"])
         day_key = s["dia"]
@@ -102,7 +104,8 @@ def import_cuaderno(payload: dict, user: CurrentUser, db: DB):
         if old is not None:
             db.delete(old)
             db.flush()
-        ses = WorkoutSession(user_id=user.id, date=d, day_key=day_key)
+        # El cuaderno web solo conoce el programa por defecto, de una semana
+        ses = WorkoutSession(user_id=user.id, date=d, day_key=day_key, program_id=DEFAULT_PROGRAM, week=1)
         for ex_id, sets in (s.get("ej") or {}).items():
             if ex_id not in known:
                 rep.skipped.append(f"sesión {sid}: ejercicio desconocido «{ex_id}»")

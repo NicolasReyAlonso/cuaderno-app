@@ -46,6 +46,8 @@ class User(Base):
     kcal_target: Mapped[int] = mapped_column(Integer, default=2000)
     protein_target_g: Mapped[int] = mapped_column(Integer, default=160)
     program_id: Mapped[str | None] = mapped_column(ForeignKey("programs.id"))
+    # Día en que empezó el plan activo: semana = (días desde aquí ÷ 7) mód weeks + 1
+    program_started_on: Mapped[date | None] = mapped_column(Date)
 
 
 # ---------------------------------------------------------------- catálogo
@@ -57,6 +59,8 @@ class Exercise(Base):
     )
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    # None = catálogo; con dueño = ejercicio propio (con la figura genérica)
+    owner_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     name: Mapped[str] = mapped_column(String(160))
     muscle_group: Mapped[str] = mapped_column(String(80))
     cue: Mapped[str] = mapped_column(Text, default="")
@@ -81,20 +85,28 @@ class ExerciseAlternative(Base):
 
 class Program(Base):
     __tablename__ = "programs"
+    __table_args__ = (CheckConstraint("weeks between 1 and 4", name="program_weeks"),)
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
     # None = plantilla pública; con dueño = programa personalizado
     owner_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="CASCADE", use_alter=True))
-    days: Mapped[list["ProgramDay"]] = relationship(back_populates="program", order_by="ProgramDay.position", cascade="all, delete-orphan")
+    # Semanas que se repiten en bucle (1 = la misma semana siempre)
+    weeks: Mapped[int] = mapped_column(Integer, default=1)
+    days: Mapped[list["ProgramDay"]] = relationship(back_populates="program", order_by=lambda: (ProgramDay.week, ProgramDay.position),
+                                                    cascade="all, delete-orphan")
 
 
 class ProgramDay(Base):
     __tablename__ = "program_days"
-    __table_args__ = (UniqueConstraint("program_id", "key"),)
+    __table_args__ = (
+        UniqueConstraint("program_id", "week", "key"),
+        CheckConstraint("week >= 1", name="program_day_week"),  # el tope (≤ programs.weeks) lo valida la API
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     program_id: Mapped[str] = mapped_column(ForeignKey("programs.id", ondelete="CASCADE"))
+    week: Mapped[int] = mapped_column(Integer, default=1)
     key: Mapped[str] = mapped_column(String(40))
     position: Mapped[int] = mapped_column(Integer)
     weekday: Mapped[int | None] = mapped_column(Integer)  # 1 = lunes … 7 = domingo
@@ -133,6 +145,9 @@ class WorkoutSession(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     date: Mapped[date] = mapped_column(Date, index=True)
     day_key: Mapped[str] = mapped_column(String(40))
+    # Plan y semana con los que se hizo; si se borra el plan, el historial se queda
+    program_id: Mapped[str | None] = mapped_column(ForeignKey("programs.id", ondelete="SET NULL"))
+    week: Mapped[int] = mapped_column(Integer, default=1)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
     sets: Mapped[list["WorkoutSet"]] = relationship(back_populates="session", order_by="WorkoutSet.id", cascade="all, delete-orphan")
 
