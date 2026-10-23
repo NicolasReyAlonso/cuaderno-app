@@ -54,3 +54,15 @@ class Panel extends StatelessWidget {
     );
   }
 }
+
+/// Ritmo semanal de bajada: siempre icono + texto, el color solo acompaña.
+/// En ritmo = bien; lento o demasiado rápido = aviso; estancado = revisar.
+({Color fg, Color bg, IconData icon}) paceStyle(BuildContext context, String pace) {
+  final cs = Theme.of(context).colorScheme;
+  return switch (pace) {
+    'on_track' => (fg: hintColors(context, 'up').fg, bg: hintColors(context, 'up').bg, icon: Icons.check_circle_outline),
+    'fast' => (fg: hintColors(context, 'hold').fg, bg: hintColors(context, 'hold').bg, icon: Icons.speed),
+    'slow' => (fg: hintColors(context, 'hold').fg, bg: hintColors(context, 'hold').bg, icon: Icons.trending_flat),
+    _ => (fg: cs.onErrorContainer, bg: cs.errorContainer, icon: Icons.pause_circle_outline),
+  };
+}

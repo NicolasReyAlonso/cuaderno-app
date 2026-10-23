@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth/auth_controller.dart';
+import '../body/body_page.dart';
+import '../nutrition/nutrition_page.dart';
 import '../programs/programs_page.dart';
 import '../workout/workout_page.dart';
 
@@ -22,8 +24,8 @@ class _HomeShellState extends ConsumerState<HomeShell> {
     final wide = MediaQuery.sizeOf(context).width >= 840;
     final pages = [
       const WorkoutPage(),
-      const _NextPhase(icon: Icons.restaurant, title: 'Diario de comidas', text: 'Buscador de alimentos, tus platos y el total del día. Llega en la fase 2; el backend ya lo tiene listo.'),
-      const _NextPhase(icon: Icons.monitor_weight_outlined, title: 'Peso y medidas', text: 'Media de 7 días, grasa estimada, ritmo semanal y gráfica. Llega en la fase 2; el backend ya lo calcula.'),
+      const NutritionPage(),
+      const BodyPage(),
       const _NextPhase(icon: Icons.menu_book_outlined, title: 'Guía', text: 'Cómo progresar y cuándo ajustar calorías. Llega en la fase 3.'),
     ];
     final destinations = const [

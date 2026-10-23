@@ -362,6 +362,7 @@ class IngredientOut(BaseModel):
     name: str
     grams: float
     kcal: float
+    protein: float
 
 
 class DishOut(BaseModel):

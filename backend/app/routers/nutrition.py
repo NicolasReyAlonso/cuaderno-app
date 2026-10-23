@@ -77,7 +77,8 @@ def dish_out(d: Dish) -> DishOut:
     raw = sum(_f(i.grams) for i in d.ingredients)
     weight = _f(d.cooked_weight_g) or raw or 1
     return DishOut(id=d.id, name=d.name, servings=d.servings, cooked_weight_g=_f(d.cooked_weight_g) or None,
-                   ingredients=[IngredientOut(food_id=i.food_id, name=i.name, grams=_f(i.grams), kcal=round(_f(i.kcal) * _f(i.grams) / 100, 1))
+                   ingredients=[IngredientOut(food_id=i.food_id, name=i.name, grams=_f(i.grams), kcal=round(_f(i.kcal) * _f(i.grams) / 100, 1),
+                                              protein=round(_f(i.protein) * _f(i.grams) / 100, 1))
                                 for i in d.ingredients],
                    total_kcal=round(tk, 1), total_protein=round(tp, 1),
                    per100_kcal=round(tk / weight * 100, 1), per100_protein=round(tp / weight * 100, 2),

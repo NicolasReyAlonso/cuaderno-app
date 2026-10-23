@@ -104,6 +104,18 @@ def test_nutrition_flow(auth):
         {"food_id": "b:arroz_crudo", "grams": 300}, {"food_id": "b:gambas", "grams": 300}]}).json()
     assert dish["total_kcal"] == 1377.0 and dish["serving_g"] == 400
     assert abs(dish["per100_kcal"] - 114.8) < 0.1
+    assert all(i["protein"] > 0 for i in dish["ingredients"])
+
+    # Editar sustituye ingredientes y raciones; otro usuario no lo ve
+    edited = auth.put(f"/dishes/{dish['id']}", json={"name": "Arroz marisco", "servings": 4, "ingredients": [
+        {"food_id": "b:arroz_crudo", "grams": 300}]}).json()
+    assert len(edited["ingredients"]) == 1 and edited["servings"] == 4 and edited["cooked_weight_g"] is None
+    assert edited["serving_g"] == 75  # sin peso cocinado se usa el peso crudo: 300 g ÷ 4
+    tmp = auth.post("/dishes", json={"name": "Para borrar", "ingredients": [{"food_id": "b:platano", "grams": 100}]}).json()
+    assert auth.delete(f"/dishes/{tmp['id']}").status_code == 204
+    assert tmp["id"] not in {d["id"] for d in auth.get("/dishes").json()}
+    auth.put(f"/dishes/{dish['id']}", json={"name": "Arroz marisco", "servings": 3, "cooked_weight_g": 1200, "ingredients": [
+        {"food_id": "b:arroz_crudo", "grams": 300}, {"food_id": "b:gambas", "grams": 300}]})
 
     a = auth.post("/diary/2026-10-20/items", json={"meal": "almuerzo", "dish_id": dish["id"], "grams": 407})
     b = auth.post("/diary/2026-10-20/items", json={"meal": "desayuno", "food_id": "b:platano", "grams": 120})
