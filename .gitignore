@@ -7,3 +7,4 @@ app/build/
 app/.flutter-plugins
 app/.flutter-plugins-dependencies
 .DS_Store
+backend/media/
