@@ -52,6 +52,14 @@ class UserPatch(BaseModel):
 
 
 # ---------------------------------------------------------------- catálogo
+class MediaOut(BaseModel):
+    id: uuid.UUID
+    kind: Literal["image", "video"]
+    content_type: str
+    size_bytes: int
+    url: str  # relativa a la API y con firma temporal: no necesita Authorization
+
+
 class ExerciseOut(ORM):
     id: str
     name: str
@@ -64,6 +72,7 @@ class ExerciseOut(ORM):
     default_rep_max: int | None
     figure: dict
     mine: bool = False
+    media: list[MediaOut] = []  # solo en los ejercicios propios
 
 
 class ExerciseIn(BaseModel):

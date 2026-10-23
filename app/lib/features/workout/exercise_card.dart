@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme.dart';
 import '../figures/figure_view.dart';
+import '../media/media_widgets.dart';
 import 'models.dart';
 
 const _months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -103,10 +104,13 @@ class ExerciseCard extends StatelessWidget {
     return Panel(
       highlight: swapped ? cs.primary : null,
       child: LayoutBuilder(builder: (context, c) {
-        final figure = DecoratedBox(
-          decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
-          child: ClipRRect(borderRadius: BorderRadius.circular(10), child: AnimatedFigure(key: ValueKey(ex.id), spec: ex.figure)),
-        );
+        // Con fotos o vídeos propios se muestran en lugar de la figura genérica
+        final figure = ex.media.isNotEmpty
+            ? MediaCover(ex: ex)
+            : DecoratedBox(
+                decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
+                child: ClipRRect(borderRadius: BorderRadius.circular(10), child: AnimatedFigure(key: ValueKey(ex.id), spec: ex.figure)),
+              );
         if (c.maxWidth < 420) {
           return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Center(child: SizedBox(width: 220, child: figure)),

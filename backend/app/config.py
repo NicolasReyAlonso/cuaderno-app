@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     access_token_minutes: int = 60 * 24 * 30
     cors_origins: list[str] = ["http://localhost:8080", "http://localhost:5000", "http://127.0.0.1:8080"]
     seed_on_startup: bool = True
+    # Fotos y vídeos de los ejercicios propios
+    media_dir: str = "media"
+    media_url_hours: int = 12  # validez de las URL firmadas
 
 
 @lru_cache

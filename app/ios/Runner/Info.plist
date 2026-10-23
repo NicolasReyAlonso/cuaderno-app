@@ -66,5 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Para añadir fotos, GIF o vídeos de cómo se hace un ejercicio.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Para hacer una foto o grabar un vídeo de cómo se hace un ejercicio.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Para grabar el sonido de los vídeos de tus ejercicios.</string>
 </dict>
 </plist>

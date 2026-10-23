@@ -55,6 +55,18 @@ class _AnimatedFigureState extends State<AnimatedFigure> with SingleTickerProvid
   }
 }
 
+/// Figura quieta en la pose b: para listas, donde animar decenas a la vez sobra.
+class StillFigure extends StatelessWidget {
+  const StillFigure({super.key, required this.spec});
+  final FigureSpec spec;
+
+  @override
+  Widget build(BuildContext context) => AspectRatio(
+        aspectRatio: kFigureW / kFigureH,
+        child: CustomPaint(painter: FigurePainter(spec, 1, FigureColors.of(Theme.of(context)))),
+      );
+}
+
 class FigureColors {
   final Color body, ghost, equipment, equipmentFill, plate, plateHole, pad, iron, cable;
   const FigureColors({

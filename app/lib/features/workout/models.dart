@@ -1,12 +1,31 @@
+import '../../core/api.dart' show apiUrl;
 import '../figures/figure.dart';
 
 double? _d(dynamic v) => (v as num?)?.toDouble();
+
+/// Foto, GIF o vídeo de un ejercicio propio. [url] ya es absoluta y lleva firma temporal.
+class MediaItem {
+  final String id, kind, contentType, url;
+  final int sizeBytes;
+  const MediaItem({required this.id, required this.kind, required this.contentType, required this.url, required this.sizeBytes});
+
+  bool get isVideo => kind == 'video';
+
+  factory MediaItem.fromJson(Map<String, dynamic> j) => MediaItem(
+        id: j['id'] as String,
+        kind: j['kind'] as String,
+        contentType: j['content_type'] as String,
+        url: '$apiUrl${j['url']}',
+        sizeBytes: j['size_bytes'] as int,
+      );
+}
 
 class Exercise {
   final String id, name, muscleGroup, cue, unit, loadMode;
   final bool isCompound;
   final bool mine; // ejercicio propio (figura genérica)
   final FigureSpec figure;
+  final List<MediaItem> media;
 
   const Exercise({
     required this.id,
@@ -18,6 +37,7 @@ class Exercise {
     required this.isCompound,
     required this.figure,
     this.mine = false,
+    this.media = const [],
   });
 
   bool get isSeconds => unit == 'seconds';
@@ -32,6 +52,7 @@ class Exercise {
         loadMode: j['load_mode'] as String,
         isCompound: j['is_compound'] as bool,
         mine: j['mine'] as bool? ?? false,
+        media: [for (final m in j['media'] as List? ?? const []) MediaItem.fromJson(m as Map<String, dynamic>)],
         figure: FigureSpec.fromJson(j['figure'] as Map<String, dynamic>),
       );
 }

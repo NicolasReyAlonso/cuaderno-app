@@ -6,9 +6,10 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from ..models import Exercise, ExerciseAlternative, Program, ProgramDay, ProgramSlot, User
-from ..schemas import CatalogOut, DayOut, ExerciseIn, ExerciseOut, ProgramOut, SlotOut
+from ..schemas import CatalogOut, DayOut, ExerciseIn, ExerciseOut, MediaOut, ProgramOut, SlotOut
 from ..security import DB, CurrentUser
 from ..seed import DEFAULT_PROGRAM
+from ..services.media import signed_url
 
 router = APIRouter(tags=["catálogo"])
 
@@ -55,15 +56,23 @@ def program_out(prog: Program, alts: dict[str, list[str]], user: User) -> Progra
                       days=[day_out(d, alts) for d in prog.days])
 
 
+_EXERCISE_FIELDS = set(ExerciseOut.model_fields) - {"mine", "media"}
+
+
+def media_out(m) -> MediaOut:
+    return MediaOut(id=m.id, kind=m.kind, content_type=m.content_type, size_bytes=m.size_bytes, url=signed_url(m.id))
+
+
 def exercise_out(e: Exercise, user: User) -> ExerciseOut:
-    o = ExerciseOut.model_validate(e)
-    o.mine = e.owner_id == user.id
-    return o
+    mine = e.owner_id == user.id
+    return ExerciseOut(**{k: getattr(e, k) for k in _EXERCISE_FIELDS}, mine=mine,
+                       media=[media_out(m) for m in e.media] if mine else [])
 
 
 @router.get("/catalog", response_model=CatalogOut)
 def catalog(user: CurrentUser, db: DB):
-    exercises = db.scalars(select(Exercise).where(visible_exercises(user)).order_by(Exercise.id)).all()
+    exercises = db.scalars(select(Exercise).where(visible_exercises(user)).options(selectinload(Exercise.media))
+                           .order_by(Exercise.id)).all()
     prog = load_program(db, user.program_id or DEFAULT_PROGRAM)
     return CatalogOut(exercises=[exercise_out(e, user) for e in exercises],
                       program=program_out(prog, alternatives_map(db), user))

@@ -18,9 +18,12 @@ services:
       CUADERNO_DATABASE_URL: postgresql+psycopg://cuaderno:cuaderno@db:5432/cuaderno
       CUADERNO_JWT_SECRET: ${CUADERNO_JWT_SECRET:-solo-para-desarrollo}
       CUADERNO_CORS_ORIGINS: '["http://localhost:8080","http://127.0.0.1:8080"]'
+      CUADERNO_MEDIA_DIR: /srv/media
+    volumes: [media:/srv/media]
     ports: ["8000:8000"]
     depends_on:
       db: { condition: service_healthy }
 
 volumes:
   pgdata:
+  media:  # fotos y vídeos de los ejercicios propios

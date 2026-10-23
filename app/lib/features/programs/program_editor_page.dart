@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/api.dart';
 import '../../core/theme.dart';
+import '../figures/figure_view.dart';
+import '../media/media_widgets.dart';
 import '../workout/models.dart';
 import '../workout/workout_repository.dart';
 import 'models.dart';
@@ -143,6 +145,8 @@ class _ProgramEditorPageState extends ConsumerState<ProgramEditorPage> {
     if (created == null) return;
     ref.invalidate(catalogProvider);
     if (sheet.mounted) Navigator.pop(sheet, created.id);
+    // Recién creado: se ofrece añadir fotos o vídeos de cómo se hace (se puede cerrar sin añadir)
+    if (mounted) await showMediaManager(context, created);
   }
 
   @override
@@ -488,6 +492,17 @@ class _SlotRow extends StatelessWidget {
               ),
             ),
           ),
+          if (exercise?.mine ?? false)
+            IconButton(
+              tooltip: exercise!.media.isEmpty ? 'Añadir fotos o vídeos' : 'Fotos y vídeos (${exercise!.media.length})',
+              visualDensity: VisualDensity.compact,
+              onPressed: () => showMediaManager(context, exercise!),
+              icon: Badge(
+                isLabelVisible: exercise!.media.isNotEmpty,
+                label: Text('${exercise!.media.length}'),
+                child: const Icon(Icons.photo_library_outlined, size: 18),
+              ),
+            ),
           if (!readOnly) ...[
             IconButton(
                 tooltip: 'Subir', visualDensity: VisualDensity.compact, onPressed: onUp, icon: const Icon(Icons.arrow_upward, size: 18)),
@@ -531,6 +546,7 @@ class _ExercisePicker extends StatefulWidget {
 
 class _ExercisePickerState extends State<_ExercisePicker> {
   String _q = '';
+  String? _open; // ejercicio con la vista previa desplegada
 
   @override
   Widget build(BuildContext context) {
@@ -561,10 +577,12 @@ class _ExercisePickerState extends State<_ExercisePicker> {
                   ? const Center(child: Text('Ningún ejercicio coincide. Prueba con otra palabra o crea uno propio.'))
                   : ListView.builder(
                       itemCount: list.length,
-                      itemBuilder: (_, i) => ListTile(
-                        title: Text(list[i].name),
-                        subtitle: Text(list[i].mine ? '${list[i].muscleGroup} · propio' : list[i].muscleGroup),
-                        onTap: () => Navigator.pop(context, list[i].id),
+                      itemBuilder: (_, i) => _PickerRow(
+                        key: ValueKey(list[i].id),
+                        exercise: list[i],
+                        open: _open == list[i].id,
+                        onToggle: () => setState(() => _open = _open == list[i].id ? null : list[i].id),
+                        onPick: () => Navigator.pop(context, list[i].id),
                       ),
                     ),
             ),
@@ -572,6 +590,82 @@ class _ExercisePickerState extends State<_ExercisePicker> {
         ),
       ),
     );
+  }
+}
+
+/// Fila del selector: miniatura quieta; al tocarla, vista previa con la figura animada
+/// (o las fotos y vídeos propios) y la técnica. El «+» elige sin abrir nada.
+class _PickerRow extends StatelessWidget {
+  const _PickerRow({super.key, required this.exercise, required this.open, required this.onToggle, required this.onPick});
+  final Exercise exercise;
+  final bool open;
+  final VoidCallback onToggle, onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context);
+    final cs = t.colorScheme;
+    final e = exercise;
+    final hasMedia = e.media.isNotEmpty;
+    final thumb = ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: SizedBox(
+        width: 64,
+        child: hasMedia
+            ? AspectRatio(aspectRatio: 64 / 54, child: LayoutBuilder(builder: (_, c) => MediaThumb(item: e.media.first, size: c.maxWidth)))
+            : ColoredBox(color: cs.surfaceContainerHighest, child: StillFigure(spec: e.figure)),
+      ),
+    );
+    final tags = [
+      e.isSeconds ? 'Segundos' : 'Repeticiones',
+      e.isExtraLoad ? 'Peso corporal o lastre' : 'Con carga',
+      e.isCompound ? 'Básico' : 'Aislamiento',
+    ];
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      ListTile(
+        leading: thumb,
+        title: Text(e.name),
+        subtitle: Text(e.mine ? '${e.muscleGroup} · propio' : e.muscleGroup),
+        selected: open,
+        onTap: onToggle,
+        trailing: IconButton(tooltip: 'Elegir ${e.name}', onPressed: onPick, icon: const Icon(Icons.add_circle_outline)),
+      ),
+      if (open)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          child: LayoutBuilder(builder: (context, c) {
+            final visual = SizedBox(
+              width: c.maxWidth < 420 ? 200 : 220,
+              child: hasMedia
+                  ? MediaCover(ex: e)
+                  : DecoratedBox(
+                      decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
+                      child: ClipRRect(borderRadius: BorderRadius.circular(10), child: AnimatedFigure(spec: e.figure)),
+                    ),
+            );
+            final info = Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Wrap(spacing: 6, runSpacing: 6, children: [
+                for (final tag in tags)
+                  DecoratedBox(
+                    decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(999)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      child: Text(tag, style: t.textTheme.labelSmall?.copyWith(color: cs.onSurfaceVariant)),
+                    ),
+                  ),
+              ]),
+              const SizedBox(height: 8),
+              Text(e.cue.isEmpty ? 'Sin indicaciones de técnica.' : e.cue,
+                  style: t.textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
+              const SizedBox(height: 10),
+              FilledButton.icon(onPressed: onPick, icon: const Icon(Icons.add), label: const Text('Elegir')),
+            ]);
+            return c.maxWidth < 420
+                ? Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [Center(child: visual), const SizedBox(height: 10), info])
+                : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [visual, const SizedBox(width: 14), Expanded(child: info)]);
+          }),
+        ),
+    ]);
   }
 }
 

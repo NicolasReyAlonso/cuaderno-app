@@ -73,6 +73,25 @@ class Exercise(Base):
     default_rep_max: Mapped[int | None] = mapped_column(Integer)
     # Pose a y b del muñeco animado (mismo formato que el cuaderno web)
     figure: Mapped[dict] = mapped_column(JSON)
+    media: Mapped[list["ExerciseMedia"]] = relationship(order_by="ExerciseMedia.position", cascade="all, delete-orphan")
+
+
+class ExerciseMedia(Base):
+    """Foto, GIF o vídeo de cómo se hace un ejercicio propio. El archivo está en disco (settings.media_dir)."""
+
+    __tablename__ = "exercise_media"
+    __table_args__ = (CheckConstraint("kind in ('image','video')", name="exercise_media_kind"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    exercise_id: Mapped[str] = mapped_column(ForeignKey("exercises.id", ondelete="CASCADE"), index=True)
+    owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    position: Mapped[int] = mapped_column(Integer, default=0)
+    kind: Mapped[str] = mapped_column(String(10))
+    content_type: Mapped[str] = mapped_column(String(40))
+    size_bytes: Mapped[int] = mapped_column(Integer)
+    # Ruta relativa dentro de media_dir: <owner_id>/<id>.<ext>
+    path: Mapped[str] = mapped_column(String(120))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
 
 
 class ExerciseAlternative(Base):
