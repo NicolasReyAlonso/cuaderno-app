@@ -1,0 +1,6349 @@
+{
+ "version": 1,
+ "exercises": [
+  {
+   "id": "dominadas",
+   "name": "Dominadas",
+   "muscle_group": "Espalda",
+   "cue": "Apunta solo el peso extra (cinturón o mancuerna), no tu peso corporal: 0 si haces solo tu cuerpo. Cuando hagas 4×10, añade lastre o baja en 3 segundos.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": true,
+   "default_reps": [
+    6,
+    10
+   ],
+   "figure": {
+    "floor": false,
+    "props": [
+     [
+      "line",
+      60,
+      12,
+      150,
+      12,
+      4
+     ],
+     [
+      "line",
+      64,
+      12,
+      64,
+      170,
+      2.5
+     ],
+     [
+      "line",
+      146,
+      12,
+      146,
+      170,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      104,
+      12
+     ],
+     "foot": [
+      92,
+      178
+     ]
+    },
+    "b": {
+     "hip": [
+      92,
+      71
+     ],
+     "t": 100,
+     "hand": [
+      104,
+      12
+     ],
+     "foot": [
+      82,
+      140
+     ]
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "press_banca",
+   "name": "Press banca con barra",
+   "muscle_group": "Pecho",
+   "cue": "Escápulas juntas y abajo. La barra toca la parte baja del pecho.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    6,
+    8
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      50,
+      112,
+      100,
+      6
+     ],
+     [
+      "line",
+      60,
+      118,
+      60,
+      158,
+      3
+     ],
+     [
+      "line",
+      140,
+      118,
+      140,
+      158,
+      3
+     ],
+     [
+      "line",
+      58,
+      40,
+      58,
+      112,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      74,
+      54
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      80,
+      92
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "press_inclinado",
+   "name": "Press inclinado en multipower",
+   "muscle_group": "Pecho",
+   "cue": "Banco a 30–45°. Baja hasta rozar la clavícula.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      60,
+      6,
+      60,
+      158,
+      2.5
+     ],
+     [
+      "line",
+      150,
+      6,
+      150,
+      158,
+      2.5
+     ],
+     [
+      "line",
+      114,
+      116,
+      80,
+      62,
+      7
+     ],
+     [
+      "line",
+      104,
+      119,
+      140,
+      119,
+      6
+     ],
+     [
+      "line",
+      122,
+      119,
+      122,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      118,
+      112
+     ],
+     "t": 125,
+     "hand": [
+      100,
+      24
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      118,
+      112
+     ],
+     "t": 125,
+     "hand": [
+      98,
+      66
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "jalon_pecho",
+   "name": "Jalón al pecho",
+   "muscle_group": "Espalda",
+   "cue": "Pecho arriba. Lleva la barra a la clavícula tirando con los codos.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      160,
+      4,
+      160,
+      158,
+      4
+     ],
+     [
+      "line",
+      100,
+      4,
+      160,
+      4,
+      3
+     ],
+     [
+      "rect",
+      84,
+      110,
+      34,
+      6
+     ],
+     [
+      "line",
+      100,
+      116,
+      100,
+      158,
+      3
+     ],
+     [
+      "circle",
+      124,
+      98,
+      6
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      106
+     ],
+     "t": 98,
+     "hand": [
+      106,
+      10
+     ],
+     "foot": [
+      130,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      106
+     ],
+     "t": 104,
+     "hand": [
+      106,
+      62
+     ],
+     "foot": [
+      130,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       106,
+       4
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "hbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "remo_polea_baja",
+   "name": "Remo en polea baja",
+   "muscle_group": "Espalda",
+   "cue": "Espalda neutra, sin balancearte. Junta las escápulas al final.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      56,
+      124,
+      46,
+      6
+     ],
+     [
+      "line",
+      78,
+      130,
+      78,
+      158,
+      3
+     ],
+     [
+      "line",
+      136,
+      106,
+      136,
+      146,
+      5
+     ],
+     [
+      "line",
+      188,
+      10,
+      188,
+      158,
+      4
+     ],
+     [
+      "circle",
+      188,
+      128,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      80,
+      122
+     ],
+     "t": 68,
+     "hand": [
+      148,
+      104
+     ],
+     "foot": [
+      132,
+      124
+     ]
+    },
+    "b": {
+     "hip": [
+      80,
+      122
+     ],
+     "t": 98,
+     "hand": [
+      96,
+      100
+     ],
+     "foot": [
+      132,
+      124
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       188,
+       128
+      ],
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "facepull",
+   "name": "Face pull",
+   "muscle_group": "Hombro posterior",
+   "cue": "Cuerda hacia la cara con los codos altos.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      176,
+      6,
+      176,
+      158,
+      4
+     ],
+     [
+      "circle",
+      176,
+      26,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      84
+     ],
+     "t": 88,
+     "hand": [
+      146,
+      34
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      112,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      84
+     ],
+     "t": 92,
+     "hand": [
+      114,
+      26
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      112,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       176,
+       26
+      ],
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "sentadilla_smith",
+   "name": "Sentadilla en multipower",
+   "muscle_group": "Pierna",
+   "cue": "Pies algo adelantados. Baja hasta que el muslo quede paralelo al suelo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    6,
+    8
+   ],
+   "figure": {
+    "fs": 0.6,
+    "props": [
+     [
+      "line",
+      62,
+      6,
+      62,
+      158,
+      2.5
+     ],
+     [
+      "line",
+      150,
+      6,
+      150,
+      158,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       -7,
+       1
+      ]
+     },
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      80,
+      121
+     ],
+     "t": 58,
+     "hand": {
+      "rel": "S",
+      "d": [
+       -7,
+       1
+      ]
+     },
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "S",
+      "d": [
+       -6,
+       -1
+      ],
+      "r": 9,
+      "behind": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "haka",
+   "name": "Hack squat (Haka)",
+   "muscle_group": "Pierna",
+   "cue": "Espalda pegada al respaldo. Controla la bajada.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "fs": 0.7,
+    "props": [
+     [
+      "line",
+      96,
+      160,
+      140,
+      146,
+      5
+     ],
+     [
+      "line",
+      30,
+      156,
+      96,
+      2,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      94,
+      84
+     ],
+     "t": 104,
+     "hand": {
+      "rel": "S",
+      "d": [
+       8,
+       6
+      ]
+     },
+     "foot": [
+      112,
+      152
+     ]
+    },
+    "b": {
+     "hip": [
+      78,
+      122
+     ],
+     "t": 108,
+     "hand": {
+      "rel": "S",
+      "d": [
+       8,
+       6
+      ]
+     },
+     "foot": [
+      112,
+      152
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "backpad"
+     },
+     {
+      "k": "spad",
+      "at": "S"
+     }
+    ]
+   }
+  },
+  {
+   "id": "hip_thrust",
+   "name": "Hip thrust",
+   "muscle_group": "Glúteo",
+   "cue": "Mentón al pecho. Aprieta glúteo un segundo arriba.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      18,
+      108,
+      52,
+      6
+     ],
+     [
+      "line",
+      26,
+      114,
+      26,
+      158,
+      3
+     ],
+     [
+      "line",
+      62,
+      114,
+      62,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      104,
+      138
+     ],
+     "t": 144,
+     "hand": {
+      "rel": "H",
+      "d": [
+       0,
+       -8
+      ]
+     },
+     "foot": [
+      140,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      112,
+      106
+     ],
+     "t": 178,
+     "hand": {
+      "rel": "H",
+      "d": [
+       0,
+       -8
+      ]
+     },
+     "foot": [
+      140,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hip",
+      "d": [
+       0,
+       -11
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "femoral_tumbado",
+   "name": "Femoral tumbado",
+   "muscle_group": "Femoral",
+   "cue": "Cadera pegada al banco durante todo el recorrido.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      36,
+      118,
+      124,
+      6
+     ],
+     [
+      "line",
+      46,
+      124,
+      46,
+      158,
+      3
+     ],
+     [
+      "line",
+      150,
+      124,
+      150,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      112,
+      112
+     ],
+     "t": 180,
+     "hand": [
+      56,
+      132
+     ],
+     "foot": [
+      184,
+      116
+     ]
+    },
+    "b": {
+     "hip": [
+      112,
+      112
+     ],
+     "t": 180,
+     "hand": [
+      56,
+      132
+     ],
+     "foot": [
+      130,
+      72
+     ]
+    },
+    "eb": 1,
+    "kb": -1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "ankle",
+      "d": [
+       0,
+       -6
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "leg_extension",
+   "name": "Extensión de cuádriceps",
+   "muscle_group": "Cuádriceps",
+   "cue": "Pausa de un segundo arriba.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      74,
+      108,
+      40,
+      6
+     ],
+     [
+      "line",
+      76,
+      108,
+      68,
+      58,
+      6
+     ],
+     [
+      "line",
+      94,
+      114,
+      94,
+      158,
+      3
+     ],
+     [
+      "circle",
+      132,
+      108,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      94,
+      104
+     ],
+     "t": 98,
+     "hand": {
+      "rel": "H",
+      "d": [
+       -2,
+       8
+      ]
+     },
+     "foot": [
+      128,
+      152
+     ]
+    },
+    "b": {
+     "hip": [
+      94,
+      104
+     ],
+     "t": 98,
+     "hand": {
+      "rel": "H",
+      "d": [
+       -2,
+       8
+      ]
+     },
+     "foot": [
+      166,
+      96
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "ankle",
+      "d": [
+       2,
+       4
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gemelos",
+   "name": "Gemelos de pie",
+   "muscle_group": "Gemelo",
+   "cue": "Estira abajo del todo y sube de puntillas.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "fs": 0.6,
+    "props": [
+     [
+      "rect",
+      82,
+      152,
+      40,
+      8
+     ],
+     [
+      "line",
+      150,
+      10,
+      150,
+      158,
+      4
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      80
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       10,
+       -4
+      ]
+     },
+     "foot": [
+      101,
+      150
+     ],
+     "toe": 0
+    },
+    "b": {
+     "hip": [
+      100,
+      71
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       10,
+       -4
+      ]
+     },
+     "foot": [
+      101,
+      141
+     ],
+     "toe": -50
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "spad",
+      "at": "S"
+     }
+    ]
+   }
+  },
+  {
+   "id": "crunch_polea",
+   "name": "Abdominales en polea",
+   "muscle_group": "Core",
+   "cue": "Enrolla la columna. La cadera no se mueve.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "fs": 0.6,
+    "props": [
+     [
+      "line",
+      172,
+      4,
+      172,
+      158,
+      4
+     ],
+     [
+      "circle",
+      172,
+      10,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      118
+     ],
+     "t": 100,
+     "hand": {
+      "rel": "head",
+      "d": [
+       4,
+       6
+      ]
+     },
+     "foot": [
+      64,
+      154
+     ],
+     "toe": 180
+    },
+    "b": {
+     "hip": [
+      100,
+      118
+     ],
+     "t": 30,
+     "hand": {
+      "rel": "head",
+      "d": [
+       4,
+       6
+      ]
+     },
+     "foot": [
+      64,
+      154
+     ],
+     "toe": 180
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       172,
+       10
+      ],
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "plancha_lateral",
+   "name": "Plancha lateral",
+   "muscle_group": "Core",
+   "cue": "Cada lado. Cuerpo en línea recta, cadera arriba.",
+   "unit": "seconds",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": [
+    40,
+    60
+   ],
+   "figure": {
+    "a": {
+     "hip": [
+      116,
+      138
+     ],
+     "t": 166,
+     "hand": [
+      96,
+      154
+     ],
+     "hand2": {
+      "rel": "H",
+      "d": [
+       -4,
+       -6
+      ]
+     },
+     "foot": [
+      178,
+      154
+     ]
+    },
+    "b": {
+     "hip": [
+      116,
+      130
+     ],
+     "t": 170,
+     "hand": [
+      96,
+      154
+     ],
+     "hand2": {
+      "rel": "H",
+      "d": [
+       -4,
+       -6
+      ]
+     },
+     "foot": [
+      178,
+      154
+     ]
+    },
+    "eb": -1,
+    "eb2": 1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "press_militar",
+   "name": "Press de hombro con mancuernas",
+   "muscle_group": "Hombro",
+   "cue": "Sentado con respaldo. Sube sin bloquear del todo los codos.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    6,
+    8
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      80,
+      112,
+      34,
+      6
+     ],
+     [
+      "line",
+      82,
+      112,
+      80,
+      52,
+      6
+     ],
+     [
+      "line",
+      96,
+      118,
+      96,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      94,
+      108
+     ],
+     "t": 92,
+     "hand": [
+      108,
+      58
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      94,
+      108
+     ],
+     "t": 92,
+     "hand": [
+      96,
+      10
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "laterales",
+   "name": "Elevaciones laterales",
+   "muscle_group": "Hombro",
+   "cue": "Codos un poco flexionados. Sube hasta la altura del hombro.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      86,
+      90
+     ],
+     "hand2": [
+      114,
+      90
+     ],
+     "foot": [
+      93,
+      156
+     ],
+     "foot2": [
+      107,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      44,
+      42
+     ],
+     "hand2": [
+      156,
+      42
+     ],
+     "foot": [
+      93,
+      156
+     ],
+     "foot2": [
+      107,
+      156
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     },
+     {
+      "k": "db",
+      "at": "hand2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "pajaro",
+   "name": "Pájaro (elevación posterior)",
+   "muscle_group": "Hombro posterior",
+   "cue": "De pie inclinado o con el pecho en el banco.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "tl": 26,
+    "ho": 5,
+    "a": {
+     "hip": [
+      100,
+      92
+     ],
+     "t": 90,
+     "hand": [
+      94,
+      116
+     ],
+     "hand2": [
+      106,
+      116
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      92
+     ],
+     "t": 90,
+     "hand": [
+      52,
+      62
+     ],
+     "hand2": [
+      148,
+      62
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     },
+     {
+      "k": "db",
+      "at": "hand2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "curl_scott",
+   "name": "Curl en banco Scott con barra Z",
+   "muscle_group": "Bíceps",
+   "cue": "Baja hasta casi estirar el brazo, sin rebotar.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      74,
+      114,
+      32,
+      6
+     ],
+     [
+      "line",
+      90,
+      120,
+      90,
+      158,
+      3
+     ],
+     [
+      "poly",
+      "102,70 134,108 126,113 95,76"
+     ]
+    ],
+    "a": {
+     "hip": [
+      90,
+      112
+     ],
+     "t": 80,
+     "hand": [
+      140,
+      110
+     ],
+     "foot": [
+      118,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      90,
+      112
+     ],
+     "t": 80,
+     "hand": [
+      110,
+      62
+     ],
+     "foot": [
+      118,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand",
+      "r": 7
+     }
+    ]
+   }
+  },
+  {
+   "id": "triceps_cuerda",
+   "name": "Tríceps en polea con cuerda",
+   "muscle_group": "Tríceps",
+   "cue": "Codos pegados al cuerpo. Abre la cuerda abajo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      152,
+      4,
+      152,
+      158,
+      4
+     ],
+     [
+      "circle",
+      152,
+      10,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 86,
+     "hand": [
+      118,
+      54
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 86,
+     "hand": [
+      110,
+      94
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       152,
+       10
+      ],
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "curl_martillo",
+   "name": "Curl martillo con mancuernas",
+   "muscle_group": "Bíceps",
+   "cue": "Palmas mirándose entre sí.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      76,
+      112,
+      40,
+      6
+     ],
+     [
+      "line",
+      96,
+      118,
+      96,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      100,
+      116
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      105.5,
+      65.5
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "tras_nuca",
+   "name": "Tríceps tras nuca",
+   "muscle_group": "Tríceps",
+   "cue": "Codos apuntando al techo durante todo el movimiento.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      76,
+      112,
+      40,
+      6
+     ],
+     [
+      "line",
+      96,
+      118,
+      96,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      91,
+      58
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      98,
+      10
+     ],
+     "foot": [
+      124,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "press_mancuernas",
+   "name": "Press banca con mancuernas",
+   "muscle_group": "Pecho",
+   "cue": "Apunta el peso de una mancuerna.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      50,
+      112,
+      100,
+      6
+     ],
+     [
+      "line",
+      60,
+      118,
+      60,
+      158,
+      3
+     ],
+     [
+      "line",
+      140,
+      118,
+      140,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      76,
+      54
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      82,
+      94
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fondos_pecho",
+   "name": "Fondos de pecho",
+   "muscle_group": "Pecho",
+   "cue": "Torso inclinado hacia delante para cargar el pecho.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      84,
+      76,
+      130,
+      76,
+      5
+     ],
+     [
+      "line",
+      126,
+      76,
+      126,
+      158,
+      4
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      70
+     ],
+     "t": 78,
+     "hand": [
+      106,
+      76
+     ],
+     "foot": [
+      82,
+      120
+     ]
+    },
+    "b": {
+     "hip": [
+      92,
+      100
+     ],
+     "t": 62,
+     "hand": [
+      106,
+      76
+     ],
+     "foot": [
+      80,
+      150
+     ]
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "remo_landmine",
+   "name": "Remo en landmine",
+   "muscle_group": "Espalda",
+   "cue": "Barra con agarre estrecho. Tira hacia el ombligo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "circle",
+      186,
+      152,
+      4
+     ]
+    ],
+    "a": {
+     "hip": [
+      80,
+      86
+     ],
+     "t": 36,
+     "hand": [
+      119,
+      110
+     ],
+     "foot": [
+      92,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      80,
+      86
+     ],
+     "t": 36,
+     "hand": [
+      104,
+      92
+     ],
+     "foot": [
+      92,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "lever",
+      "from": [
+       186,
+       152
+      ],
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "jalon_estrecho",
+   "name": "Jalón con agarre estrecho",
+   "muscle_group": "Espalda",
+   "cue": "Triángulo al pecho, codos pegados.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      160,
+      4,
+      160,
+      158,
+      4
+     ],
+     [
+      "line",
+      100,
+      4,
+      160,
+      4,
+      3
+     ],
+     [
+      "rect",
+      84,
+      110,
+      34,
+      6
+     ],
+     [
+      "line",
+      100,
+      116,
+      100,
+      158,
+      3
+     ],
+     [
+      "circle",
+      124,
+      98,
+      6
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      106
+     ],
+     "t": 98,
+     "hand": [
+      104,
+      10
+     ],
+     "foot": [
+      130,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      106
+     ],
+     "t": 106,
+     "hand": [
+      104,
+      66
+     ],
+     "foot": [
+      130,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       104,
+       4
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "vbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "pec_fly",
+   "name": "Cruce de poleas a media altura",
+   "muscle_group": "Pecho",
+   "cue": "Codos fijos, como si abrazaras un árbol.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "props": [
+     [
+      "line",
+      10,
+      10,
+      10,
+      158,
+      4
+     ],
+     [
+      "line",
+      190,
+      10,
+      190,
+      158,
+      4
+     ],
+     [
+      "circle",
+      10,
+      62,
+      3.5
+     ],
+     [
+      "circle",
+      190,
+      62,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      44,
+      58
+     ],
+     "hand2": [
+      156,
+      58
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      96,
+      66
+     ],
+     "hand2": [
+      104,
+      66
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "eb": -1,
+    "eb2": 1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       10,
+       62
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "cable",
+      "from": [
+       190,
+       62
+      ],
+      "at": "hand2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "cruzada_inversa",
+   "name": "Cruzada inversa en polea",
+   "muscle_group": "Hombro posterior",
+   "cue": "Cables cruzados. Abre hasta la línea de los hombros.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "props": [
+     [
+      "line",
+      10,
+      10,
+      10,
+      158,
+      4
+     ],
+     [
+      "line",
+      190,
+      10,
+      190,
+      158,
+      4
+     ],
+     [
+      "circle",
+      10,
+      40,
+      3.5
+     ],
+     [
+      "circle",
+      190,
+      40,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      108,
+      50
+     ],
+     "hand2": [
+      92,
+      50
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      44,
+      40
+     ],
+     "hand2": [
+      156,
+      40
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "eb": -1,
+    "eb2": 1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       190,
+       40
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "cable",
+      "from": [
+       10,
+       40
+      ],
+      "at": "hand2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "peso_muerto",
+   "name": "Peso muerto rumano",
+   "muscle_group": "Femoral y glúteo",
+   "cue": "Cadera hacia atrás, barra pegada a las piernas, espalda neutra.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    6,
+    8
+   ],
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      104,
+      140
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      84,
+      86
+     ],
+     "t": 18,
+     "hand": [
+      128,
+      140
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "bulgara",
+   "name": "Sentadilla búlgara",
+   "muscle_group": "Pierna",
+   "cue": "Repeticiones por pierna. Apunta el peso de una mancuerna.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    8,
+    10
+   ],
+   "figure": {
+    "props": [
+     [
+      "rect",
+      26,
+      124,
+      36,
+      6
+     ],
+     [
+      "line",
+      32,
+      130,
+      32,
+      158,
+      3
+     ],
+     [
+      "line",
+      56,
+      130,
+      56,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      82
+     ],
+     "t": 90,
+     "hand": [
+      98,
+      140
+     ],
+     "foot": [
+      122,
+      156
+     ],
+     "foot2": [
+      52,
+      122
+     ],
+     "toe2": 180
+    },
+    "b": {
+     "hip": [
+      92,
+      112
+     ],
+     "t": 84,
+     "hand": [
+      98,
+      160
+     ],
+     "foot": [
+      122,
+      156
+     ],
+     "foot2": [
+      52,
+      122
+     ],
+     "toe2": 180
+    },
+    "eb": -1,
+    "kb": 1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "prensa",
+   "name": "Prensa inclinada",
+   "muscle_group": "Pierna",
+   "cue": "No despegues la zona lumbar del respaldo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": [
+    10,
+    12
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      30,
+      92,
+      74,
+      128,
+      7
+     ],
+     [
+      "line",
+      68,
+      131,
+      98,
+      131,
+      6
+     ],
+     [
+      "line",
+      96,
+      140,
+      192,
+      44,
+      2.5
+     ],
+     [
+      "line",
+      84,
+      131,
+      84,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      80,
+      124
+     ],
+     "t": 142,
+     "hand": {
+      "rel": "H",
+      "d": [
+       6,
+       8
+      ]
+     },
+     "foot": [
+      148,
+      70
+     ],
+     "toe": 134
+    },
+    "b": {
+     "hip": [
+      80,
+      124
+     ],
+     "t": 142,
+     "hand": {
+      "rel": "H",
+      "d": [
+       6,
+       8
+      ]
+     },
+     "foot": [
+      118,
+      96
+     ],
+     "toe": 134
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plat",
+      "at": "ankle",
+      "a": 134
+     }
+    ]
+   }
+  },
+  {
+   "id": "aductor",
+   "name": "Aductor en máquina",
+   "muscle_group": "Aductor",
+   "cue": "Puedes hacerlo en superserie con el abductor.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "ls": 0.6,
+    "fs": 0.8,
+    "props": [
+     [
+      "rect",
+      86,
+      52,
+      28,
+      60
+     ],
+     [
+      "rect",
+      76,
+      110,
+      48,
+      6
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      80,
+      112
+     ],
+     "hand2": [
+      120,
+      112
+     ],
+     "foot": [
+      62,
+      144
+     ],
+     "foot2": [
+      138,
+      144
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      80,
+      112
+     ],
+     "hand2": [
+      120,
+      112
+     ],
+     "foot": [
+      95,
+      150
+     ],
+     "foot2": [
+      105,
+      150
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "knee",
+      "d": [
+       6,
+       0
+      ]
+     },
+     {
+      "k": "pad",
+      "at": "knee2",
+      "d": [
+       -6,
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "abductor",
+   "name": "Abductor en máquina",
+   "muscle_group": "Glúteo medio",
+   "cue": "Inclínate un poco hacia delante para cargar más el glúteo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "front": true,
+    "ls": 0.6,
+    "fs": 0.8,
+    "props": [
+     [
+      "rect",
+      86,
+      52,
+      28,
+      60
+     ],
+     [
+      "rect",
+      76,
+      110,
+      48,
+      6
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      80,
+      112
+     ],
+     "hand2": [
+      120,
+      112
+     ],
+     "foot": [
+      95,
+      150
+     ],
+     "foot2": [
+      105,
+      150
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      80,
+      112
+     ],
+     "hand2": [
+      120,
+      112
+     ],
+     "foot": [
+      62,
+      144
+     ],
+     "foot2": [
+      138,
+      144
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "knee",
+      "d": [
+       -6,
+       0
+      ]
+     },
+     {
+      "k": "pad",
+      "at": "knee2",
+      "d": [
+       6,
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gemelos_prensa",
+   "name": "Gemelos en prensa",
+   "muscle_group": "Gemelo",
+   "cue": "Solo la punta del pie en la plataforma.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "props": [
+     [
+      "line",
+      30,
+      92,
+      74,
+      128,
+      7
+     ],
+     [
+      "line",
+      68,
+      131,
+      98,
+      131,
+      6
+     ],
+     [
+      "line",
+      96,
+      140,
+      192,
+      44,
+      2.5
+     ],
+     [
+      "line",
+      84,
+      131,
+      84,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      80,
+      124
+     ],
+     "t": 142,
+     "hand": {
+      "rel": "H",
+      "d": [
+       6,
+       8
+      ]
+     },
+     "foot": [
+      148,
+      70
+     ],
+     "toe": 150
+    },
+    "b": {
+     "hip": [
+      80,
+      124
+     ],
+     "t": 142,
+     "hand": {
+      "rel": "H",
+      "d": [
+       6,
+       8
+      ]
+     },
+     "foot": [
+      148,
+      70
+     ],
+     "toe": 105
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plat",
+      "at": "toe",
+      "a": 134
+     }
+    ]
+   }
+  },
+  {
+   "id": "rueda",
+   "name": "Rueda abdominal",
+   "muscle_group": "Core",
+   "cue": "Pídela al monitor. Rodillas en el suelo, sin arquear la lumbar.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": [
+    8,
+    12
+   ],
+   "figure": {
+    "a": {
+     "hip": [
+      60,
+      118
+     ],
+     "t": 35,
+     "hand": [
+      100,
+      146
+     ],
+     "foot": [
+      26,
+      152
+     ],
+     "toe": 180
+    },
+    "b": {
+     "hip": [
+      88,
+      138
+     ],
+     "t": 8,
+     "hand": [
+      184,
+      146
+     ],
+     "foot": [
+      20,
+      152
+     ],
+     "toe": 180
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "wheel",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "elevacion_rodillas",
+   "name": "Elevación de rodillas en silla romana",
+   "muscle_group": "Core",
+   "cue": "Sube las rodillas al pecho sin balancearte.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": [
+    12,
+    15
+   ],
+   "figure": {
+    "floor": false,
+    "props": [
+     [
+      "line",
+      86,
+      26,
+      86,
+      112,
+      6
+     ],
+     [
+      "line",
+      92,
+      82,
+      136,
+      82,
+      5
+     ],
+     [
+      "line",
+      78,
+      10,
+      78,
+      170,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      104
+     ],
+     "t": 92,
+     "hand": [
+      122,
+      78
+     ],
+     "foot": [
+      100,
+      176
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      104
+     ],
+     "t": 96,
+     "hand": [
+      122,
+      78
+     ],
+     "foot": [
+      132,
+      108
+     ]
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "dominadas_negativas",
+   "name": "Dominadas negativas",
+   "muscle_group": "Espalda",
+   "cue": "Sube con un salto o un banco y baja en 4–5 segundos. Apunta 0 si no llevas peso extra.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "floor": false,
+    "props": [
+     [
+      "line",
+      60,
+      12,
+      150,
+      12,
+      4
+     ],
+     [
+      "line",
+      64,
+      12,
+      64,
+      170,
+      2.5
+     ],
+     [
+      "line",
+      146,
+      12,
+      146,
+      170,
+      2.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      92,
+      71
+     ],
+     "t": 100,
+     "hand": [
+      104,
+      12
+     ],
+     "foot": [
+      82,
+      140
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      104,
+      12
+     ],
+     "foot": [
+      92,
+      178
+     ]
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "remo_barra",
+   "name": "Remo con barra",
+   "muscle_group": "Espalda",
+   "cue": "Torso inclinado unos 45° y espalda neutra. Lleva la barra al ombligo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      84,
+      86
+     ],
+     "t": 18,
+     "hand": [
+      128,
+      124
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      84,
+      86
+     ],
+     "t": 18,
+     "hand": [
+      108,
+      98
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "remo_mancuerna",
+   "name": "Remo con mancuerna en banco",
+   "muscle_group": "Espalda",
+   "cue": "Rodilla y mano en el banco. Tira con el codo pegado. Repeticiones por brazo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "rect",
+      50,
+      128,
+      112,
+      6
+     ],
+     [
+      "line",
+      60,
+      134,
+      60,
+      158,
+      3
+     ],
+     [
+      "line",
+      152,
+      134,
+      152,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      86,
+      92
+     ],
+     "t": 4,
+     "hand": [
+      130,
+      140
+     ],
+     "hand2": [
+      140,
+      128
+     ],
+     "foot": [
+      52,
+      124
+     ],
+     "toe": 180,
+     "foot2": [
+      104,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      86,
+      92
+     ],
+     "t": 4,
+     "hand": [
+      110,
+      98
+     ],
+     "hand2": [
+      140,
+      128
+     ],
+     "foot": [
+      52,
+      124
+     ],
+     "toe": 180,
+     "foot2": [
+      104,
+      156
+     ]
+    },
+    "eb": -1,
+    "eb2": -1,
+    "kb": 1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "pullover_polea",
+   "name": "Pullover en polea alta",
+   "muscle_group": "Espalda",
+   "cue": "Brazos casi rectos. Baja la barra hasta los muslos con el dorsal.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "line",
+      176,
+      6,
+      176,
+      158,
+      4
+     ],
+     [
+      "circle",
+      176,
+      14,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      92,
+      92
+     ],
+     "t": 75,
+     "hand": [
+      140,
+      22
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      110,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      92,
+      92
+     ],
+     "t": 75,
+     "hand": [
+      112,
+      96
+     ],
+     "foot": [
+      92,
+      156
+     ],
+     "foot2": [
+      110,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       176,
+       14
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "hbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "flexiones",
+   "name": "Flexiones",
+   "muscle_group": "Pecho",
+   "cue": "Cuerpo en línea. Si pasas de 15, pon un disco en la espalda o eleva los pies.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      78,
+      120
+     ],
+     "t": 14,
+     "hand": [
+      124,
+      158
+     ],
+     "foot": [
+      8,
+      152
+     ],
+     "toe": -80
+    },
+    "b": {
+     "hip": [
+      78,
+      140
+     ],
+     "t": 6,
+     "hand": [
+      124,
+      158
+     ],
+     "foot": [
+      8,
+      152
+     ],
+     "toe": -80
+    },
+    "eb": -1,
+    "kb": -1
+   }
+  },
+  {
+   "id": "aperturas",
+   "name": "Aperturas con mancuernas",
+   "muscle_group": "Pecho",
+   "cue": "Codos un poco flexionados y fijos. Abre hasta notar el estiramiento.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "rect",
+      50,
+      112,
+      100,
+      6
+     ],
+     [
+      "line",
+      60,
+      118,
+      60,
+      158,
+      3
+     ],
+     [
+      "line",
+      140,
+      118,
+      140,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      74,
+      56
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      120,
+      107
+     ],
+     "t": 180,
+     "hand": [
+      56,
+      110
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "press_inclinado_mancuernas",
+   "name": "Press inclinado con mancuernas",
+   "muscle_group": "Pecho",
+   "cue": "Banco a 30–45°. Apunta el peso de una mancuerna.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "line",
+      114,
+      116,
+      80,
+      62,
+      7
+     ],
+     [
+      "line",
+      104,
+      119,
+      140,
+      119,
+      6
+     ],
+     [
+      "line",
+      122,
+      119,
+      122,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      118,
+      112
+     ],
+     "t": 125,
+     "hand": [
+      100,
+      24
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      118,
+      112
+     ],
+     "t": 125,
+     "hand": [
+      96,
+      68
+     ],
+     "foot": [
+      150,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "db",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "sentadilla_rack",
+   "name": "Sentadilla con barra libre",
+   "muscle_group": "Pierna",
+   "cue": "Barra sobre los trapecios. Rodillas en la línea de los pies, baja hasta paralelo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "fs": 0.6,
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       -7,
+       1
+      ]
+     },
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      80,
+      120
+     ],
+     "t": 52,
+     "hand": {
+      "rel": "S",
+      "d": [
+       -7,
+       1
+      ]
+     },
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "S",
+      "d": [
+       -6,
+       -1
+      ],
+      "r": 9,
+      "behind": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "sentadilla_goblet",
+   "name": "Sentadilla goblet",
+   "muscle_group": "Pierna",
+   "cue": "Mancuerna pegada al pecho, torso erguido. Baja entre las rodillas.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "fs": 0.6,
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       11,
+       9
+      ]
+     },
+     "foot": [
+      104,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      84,
+      120
+     ],
+     "t": 72,
+     "hand": {
+      "rel": "S",
+      "d": [
+       11,
+       9
+      ]
+     },
+     "foot": [
+      104,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "zancadas",
+   "name": "Zancadas con mancuernas",
+   "muscle_group": "Pierna",
+   "cue": "Paso largo, la rodilla de atrás casi toca el suelo. Repeticiones por pierna.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": {
+      "rel": "S",
+      "d": [
+       2,
+       50
+      ]
+     },
+     "foot": [
+      118,
+      156
+     ],
+     "foot2": [
+      82,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      118
+     ],
+     "t": 88,
+     "hand": {
+      "rel": "S",
+      "d": [
+       2,
+       50
+      ]
+     },
+     "foot": [
+      126,
+      156
+     ],
+     "foot2": [
+      58,
+      154
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "puente_gluteo",
+   "name": "Puente de glúteo en el suelo",
+   "muscle_group": "Glúteo",
+   "cue": "Disco sobre la cadera. Aprieta glúteo arriba un segundo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 178,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96.4,
+      128
+     ],
+     "t": 208.6,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hip",
+      "d": [
+       0,
+       -11
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "puente_banda",
+   "name": "Puente de glúteo con banda",
+   "muscle_group": "Glúteo medio",
+   "cue": "Banda sobre las rodillas. Empuja hacia fuera mientras subes. Apunta 0 kg.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 178,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96.4,
+      128
+     ],
+     "t": 208.6,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "knee",
+      "d": [
+       0,
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "femoral_sentado",
+   "name": "Femoral sentado",
+   "muscle_group": "Femoral",
+   "cue": "Ajusta el rodillo sobre los tobillos. Controla la vuelta.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "rect",
+      74,
+      110,
+      40,
+      6
+     ],
+     [
+      "line",
+      76,
+      110,
+      68,
+      58,
+      6
+     ],
+     [
+      "line",
+      94,
+      116,
+      94,
+      158,
+      3
+     ],
+     [
+      "circle",
+      128,
+      96,
+      4
+     ]
+    ],
+    "a": {
+     "hip": [
+      92,
+      104
+     ],
+     "t": 100,
+     "hand": [
+      106,
+      112
+     ],
+     "foot": [
+      164,
+      104
+     ],
+     "toe": 90
+    },
+    "b": {
+     "hip": [
+      92,
+      104
+     ],
+     "t": 100,
+     "hand": [
+      106,
+      112
+     ],
+     "foot": [
+      112,
+      148
+     ],
+     "toe": 90
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "pad",
+      "at": "ankle",
+      "d": [
+       -3,
+       5
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gemelos_sentado",
+   "name": "Gemelos sentado",
+   "muscle_group": "Gemelo",
+   "cue": "Pausa abajo estirando y sube del todo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "rect",
+      74,
+      112,
+      36,
+      6
+     ],
+     [
+      "line",
+      92,
+      118,
+      92,
+      158,
+      3
+     ],
+     [
+      "rect",
+      116,
+      152,
+      30,
+      8
+     ]
+    ],
+    "a": {
+     "hip": [
+      92,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      122,
+      102
+     ],
+     "foot": [
+      128,
+      150
+     ],
+     "toe": 0
+    },
+    "b": {
+     "hip": [
+      92,
+      108
+     ],
+     "t": 90,
+     "hand": [
+      122,
+      96
+     ],
+     "foot": [
+      128,
+      142
+     ],
+     "toe": -45
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "spad",
+      "at": "knee",
+      "d": [
+       2,
+       -5
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "crunch",
+   "name": "Crunch en el suelo",
+   "muscle_group": "Core",
+   "cue": "Lumbar pegada al suelo. Sube solo los hombros, sin tirar del cuello. 0 kg sin disco.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "fs": 0.6,
+    "a": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 178,
+     "hand": {
+      "rel": "head",
+      "d": [
+       6,
+       -6
+      ]
+     },
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 148,
+     "hand": {
+      "rel": "head",
+      "d": [
+       6,
+       -6
+      ]
+     },
+     "foot": [
+      134,
+      156
+     ]
+    },
+    "eb": 1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "plancha",
+   "name": "Plancha frontal",
+   "muscle_group": "Core",
+   "cue": "Antebrazos bajo los hombros, glúteo apretado, sin hundir la cadera.",
+   "unit": "seconds",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": [
+    40,
+    60
+   ],
+   "figure": {
+    "a": {
+     "hip": [
+      90,
+      136
+     ],
+     "t": 6,
+     "hand": [
+      158,
+      156
+     ],
+     "foot": [
+      20,
+      152
+     ],
+     "toe": -80
+    },
+    "b": {
+     "hip": [
+      90,
+      132
+     ],
+     "t": 1,
+     "hand": [
+      158,
+      156
+     ],
+     "foot": [
+      20,
+      152
+     ],
+     "toe": -80
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "giro_ruso",
+   "name": "Giro ruso",
+   "muscle_group": "Core",
+   "cue": "Torso inclinado atrás, gira de lado a lado. Cuenta cada giro.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": [
+    16,
+    20
+   ],
+   "figure": {
+    "a": {
+     "hip": [
+      96,
+      148
+     ],
+     "t": 125,
+     "hand": [
+      106,
+      114
+     ],
+     "foot": [
+      140,
+      138
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      148
+     ],
+     "t": 125,
+     "hand": [
+      86,
+      122
+     ],
+     "foot": [
+      140,
+      138
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand",
+      "r": 8
+     }
+    ]
+   }
+  },
+  {
+   "id": "elevacion_piernas",
+   "name": "Elevación de piernas tumbado",
+   "muscle_group": "Core",
+   "cue": "Lumbar pegada al suelo. Baja las piernas despacio sin tocar el suelo.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 178,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      172,
+      150
+     ],
+     "toe": 90
+    },
+    "b": {
+     "hip": [
+      100,
+      152
+     ],
+     "t": 178,
+     "hand": [
+      100,
+      157
+     ],
+     "foot": [
+      106,
+      80
+     ],
+     "toe": 0
+    },
+    "eb": 1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "press_militar_barra",
+   "name": "Press militar con barra de pie",
+   "muscle_group": "Hombro",
+   "cue": "Glúteo y abdomen apretados. Mete la cabeza al pasar la barra.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "fs": 0.8,
+    "ls": 0.8,
+    "tl": 42,
+    "a": {
+     "hip": [
+      96,
+      101
+     ],
+     "t": 90,
+     "hand": [
+      105,
+      62
+     ],
+     "foot": [
+      98,
+      158
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      101
+     ],
+     "t": 90,
+     "hand": [
+      99,
+      18
+     ],
+     "foot": [
+      98,
+      158
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand",
+      "r": 9
+     }
+    ]
+   }
+  },
+  {
+   "id": "laterales_polea",
+   "name": "Elevación lateral en polea",
+   "muscle_group": "Hombro",
+   "cue": "Polea baja al lado contrario. Sube hasta la altura del hombro. Repeticiones por brazo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "front": true,
+    "props": [
+     [
+      "line",
+      12,
+      10,
+      12,
+      158,
+      4
+     ],
+     [
+      "circle",
+      12,
+      150,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      82,
+      84
+     ],
+     "hand2": [
+      96,
+      96
+     ],
+     "foot": [
+      93,
+      156
+     ],
+     "foot2": [
+      107,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      82,
+      84
+     ],
+     "hand2": [
+      156,
+      42
+     ],
+     "foot": [
+      93,
+      156
+     ],
+     "foot2": [
+      107,
+      156
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       12,
+       150
+      ],
+      "at": "hand2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "curl_barra",
+   "name": "Curl con barra",
+   "muscle_group": "Bíceps",
+   "cue": "Codos fijos a los lados, sin balancear el cuerpo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      106,
+      88
+     ],
+     "foot": [
+      100,
+      156
+     ],
+     "foot2": [
+      112,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      114,
+      46
+     ],
+     "foot": [
+      100,
+      156
+     ],
+     "foot2": [
+      112,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "plate",
+      "at": "hand",
+      "r": 8
+     }
+    ]
+   }
+  },
+  {
+   "id": "curl_polea",
+   "name": "Curl en polea baja",
+   "muscle_group": "Bíceps",
+   "cue": "Codos fijos. Tensión constante arriba y abajo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "line",
+      176,
+      10,
+      176,
+      158,
+      4
+     ],
+     [
+      "circle",
+      176,
+      150,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      102,
+      88
+     ],
+     "foot": [
+      96,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      110,
+      46
+     ],
+     "foot": [
+      96,
+      156
+     ],
+     "foot2": [
+      108,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       176,
+       150
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "hbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "triceps_barra",
+   "name": "Tríceps en polea con barra",
+   "muscle_group": "Tríceps",
+   "cue": "Codos pegados. Extiende del todo abajo.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "line",
+      152,
+      4,
+      152,
+      158,
+      4
+     ],
+     [
+      "circle",
+      152,
+      10,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 86,
+     "hand": [
+      118,
+      54
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 86,
+     "hand": [
+      110,
+      94
+     ],
+     "foot": [
+      102,
+      156
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       152,
+       10
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "sbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "tras_nuca_polea",
+   "name": "Tríceps tras nuca en polea baja con cuerda",
+   "muscle_group": "Tríceps",
+   "cue": "De espaldas a la polea baja, cuerda detrás de la cabeza. Codos junto a las orejas apuntando al techo; extiende hacia arriba sin abrirlos.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "fs": 0.8,
+    "ls": 0.8,
+    "tl": 42,
+    "props": [
+     [
+      "line",
+      16,
+      10,
+      16,
+      158,
+      4
+     ],
+     [
+      "circle",
+      16,
+      150,
+      3.5
+     ]
+    ],
+    "a": {
+     "hip": [
+      96,
+      101
+     ],
+     "t": 88,
+     "hand": [
+      88,
+      58
+     ],
+     "foot": [
+      104,
+      158
+     ],
+     "foot2": [
+      84,
+      158
+     ]
+    },
+    "b": {
+     "hip": [
+      96,
+      101
+     ],
+     "t": 88,
+     "hand": [
+      100,
+      18
+     ],
+     "foot": [
+      104,
+      158
+     ],
+     "foot2": [
+      84,
+      158
+     ]
+    },
+    "eb": -1,
+    "kb": 1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "cable",
+      "from": [
+       16,
+       150
+      ],
+      "at": "hand"
+     },
+     {
+      "k": "vbar",
+      "at": "hand"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fondos_banco",
+   "name": "Fondos en banco",
+   "muscle_group": "Tríceps",
+   "cue": "Manos en el borde del banco, baja hasta 90° de codo. 0 kg sin disco.",
+   "unit": "reps",
+   "load_mode": "extra",
+   "is_compound": false,
+   "default_reps": null,
+   "figure": {
+    "props": [
+     [
+      "rect",
+      40,
+      110,
+      44,
+      6
+     ],
+     [
+      "line",
+      46,
+      116,
+      46,
+      158,
+      3
+     ],
+     [
+      "line",
+      78,
+      116,
+      78,
+      158,
+      3
+     ]
+    ],
+    "a": {
+     "hip": [
+      84,
+      102
+     ],
+     "t": 92,
+     "hand": [
+      80,
+      108
+     ],
+     "foot": [
+      140,
+      156
+     ],
+     "toe": 60
+    },
+    "b": {
+     "hip": [
+      84,
+      132
+     ],
+     "t": 92,
+     "hand": [
+      80,
+      108
+     ],
+     "foot": [
+      140,
+      156
+     ],
+     "toe": 60
+    },
+    "eb": -1,
+    "kb": 1
+   }
+  },
+  {
+   "id": "sentadilla_sumo",
+   "name": "Sentadilla sumo",
+   "muscle_group": "Pierna y aductor",
+   "cue": "Pies muy abiertos y puntas hacia fuera. Mancuerna o kettlebell colgando entre las piernas, torso recto. Las rodillas siguen la dirección de las puntas.",
+   "unit": "reps",
+   "load_mode": "kg",
+   "is_compound": true,
+   "default_reps": null,
+   "figure": {
+    "front": true,
+    "a": {
+     "hip": [
+      100,
+      84
+     ],
+     "t": 90,
+     "hand": [
+      97,
+      120
+     ],
+     "hand2": [
+      103,
+      120
+     ],
+     "foot": [
+      68,
+      156
+     ],
+     "foot2": [
+      132,
+      156
+     ]
+    },
+    "b": {
+     "hip": [
+      100,
+      110
+     ],
+     "t": 90,
+     "hand": [
+      97,
+      146
+     ],
+     "hand2": [
+      103,
+      146
+     ],
+     "foot": [
+      68,
+      156
+     ],
+     "foot2": [
+      132,
+      156
+     ]
+    },
+    "eb": 1,
+    "eb2": -1,
+    "kb": -1,
+    "kb2": 1,
+    "gear": [
+     {
+      "k": "dbv",
+      "at": "hand",
+      "d": [
+       3,
+       0
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "program": {
+  "id": "definicion-5d",
+  "name": "Definición 5 días",
+  "days": [
+   {
+    "id": "torsoA",
+    "position": 0,
+    "weekday": 1,
+    "name": "Torso A",
+    "short": "Lun",
+    "focus": "Pecho y espalda, cargas pesadas",
+    "color": "blue",
+    "slots": [
+     {
+      "position": 0,
+      "exercise_id": "dominadas",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 10,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 1,
+      "exercise_id": "press_banca",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 8,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 2,
+      "exercise_id": "press_inclinado",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 3,
+      "exercise_id": "jalon_pecho",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 4,
+      "exercise_id": "remo_polea_baja",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 5,
+      "exercise_id": "facepull",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     }
+    ]
+   },
+   {
+    "id": "piernaA",
+    "position": 1,
+    "weekday": 2,
+    "name": "Pierna A",
+    "short": "Mar",
+    "focus": "Cuádriceps y glúteo + core",
+    "color": "red",
+    "slots": [
+     {
+      "position": 0,
+      "exercise_id": "sentadilla_smith",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 8,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 1,
+      "exercise_id": "haka",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 2,
+      "exercise_id": "hip_thrust",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 3,
+      "exercise_id": "femoral_tumbado",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 4,
+      "exercise_id": "leg_extension",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 5,
+      "exercise_id": "gemelos",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 6,
+      "exercise_id": "crunch_polea",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": true
+     },
+     {
+      "position": 7,
+      "exercise_id": "plancha_lateral",
+      "sets": 3,
+      "rep_min": 40,
+      "rep_max": 60,
+      "rest": "45 s",
+      "is_core": true
+     }
+    ]
+   },
+   {
+    "id": "brazos",
+    "position": 2,
+    "weekday": 3,
+    "name": "Hombro y brazos",
+    "short": "Mié",
+    "focus": "Deltoides, bíceps y tríceps",
+    "color": "yellow",
+    "slots": [
+     {
+      "position": 0,
+      "exercise_id": "press_militar",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 8,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 1,
+      "exercise_id": "laterales",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 2,
+      "exercise_id": "pajaro",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 3,
+      "exercise_id": "curl_scott",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 4,
+      "exercise_id": "triceps_cuerda",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 5,
+      "exercise_id": "curl_martillo",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 6,
+      "exercise_id": "tras_nuca",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "60 s",
+      "is_core": false
+     }
+    ]
+   },
+   {
+    "id": "torsoB",
+    "position": 3,
+    "weekday": 4,
+    "name": "Torso B",
+    "short": "Jue",
+    "focus": "Pecho y espalda, más volumen",
+    "color": "green",
+    "slots": [
+     {
+      "position": 0,
+      "exercise_id": "dominadas",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 10,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 1,
+      "exercise_id": "press_mancuernas",
+      "sets": 4,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 2,
+      "exercise_id": "fondos_pecho",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 12,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 3,
+      "exercise_id": "remo_landmine",
+      "sets": 4,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 4,
+      "exercise_id": "jalon_estrecho",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "90 s",
+      "is_core": false
+     },
+     {
+      "position": 5,
+      "exercise_id": "pec_fly",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 6,
+      "exercise_id": "cruzada_inversa",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     }
+    ]
+   },
+   {
+    "id": "piernaB",
+    "position": 4,
+    "weekday": 5,
+    "name": "Pierna B",
+    "short": "Vie",
+    "focus": "Femoral y glúteo + core",
+    "color": "grey",
+    "slots": [
+     {
+      "position": 0,
+      "exercise_id": "peso_muerto",
+      "sets": 4,
+      "rep_min": 6,
+      "rep_max": 8,
+      "rest": "2–3 min",
+      "is_core": false
+     },
+     {
+      "position": 1,
+      "exercise_id": "bulgara",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 10,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 2,
+      "exercise_id": "prensa",
+      "sets": 3,
+      "rep_min": 10,
+      "rep_max": 12,
+      "rest": "2 min",
+      "is_core": false
+     },
+     {
+      "position": 3,
+      "exercise_id": "aductor",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 4,
+      "exercise_id": "abductor",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 5,
+      "exercise_id": "gemelos_prensa",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": false
+     },
+     {
+      "position": 6,
+      "exercise_id": "rueda",
+      "sets": 3,
+      "rep_min": 8,
+      "rep_max": 12,
+      "rest": "60 s",
+      "is_core": true
+     },
+     {
+      "position": 7,
+      "exercise_id": "elevacion_rodillas",
+      "sets": 3,
+      "rep_min": 12,
+      "rep_max": 15,
+      "rest": "60 s",
+      "is_core": true
+     }
+    ]
+   }
+  ]
+ },
+ "alternatives": [
+  {
+   "exercise_id": "dominadas",
+   "alternative_id": "dominadas_negativas",
+   "position": 0
+  },
+  {
+   "exercise_id": "dominadas",
+   "alternative_id": "jalon_pecho",
+   "position": 1
+  },
+  {
+   "exercise_id": "dominadas",
+   "alternative_id": "jalon_estrecho",
+   "position": 2
+  },
+  {
+   "exercise_id": "press_banca",
+   "alternative_id": "press_mancuernas",
+   "position": 0
+  },
+  {
+   "exercise_id": "press_banca",
+   "alternative_id": "fondos_pecho",
+   "position": 1
+  },
+  {
+   "exercise_id": "press_banca",
+   "alternative_id": "flexiones",
+   "position": 2
+  },
+  {
+   "exercise_id": "press_inclinado",
+   "alternative_id": "press_inclinado_mancuernas",
+   "position": 0
+  },
+  {
+   "exercise_id": "press_inclinado",
+   "alternative_id": "pec_fly",
+   "position": 1
+  },
+  {
+   "exercise_id": "press_inclinado",
+   "alternative_id": "aperturas",
+   "position": 2
+  },
+  {
+   "exercise_id": "jalon_pecho",
+   "alternative_id": "dominadas",
+   "position": 0
+  },
+  {
+   "exercise_id": "jalon_pecho",
+   "alternative_id": "jalon_estrecho",
+   "position": 1
+  },
+  {
+   "exercise_id": "jalon_pecho",
+   "alternative_id": "pullover_polea",
+   "position": 2
+  },
+  {
+   "exercise_id": "remo_polea_baja",
+   "alternative_id": "remo_mancuerna",
+   "position": 0
+  },
+  {
+   "exercise_id": "remo_polea_baja",
+   "alternative_id": "remo_barra",
+   "position": 1
+  },
+  {
+   "exercise_id": "remo_polea_baja",
+   "alternative_id": "remo_landmine",
+   "position": 2
+  },
+  {
+   "exercise_id": "facepull",
+   "alternative_id": "pajaro",
+   "position": 0
+  },
+  {
+   "exercise_id": "facepull",
+   "alternative_id": "cruzada_inversa",
+   "position": 1
+  },
+  {
+   "exercise_id": "sentadilla_smith",
+   "alternative_id": "sentadilla_rack",
+   "position": 0
+  },
+  {
+   "exercise_id": "sentadilla_smith",
+   "alternative_id": "sentadilla_sumo",
+   "position": 1
+  },
+  {
+   "exercise_id": "sentadilla_smith",
+   "alternative_id": "sentadilla_goblet",
+   "position": 2
+  },
+  {
+   "exercise_id": "sentadilla_smith",
+   "alternative_id": "prensa",
+   "position": 3
+  },
+  {
+   "exercise_id": "haka",
+   "alternative_id": "prensa",
+   "position": 0
+  },
+  {
+   "exercise_id": "haka",
+   "alternative_id": "sentadilla_sumo",
+   "position": 1
+  },
+  {
+   "exercise_id": "haka",
+   "alternative_id": "bulgara",
+   "position": 2
+  },
+  {
+   "exercise_id": "haka",
+   "alternative_id": "zancadas",
+   "position": 3
+  },
+  {
+   "exercise_id": "hip_thrust",
+   "alternative_id": "puente_gluteo",
+   "position": 0
+  },
+  {
+   "exercise_id": "hip_thrust",
+   "alternative_id": "peso_muerto",
+   "position": 1
+  },
+  {
+   "exercise_id": "femoral_tumbado",
+   "alternative_id": "femoral_sentado",
+   "position": 0
+  },
+  {
+   "exercise_id": "femoral_tumbado",
+   "alternative_id": "peso_muerto",
+   "position": 1
+  },
+  {
+   "exercise_id": "leg_extension",
+   "alternative_id": "sentadilla_goblet",
+   "position": 0
+  },
+  {
+   "exercise_id": "leg_extension",
+   "alternative_id": "zancadas",
+   "position": 1
+  },
+  {
+   "exercise_id": "gemelos",
+   "alternative_id": "gemelos_prensa",
+   "position": 0
+  },
+  {
+   "exercise_id": "gemelos",
+   "alternative_id": "gemelos_sentado",
+   "position": 1
+  },
+  {
+   "exercise_id": "crunch_polea",
+   "alternative_id": "crunch",
+   "position": 0
+  },
+  {
+   "exercise_id": "crunch_polea",
+   "alternative_id": "rueda",
+   "position": 1
+  },
+  {
+   "exercise_id": "crunch_polea",
+   "alternative_id": "elevacion_piernas",
+   "position": 2
+  },
+  {
+   "exercise_id": "plancha_lateral",
+   "alternative_id": "plancha",
+   "position": 0
+  },
+  {
+   "exercise_id": "plancha_lateral",
+   "alternative_id": "giro_ruso",
+   "position": 1
+  },
+  {
+   "exercise_id": "press_militar",
+   "alternative_id": "press_militar_barra",
+   "position": 0
+  },
+  {
+   "exercise_id": "laterales",
+   "alternative_id": "laterales_polea",
+   "position": 0
+  },
+  {
+   "exercise_id": "pajaro",
+   "alternative_id": "facepull",
+   "position": 0
+  },
+  {
+   "exercise_id": "pajaro",
+   "alternative_id": "cruzada_inversa",
+   "position": 1
+  },
+  {
+   "exercise_id": "curl_scott",
+   "alternative_id": "curl_barra",
+   "position": 0
+  },
+  {
+   "exercise_id": "curl_scott",
+   "alternative_id": "curl_polea",
+   "position": 1
+  },
+  {
+   "exercise_id": "triceps_cuerda",
+   "alternative_id": "triceps_barra",
+   "position": 0
+  },
+  {
+   "exercise_id": "triceps_cuerda",
+   "alternative_id": "tras_nuca_polea",
+   "position": 1
+  },
+  {
+   "exercise_id": "triceps_cuerda",
+   "alternative_id": "fondos_banco",
+   "position": 2
+  },
+  {
+   "exercise_id": "curl_martillo",
+   "alternative_id": "curl_barra",
+   "position": 0
+  },
+  {
+   "exercise_id": "curl_martillo",
+   "alternative_id": "curl_polea",
+   "position": 1
+  },
+  {
+   "exercise_id": "tras_nuca",
+   "alternative_id": "tras_nuca_polea",
+   "position": 0
+  },
+  {
+   "exercise_id": "tras_nuca",
+   "alternative_id": "fondos_banco",
+   "position": 1
+  },
+  {
+   "exercise_id": "tras_nuca",
+   "alternative_id": "triceps_barra",
+   "position": 2
+  },
+  {
+   "exercise_id": "press_mancuernas",
+   "alternative_id": "press_banca",
+   "position": 0
+  },
+  {
+   "exercise_id": "press_mancuernas",
+   "alternative_id": "flexiones",
+   "position": 1
+  },
+  {
+   "exercise_id": "fondos_pecho",
+   "alternative_id": "flexiones",
+   "position": 0
+  },
+  {
+   "exercise_id": "fondos_pecho",
+   "alternative_id": "press_banca",
+   "position": 1
+  },
+  {
+   "exercise_id": "remo_landmine",
+   "alternative_id": "remo_mancuerna",
+   "position": 0
+  },
+  {
+   "exercise_id": "remo_landmine",
+   "alternative_id": "remo_barra",
+   "position": 1
+  },
+  {
+   "exercise_id": "remo_landmine",
+   "alternative_id": "remo_polea_baja",
+   "position": 2
+  },
+  {
+   "exercise_id": "jalon_estrecho",
+   "alternative_id": "jalon_pecho",
+   "position": 0
+  },
+  {
+   "exercise_id": "jalon_estrecho",
+   "alternative_id": "pullover_polea",
+   "position": 1
+  },
+  {
+   "exercise_id": "pec_fly",
+   "alternative_id": "aperturas",
+   "position": 0
+  },
+  {
+   "exercise_id": "pec_fly",
+   "alternative_id": "flexiones",
+   "position": 1
+  },
+  {
+   "exercise_id": "cruzada_inversa",
+   "alternative_id": "facepull",
+   "position": 0
+  },
+  {
+   "exercise_id": "cruzada_inversa",
+   "alternative_id": "pajaro",
+   "position": 1
+  },
+  {
+   "exercise_id": "peso_muerto",
+   "alternative_id": "hip_thrust",
+   "position": 0
+  },
+  {
+   "exercise_id": "peso_muerto",
+   "alternative_id": "femoral_sentado",
+   "position": 1
+  },
+  {
+   "exercise_id": "bulgara",
+   "alternative_id": "zancadas",
+   "position": 0
+  },
+  {
+   "exercise_id": "bulgara",
+   "alternative_id": "sentadilla_sumo",
+   "position": 1
+  },
+  {
+   "exercise_id": "bulgara",
+   "alternative_id": "sentadilla_goblet",
+   "position": 2
+  },
+  {
+   "exercise_id": "prensa",
+   "alternative_id": "haka",
+   "position": 0
+  },
+  {
+   "exercise_id": "prensa",
+   "alternative_id": "sentadilla_sumo",
+   "position": 1
+  },
+  {
+   "exercise_id": "prensa",
+   "alternative_id": "sentadilla_goblet",
+   "position": 2
+  },
+  {
+   "exercise_id": "aductor",
+   "alternative_id": "sentadilla_sumo",
+   "position": 0
+  },
+  {
+   "exercise_id": "abductor",
+   "alternative_id": "puente_banda",
+   "position": 0
+  },
+  {
+   "exercise_id": "gemelos_prensa",
+   "alternative_id": "gemelos",
+   "position": 0
+  },
+  {
+   "exercise_id": "gemelos_prensa",
+   "alternative_id": "gemelos_sentado",
+   "position": 1
+  },
+  {
+   "exercise_id": "rueda",
+   "alternative_id": "plancha",
+   "position": 0
+  },
+  {
+   "exercise_id": "rueda",
+   "alternative_id": "crunch",
+   "position": 1
+  },
+  {
+   "exercise_id": "elevacion_rodillas",
+   "alternative_id": "elevacion_piernas",
+   "position": 0
+  },
+  {
+   "exercise_id": "elevacion_rodillas",
+   "alternative_id": "crunch",
+   "position": 1
+  }
+ ],
+ "foods": [
+  {
+   "id": "platano",
+   "name": "Plátano (pelado)",
+   "category": "Fruta",
+   "kcal": 89,
+   "protein": 1.1,
+   "carbs": 23,
+   "fat": 0.3,
+   "default_portion_g": 120
+  },
+  {
+   "id": "manzana",
+   "name": "Manzana",
+   "category": "Fruta",
+   "kcal": 52,
+   "protein": 0.3,
+   "carbs": 14,
+   "fat": 0.2,
+   "default_portion_g": 180
+  },
+  {
+   "id": "naranja",
+   "name": "Naranja (pelada)",
+   "category": "Fruta",
+   "kcal": 47,
+   "protein": 0.9,
+   "carbs": 12,
+   "fat": 0.1,
+   "default_portion_g": 150
+  },
+  {
+   "id": "pera",
+   "name": "Pera",
+   "category": "Fruta",
+   "kcal": 57,
+   "protein": 0.4,
+   "carbs": 15,
+   "fat": 0.1,
+   "default_portion_g": 170
+  },
+  {
+   "id": "fresas",
+   "name": "Fresas",
+   "category": "Fruta",
+   "kcal": 32,
+   "protein": 0.7,
+   "carbs": 7.7,
+   "fat": 0.3,
+   "default_portion_g": 150
+  },
+  {
+   "id": "kiwi",
+   "name": "Kiwi (pelado)",
+   "category": "Fruta",
+   "kcal": 61,
+   "protein": 1.1,
+   "carbs": 15,
+   "fat": 0.5,
+   "default_portion_g": 75
+  },
+  {
+   "id": "uvas",
+   "name": "Uvas",
+   "category": "Fruta",
+   "kcal": 69,
+   "protein": 0.7,
+   "carbs": 18,
+   "fat": 0.2,
+   "default_portion_g": 120
+  },
+  {
+   "id": "pina",
+   "name": "Piña",
+   "category": "Fruta",
+   "kcal": 50,
+   "protein": 0.5,
+   "carbs": 13,
+   "fat": 0.1,
+   "default_portion_g": 150
+  },
+  {
+   "id": "sandia",
+   "name": "Sandía",
+   "category": "Fruta",
+   "kcal": 30,
+   "protein": 0.6,
+   "carbs": 7.6,
+   "fat": 0.2,
+   "default_portion_g": 250
+  },
+  {
+   "id": "papaya",
+   "name": "Papaya",
+   "category": "Fruta",
+   "kcal": 43,
+   "protein": 0.5,
+   "carbs": 11,
+   "fat": 0.3,
+   "default_portion_g": 150
+  },
+  {
+   "id": "mango",
+   "name": "Mango",
+   "category": "Fruta",
+   "kcal": 60,
+   "protein": 0.8,
+   "carbs": 15,
+   "fat": 0.4,
+   "default_portion_g": 150
+  },
+  {
+   "id": "arandanos",
+   "name": "Arándanos",
+   "category": "Fruta",
+   "kcal": 57,
+   "protein": 0.7,
+   "carbs": 14,
+   "fat": 0.3,
+   "default_portion_g": 100
+  },
+  {
+   "id": "aguacate",
+   "name": "Aguacate",
+   "category": "Fruta",
+   "kcal": 160,
+   "protein": 2,
+   "carbs": 8.5,
+   "fat": 14.7,
+   "default_portion_g": 70
+  },
+  {
+   "id": "arroz_crudo",
+   "name": "Arroz blanco (crudo)",
+   "category": "Cereales",
+   "kcal": 360,
+   "protein": 6.7,
+   "carbs": 79,
+   "fat": 0.6,
+   "default_portion_g": 70
+  },
+  {
+   "id": "arroz_cocido",
+   "name": "Arroz blanco (cocido)",
+   "category": "Cereales",
+   "kcal": 130,
+   "protein": 2.7,
+   "carbs": 28,
+   "fat": 0.3,
+   "default_portion_g": 200
+  },
+  {
+   "id": "pasta_cruda",
+   "name": "Pasta (cruda)",
+   "category": "Cereales",
+   "kcal": 371,
+   "protein": 13,
+   "carbs": 75,
+   "fat": 1.5,
+   "default_portion_g": 80
+  },
+  {
+   "id": "pasta_cocida",
+   "name": "Pasta (cocida)",
+   "category": "Cereales",
+   "kcal": 158,
+   "protein": 5.8,
+   "carbs": 31,
+   "fat": 0.9,
+   "default_portion_g": 200
+  },
+  {
+   "id": "pan_blanco",
+   "name": "Pan blanco de barra",
+   "category": "Cereales",
+   "kcal": 265,
+   "protein": 9,
+   "carbs": 49,
+   "fat": 3.2,
+   "default_portion_g": 60
+  },
+  {
+   "id": "pan_integral",
+   "name": "Pan integral",
+   "category": "Cereales",
+   "kcal": 247,
+   "protein": 13,
+   "carbs": 41,
+   "fat": 3.4,
+   "default_portion_g": 60
+  },
+  {
+   "id": "pan_molde",
+   "name": "Pan de molde integral (rebanada)",
+   "category": "Cereales",
+   "kcal": 250,
+   "protein": 10,
+   "carbs": 42,
+   "fat": 4,
+   "default_portion_g": 30
+  },
+  {
+   "id": "avena",
+   "name": "Copos de avena",
+   "category": "Cereales",
+   "kcal": 389,
+   "protein": 16.9,
+   "carbs": 66,
+   "fat": 6.9,
+   "default_portion_g": 50
+  },
+  {
+   "id": "gofio_millo",
+   "name": "Gofio de millo",
+   "category": "Cereales",
+   "kcal": 368,
+   "protein": 8.6,
+   "carbs": 73,
+   "fat": 4,
+   "default_portion_g": 40
+  },
+  {
+   "id": "gofio_trigo",
+   "name": "Gofio de trigo",
+   "category": "Cereales",
+   "kcal": 360,
+   "protein": 12,
+   "carbs": 70,
+   "fat": 2,
+   "default_portion_g": 40
+  },
+  {
+   "id": "tortitas_arroz",
+   "name": "Tortitas de arroz",
+   "category": "Cereales",
+   "kcal": 387,
+   "protein": 8,
+   "carbs": 81,
+   "fat": 2.8,
+   "default_portion_g": 10
+  },
+  {
+   "id": "corn_flakes",
+   "name": "Cereales tipo corn flakes",
+   "category": "Cereales",
+   "kcal": 378,
+   "protein": 7,
+   "carbs": 84,
+   "fat": 0.9,
+   "default_portion_g": 40
+  },
+  {
+   "id": "patata",
+   "name": "Papa / patata cocida",
+   "category": "Cereales",
+   "kcal": 87,
+   "protein": 1.9,
+   "carbs": 20,
+   "fat": 0.1,
+   "default_portion_g": 200
+  },
+  {
+   "id": "boniato",
+   "name": "Batata / boniato asado",
+   "category": "Cereales",
+   "kcal": 90,
+   "protein": 2,
+   "carbs": 21,
+   "fat": 0.2,
+   "default_portion_g": 200
+  },
+  {
+   "id": "quinoa",
+   "name": "Quinoa (cocida)",
+   "category": "Cereales",
+   "kcal": 120,
+   "protein": 4.4,
+   "carbs": 21,
+   "fat": 1.9,
+   "default_portion_g": 150
+  },
+  {
+   "id": "lentejas",
+   "name": "Lentejas (cocidas)",
+   "category": "Legumbres",
+   "kcal": 116,
+   "protein": 9,
+   "carbs": 20,
+   "fat": 0.4,
+   "default_portion_g": 250
+  },
+  {
+   "id": "garbanzos",
+   "name": "Garbanzos (cocidos)",
+   "category": "Legumbres",
+   "kcal": 164,
+   "protein": 8.9,
+   "carbs": 27,
+   "fat": 2.6,
+   "default_portion_g": 200
+  },
+  {
+   "id": "alubias",
+   "name": "Alubias (cocidas)",
+   "category": "Legumbres",
+   "kcal": 127,
+   "protein": 8.7,
+   "carbs": 22.8,
+   "fat": 0.5,
+   "default_portion_g": 200
+  },
+  {
+   "id": "hummus",
+   "name": "Hummus",
+   "category": "Legumbres",
+   "kcal": 166,
+   "protein": 7.9,
+   "carbs": 14,
+   "fat": 9.6,
+   "default_portion_g": 50
+  },
+  {
+   "id": "pollo_crudo",
+   "name": "Pechuga de pollo (cruda)",
+   "category": "Carne",
+   "kcal": 120,
+   "protein": 22.5,
+   "carbs": 0,
+   "fat": 2.6,
+   "default_portion_g": 150
+  },
+  {
+   "id": "pollo_plancha",
+   "name": "Pechuga de pollo (a la plancha)",
+   "category": "Carne",
+   "kcal": 165,
+   "protein": 31,
+   "carbs": 0,
+   "fat": 3.6,
+   "default_portion_g": 120
+  },
+  {
+   "id": "pavo_crudo",
+   "name": "Pechuga de pavo (cruda)",
+   "category": "Carne",
+   "kcal": 114,
+   "protein": 23.7,
+   "carbs": 0,
+   "fat": 1.5,
+   "default_portion_g": 150
+  },
+  {
+   "id": "fiambre_pavo",
+   "name": "Fiambre de pechuga de pavo",
+   "category": "Carne",
+   "kcal": 100,
+   "protein": 18,
+   "carbs": 3,
+   "fat": 2,
+   "default_portion_g": 50
+  },
+  {
+   "id": "jamon_york",
+   "name": "Jamón cocido extra",
+   "category": "Carne",
+   "kcal": 110,
+   "protein": 18,
+   "carbs": 1.5,
+   "fat": 3.5,
+   "default_portion_g": 50
+  },
+  {
+   "id": "jamon_serrano",
+   "name": "Jamón serrano",
+   "category": "Carne",
+   "kcal": 241,
+   "protein": 30.5,
+   "carbs": 0,
+   "fat": 13,
+   "default_portion_g": 40
+  },
+  {
+   "id": "ternera_magra",
+   "name": "Ternera magra / picada 5 % (cruda)",
+   "category": "Carne",
+   "kcal": 137,
+   "protein": 21,
+   "carbs": 0,
+   "fat": 5,
+   "default_portion_g": 150
+  },
+  {
+   "id": "lomo_cerdo",
+   "name": "Lomo de cerdo (crudo)",
+   "category": "Carne",
+   "kcal": 143,
+   "protein": 21,
+   "carbs": 0,
+   "fat": 6,
+   "default_portion_g": 150
+  },
+  {
+   "id": "huevo",
+   "name": "Huevo entero",
+   "category": "Huevos",
+   "kcal": 143,
+   "protein": 12.6,
+   "carbs": 0.7,
+   "fat": 9.5,
+   "default_portion_g": 60
+  },
+  {
+   "id": "claras",
+   "name": "Claras de huevo",
+   "category": "Huevos",
+   "kcal": 52,
+   "protein": 10.9,
+   "carbs": 0.7,
+   "fat": 0.2,
+   "default_portion_g": 150
+  },
+  {
+   "id": "atun_natural",
+   "name": "Atún al natural (escurrido)",
+   "category": "Pescado",
+   "kcal": 116,
+   "protein": 26,
+   "carbs": 0,
+   "fat": 1,
+   "default_portion_g": 56
+  },
+  {
+   "id": "atun_aceite",
+   "name": "Atún en aceite (escurrido)",
+   "category": "Pescado",
+   "kcal": 198,
+   "protein": 29,
+   "carbs": 0,
+   "fat": 8.2,
+   "default_portion_g": 56
+  },
+  {
+   "id": "merluza",
+   "name": "Merluza (cruda)",
+   "category": "Pescado",
+   "kcal": 86,
+   "protein": 17.4,
+   "carbs": 0,
+   "fat": 1.8,
+   "default_portion_g": 180
+  },
+  {
+   "id": "bacalao",
+   "name": "Bacalao fresco (crudo)",
+   "category": "Pescado",
+   "kcal": 82,
+   "protein": 18,
+   "carbs": 0,
+   "fat": 0.7,
+   "default_portion_g": 180
+  },
+  {
+   "id": "salmon",
+   "name": "Salmón (crudo)",
+   "category": "Pescado",
+   "kcal": 208,
+   "protein": 20,
+   "carbs": 0,
+   "fat": 13,
+   "default_portion_g": 150
+  },
+  {
+   "id": "sardinas_lata",
+   "name": "Sardinas en aceite (escurridas)",
+   "category": "Pescado",
+   "kcal": 208,
+   "protein": 25,
+   "carbs": 0,
+   "fat": 11.5,
+   "default_portion_g": 60
+  },
+  {
+   "id": "gambas",
+   "name": "Gambas / langostinos (cocidos, pelados)",
+   "category": "Pescado",
+   "kcal": 99,
+   "protein": 24,
+   "carbs": 0.2,
+   "fat": 0.3,
+   "default_portion_g": 120
+  },
+  {
+   "id": "mejillones",
+   "name": "Mejillones (carne, cocidos)",
+   "category": "Pescado",
+   "kcal": 172,
+   "protein": 24,
+   "carbs": 7.4,
+   "fat": 4.5,
+   "default_portion_g": 100
+  },
+  {
+   "id": "calamar",
+   "name": "Calamar / pota (crudo)",
+   "category": "Pescado",
+   "kcal": 92,
+   "protein": 15.6,
+   "carbs": 3.1,
+   "fat": 1.4,
+   "default_portion_g": 150
+  },
+  {
+   "id": "tofu",
+   "name": "Tofu firme",
+   "category": "Otros",
+   "kcal": 145,
+   "protein": 15.8,
+   "carbs": 2.8,
+   "fat": 8.7,
+   "default_portion_g": 100
+  },
+  {
+   "id": "leche_semi",
+   "name": "Leche semidesnatada",
+   "category": "Lácteos",
+   "kcal": 46,
+   "protein": 3.2,
+   "carbs": 4.7,
+   "fat": 1.6,
+   "default_portion_g": 250
+  },
+  {
+   "id": "leche_desn",
+   "name": "Leche desnatada",
+   "category": "Lácteos",
+   "kcal": 35,
+   "protein": 3.4,
+   "carbs": 5,
+   "fat": 0.1,
+   "default_portion_g": 250
+  },
+  {
+   "id": "leche_entera",
+   "name": "Leche entera",
+   "category": "Lácteos",
+   "kcal": 64,
+   "protein": 3.2,
+   "carbs": 4.7,
+   "fat": 3.6,
+   "default_portion_g": 250
+  },
+  {
+   "id": "yogur_natural",
+   "name": "Yogur natural",
+   "category": "Lácteos",
+   "kcal": 61,
+   "protein": 3.5,
+   "carbs": 4.7,
+   "fat": 3.3,
+   "default_portion_g": 125
+  },
+  {
+   "id": "yogur_desn",
+   "name": "Yogur natural desnatado",
+   "category": "Lácteos",
+   "kcal": 38,
+   "protein": 4.2,
+   "carbs": 5.5,
+   "fat": 0.1,
+   "default_portion_g": 125
+  },
+  {
+   "id": "yogur_prot",
+   "name": "Yogur alto en proteínas",
+   "category": "Lácteos",
+   "kcal": 60,
+   "protein": 10,
+   "carbs": 4,
+   "fat": 0.2,
+   "default_portion_g": 200
+  },
+  {
+   "id": "skyr",
+   "name": "Skyr natural",
+   "category": "Lácteos",
+   "kcal": 63,
+   "protein": 11,
+   "carbs": 4,
+   "fat": 0.2,
+   "default_portion_g": 150
+  },
+  {
+   "id": "queso_batido",
+   "name": "Queso fresco batido 0 %",
+   "category": "Lácteos",
+   "kcal": 46,
+   "protein": 8,
+   "carbs": 3.6,
+   "fat": 0.1,
+   "default_portion_g": 250
+  },
+  {
+   "id": "queso_fresco",
+   "name": "Queso fresco desnatado",
+   "category": "Lácteos",
+   "kcal": 70,
+   "protein": 12,
+   "carbs": 3.5,
+   "fat": 0.5,
+   "default_portion_g": 80
+  },
+  {
+   "id": "mozzarella",
+   "name": "Mozzarella fresca",
+   "category": "Lácteos",
+   "kcal": 254,
+   "protein": 18,
+   "carbs": 2,
+   "fat": 19.5,
+   "default_portion_g": 60
+  },
+  {
+   "id": "queso_curado",
+   "name": "Queso curado",
+   "category": "Lácteos",
+   "kcal": 430,
+   "protein": 29,
+   "carbs": 0.5,
+   "fat": 35,
+   "default_portion_g": 30
+  },
+  {
+   "id": "whey",
+   "name": "Proteína whey en polvo",
+   "category": "Suplementos",
+   "kcal": 390,
+   "protein": 76,
+   "carbs": 8,
+   "fat": 6,
+   "default_portion_g": 30
+  },
+  {
+   "id": "lechuga",
+   "name": "Lechuga",
+   "category": "Verdura",
+   "kcal": 15,
+   "protein": 1.4,
+   "carbs": 2.9,
+   "fat": 0.2,
+   "default_portion_g": 100
+  },
+  {
+   "id": "tomate",
+   "name": "Tomate",
+   "category": "Verdura",
+   "kcal": 18,
+   "protein": 0.9,
+   "carbs": 3.9,
+   "fat": 0.2,
+   "default_portion_g": 150
+  },
+  {
+   "id": "pepino",
+   "name": "Pepino",
+   "category": "Verdura",
+   "kcal": 15,
+   "protein": 0.7,
+   "carbs": 3.6,
+   "fat": 0.1,
+   "default_portion_g": 150
+  },
+  {
+   "id": "brocoli",
+   "name": "Brócoli",
+   "category": "Verdura",
+   "kcal": 34,
+   "protein": 2.8,
+   "carbs": 7,
+   "fat": 0.4,
+   "default_portion_g": 200
+  },
+  {
+   "id": "calabacin",
+   "name": "Calabacín",
+   "category": "Verdura",
+   "kcal": 17,
+   "protein": 1.2,
+   "carbs": 3.1,
+   "fat": 0.3,
+   "default_portion_g": 200
+  },
+  {
+   "id": "pimiento",
+   "name": "Pimiento",
+   "category": "Verdura",
+   "kcal": 31,
+   "protein": 1,
+   "carbs": 6,
+   "fat": 0.3,
+   "default_portion_g": 100
+  },
+  {
+   "id": "cebolla",
+   "name": "Cebolla",
+   "category": "Verdura",
+   "kcal": 40,
+   "protein": 1.1,
+   "carbs": 9.3,
+   "fat": 0.1,
+   "default_portion_g": 80
+  },
+  {
+   "id": "zanahoria",
+   "name": "Zanahoria",
+   "category": "Verdura",
+   "kcal": 41,
+   "protein": 0.9,
+   "carbs": 9.6,
+   "fat": 0.2,
+   "default_portion_g": 80
+  },
+  {
+   "id": "espinacas",
+   "name": "Espinacas",
+   "category": "Verdura",
+   "kcal": 23,
+   "protein": 2.9,
+   "carbs": 3.6,
+   "fat": 0.4,
+   "default_portion_g": 150
+  },
+  {
+   "id": "judias_verdes",
+   "name": "Judías verdes",
+   "category": "Verdura",
+   "kcal": 31,
+   "protein": 1.8,
+   "carbs": 7,
+   "fat": 0.2,
+   "default_portion_g": 200
+  },
+  {
+   "id": "champinones",
+   "name": "Champiñones",
+   "category": "Verdura",
+   "kcal": 22,
+   "protein": 3.1,
+   "carbs": 3.3,
+   "fat": 0.3,
+   "default_portion_g": 150
+  },
+  {
+   "id": "berenjena",
+   "name": "Berenjena",
+   "category": "Verdura",
+   "kcal": 25,
+   "protein": 1,
+   "carbs": 6,
+   "fat": 0.2,
+   "default_portion_g": 200
+  },
+  {
+   "id": "verduras_mix",
+   "name": "Verduras variadas (mezcla)",
+   "category": "Verdura",
+   "kcal": 40,
+   "protein": 2,
+   "carbs": 7,
+   "fat": 0.3,
+   "default_portion_g": 200
+  },
+  {
+   "id": "tomate_frito",
+   "name": "Tomate frito",
+   "category": "Salsas",
+   "kcal": 80,
+   "protein": 1.5,
+   "carbs": 9,
+   "fat": 4,
+   "default_portion_g": 50
+  },
+  {
+   "id": "aceite",
+   "name": "Aceite de oliva",
+   "category": "Grasas",
+   "kcal": 884,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 100,
+   "default_portion_g": 10
+  },
+  {
+   "id": "crema_cacahuete",
+   "name": "Crema de cacahuete",
+   "category": "Grasas",
+   "kcal": 588,
+   "protein": 25,
+   "carbs": 20,
+   "fat": 50,
+   "default_portion_g": 20
+  },
+  {
+   "id": "almendras",
+   "name": "Almendras",
+   "category": "Grasas",
+   "kcal": 579,
+   "protein": 21,
+   "carbs": 22,
+   "fat": 50,
+   "default_portion_g": 25
+  },
+  {
+   "id": "nueces",
+   "name": "Nueces",
+   "category": "Grasas",
+   "kcal": 654,
+   "protein": 15,
+   "carbs": 14,
+   "fat": 65,
+   "default_portion_g": 25
+  },
+  {
+   "id": "chocolate_negro",
+   "name": "Chocolate negro 70–85 %",
+   "category": "Dulces",
+   "kcal": 598,
+   "protein": 7.8,
+   "carbs": 46,
+   "fat": 43,
+   "default_portion_g": 20
+  },
+  {
+   "id": "miel",
+   "name": "Miel",
+   "category": "Dulces",
+   "kcal": 304,
+   "protein": 0.3,
+   "carbs": 82,
+   "fat": 0,
+   "default_portion_g": 15
+  },
+  {
+   "id": "mermelada",
+   "name": "Mermelada",
+   "category": "Dulces",
+   "kcal": 250,
+   "protein": 0.4,
+   "carbs": 60,
+   "fat": 0.1,
+   "default_portion_g": 20
+  },
+  {
+   "id": "azucar",
+   "name": "Azúcar",
+   "category": "Dulces",
+   "kcal": 387,
+   "protein": 0,
+   "carbs": 100,
+   "fat": 0,
+   "default_portion_g": 8
+  },
+  {
+   "id": "refresco",
+   "name": "Refresco azucarado",
+   "category": "Bebidas",
+   "kcal": 42,
+   "protein": 0,
+   "carbs": 10.6,
+   "fat": 0,
+   "default_portion_g": 330
+  },
+  {
+   "id": "refresco_zero",
+   "name": "Refresco zero",
+   "category": "Bebidas",
+   "kcal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "default_portion_g": 330
+  },
+  {
+   "id": "cerveza",
+   "name": "Cerveza",
+   "category": "Bebidas",
+   "kcal": 43,
+   "protein": 0.5,
+   "carbs": 3.6,
+   "fat": 0,
+   "default_portion_g": 330
+  },
+  {
+   "id": "zumo_naranja",
+   "name": "Zumo de naranja",
+   "category": "Bebidas",
+   "kcal": 45,
+   "protein": 0.7,
+   "carbs": 10.4,
+   "fat": 0.2,
+   "default_portion_g": 200
+  }
+ ]
+}

@@ -1,0 +1,995 @@
+{
+ "formato": "cuaderno-definicion-v1",
+ "medidas": {
+  "2026-10-19": {
+   "kcal": 1361,
+   "prot": 98
+  },
+  "2026-10-20": {
+   "cintura": 103,
+   "kcal": 1225,
+   "peso": 98.1,
+   "prot": 130
+  },
+  "2026-10-21": {
+   "cintura": 102.5,
+   "kcal": 840,
+   "peso": 97.7,
+   "prot": 53
+  },
+  "2026-10-22": {
+   "cintura": 102.5,
+   "kcal": 782,
+   "peso": 98.2,
+   "prot": 46
+  },
+  "2026-10-23": {
+   "peso": 98
+  }
+ },
+ "despensa": {
+  "alimentos": {
+   "9j81eb99": {
+    "c": 10.2,
+    "g": 0.1,
+    "k": 46,
+    "n": "Ciruela roja",
+    "p": 0.6,
+    "por": 50
+   },
+   "ce65905n": {
+    "c": 23,
+    "g": 13,
+    "k": 338,
+    "n": "Barrita control Day sabor yogur",
+    "p": 28,
+    "por": 44
+   },
+   "cjn9og2j": {
+    "c": 13,
+    "g": 0,
+    "k": 54,
+    "n": "Pitaya",
+    "p": 1.6,
+    "por": 100
+   },
+   "cusc_mc01": {
+    "c": 72,
+    "g": 1.5,
+    "k": 355,
+    "n": "Cuscús Mercadona (en seco)",
+    "p": 12,
+    "por": 70
+   },
+   "cusc_mc02": {
+    "c": 23.2,
+    "g": 0.2,
+    "k": 112,
+    "n": "Cuscús Mercadona (cocido con agua y curry)",
+    "p": 3.8,
+    "por": 200
+   },
+   "ie61wg6f": {
+    "c": 11,
+    "g": 0.3,
+    "k": 46,
+    "n": "ciruela amarilla",
+    "p": 0.6,
+    "por": 50
+   },
+   "sk1dav5r": {
+    "c": 60,
+    "g": 10,
+    "k": 125,
+    "n": "Paella de marisco",
+    "p": 10,
+    "por": 400
+   },
+   "soja_hd01": {
+    "c": 1,
+    "g": 1.7,
+    "k": 32,
+    "n": "Bebida de soja sin azúcar HiperDino",
+    "p": 3.1,
+    "por": 250
+   },
+   "whey_dc01": {
+    "c": 8.6,
+    "g": 0.9,
+    "k": 370,
+    "n": "Whey isolate vainilla Decathlon",
+    "p": 82,
+    "por": 30
+   }
+  },
+  "platos": {
+   "43fde5nx": {
+    "ing": [
+     {
+      "c": 8,
+      "g": 6,
+      "gr": 30,
+      "k": 390,
+      "n": "Proteína whey en polvo",
+      "p": 76,
+      "src": "b:whey"
+     }
+    ],
+    "n": "Batido de proteínas (agua)",
+    "peso": 400,
+    "rac": 1
+   },
+   "4wksv11y": {
+    "ing": [
+     {
+      "c": 8,
+      "g": 6,
+      "gr": 30,
+      "k": 390,
+      "n": "Proteína whey en polvo",
+      "p": 76,
+      "src": "b:whey"
+     },
+     {
+      "c": 1,
+      "g": 1.7,
+      "gr": 270,
+      "k": 32,
+      "n": "Bebida de soja sin azúcar HiperDino",
+      "p": 3.1,
+      "src": "m:soja_hd01"
+     }
+    ],
+    "n": "Batido de proteínas",
+    "peso": 300,
+    "rac": 1
+   }
+  }
+ },
+ "sesiones": {
+  "2026-10-19_torsoA": {
+   "actualizado": 1792418629223,
+   "dia": "torsoA",
+   "ej": {
+    "dominadas": [
+     {
+      "kg": 0,
+      "r": 10
+     },
+     {
+      "kg": 0,
+      "r": 10
+     },
+     {
+      "kg": 0,
+      "r": 10
+     },
+     {
+      "kg": 0,
+      "r": 8
+     }
+    ],
+    "facepull": [
+     {
+      "kg": 77,
+      "r": 12
+     },
+     {
+      "kg": 77,
+      "r": 12
+     },
+     {
+      "kg": 77,
+      "r": 12
+     }
+    ],
+    "jalon_pecho": [
+     {
+      "kg": 77,
+      "r": 10
+     },
+     {
+      "kg": 81,
+      "r": 8
+     },
+     {
+      "kg": 77,
+      "r": 10
+     }
+    ],
+    "press_banca": [
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 70,
+      "r": 10
+     },
+     {
+      "kg": 80,
+      "r": 8
+     },
+     {
+      "kg": 80,
+      "r": 8
+     }
+    ],
+    "press_inclinado": [
+     {
+      "kg": 40,
+      "r": 10
+     },
+     {
+      "kg": 40,
+      "r": 10
+     },
+     {
+      "kg": 40,
+      "r": 10
+     }
+    ],
+    "remo_polea_baja": [
+     {
+      "kg": 77,
+      "r": 10
+     },
+     {
+      "kg": 77,
+      "r": 10
+     },
+     {
+      "kg": 77,
+      "r": 10
+     }
+    ]
+   },
+   "fecha": "2026-10-19"
+  },
+  "2026-10-20_piernaA": {
+   "actualizado": 1792508866760,
+   "dia": "piernaA",
+   "ej": {
+    "crunch": [
+     {
+      "kg": 0,
+      "r": 15
+     },
+     {
+      "kg": 0,
+      "r": 15
+     },
+     {
+      "kg": 0,
+      "r": 15
+     }
+    ],
+    "femoral_tumbado": [
+     {
+      "kg": 35,
+      "r": 10
+     },
+     {
+      "kg": 35,
+      "r": 10
+     },
+     {
+      "kg": 35,
+      "r": 10
+     }
+    ],
+    "gemelos": [
+     {
+      "kg": 120,
+      "r": 15
+     },
+     {
+      "kg": 120,
+      "r": 15
+     },
+     {
+      "kg": 120,
+      "r": 15
+     }
+    ],
+    "haka": [
+     {
+      "kg": 80,
+      "r": 10
+     },
+     {
+      "kg": 80,
+      "r": 10
+     },
+     {
+      "kg": 80,
+      "r": 10
+     }
+    ],
+    "hip_thrust": [
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 60,
+      "r": 10
+     }
+    ],
+    "leg_extension": [
+     {
+      "kg": 65,
+      "r": 12
+     },
+     {
+      "kg": 65,
+      "r": 12
+     },
+     {
+      "kg": 65,
+      "r": 12
+     }
+    ],
+    "plancha_lateral": [
+     {
+      "kg": null,
+      "r": 40
+     },
+     {
+      "kg": null,
+      "r": 40
+     },
+     {
+      "kg": null,
+      "r": 40
+     }
+    ],
+    "sentadilla_smith": [
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 60,
+      "r": 10
+     },
+     {
+      "kg": 60,
+      "r": 10
+     }
+    ]
+   },
+   "fecha": "2026-10-20",
+   "sust": {
+    "crunch_polea": "crunch"
+   }
+  },
+  "2026-10-21_brazos": {
+   "actualizado": 1792596948486,
+   "dia": "brazos",
+   "ej": {
+    "curl_martillo": [
+     {
+      "kg": 20,
+      "r": 12
+     },
+     {
+      "kg": 20,
+      "r": 12
+     },
+     {
+      "kg": 20,
+      "r": 12
+     }
+    ],
+    "curl_scott": [
+     {
+      "kg": 30,
+      "r": 10
+     },
+     {
+      "kg": 32.5,
+      "r": 10
+     },
+     {
+      "kg": 35,
+      "r": 8
+     }
+    ],
+    "laterales": [
+     {
+      "kg": 10,
+      "r": 14
+     },
+     {
+      "kg": 10,
+      "r": 13
+     },
+     {
+      "kg": 10,
+      "r": 12
+     }
+    ],
+    "pajaro": [
+     {
+      "kg": 10,
+      "r": 12
+     },
+     {
+      "kg": 10,
+      "r": 12
+     },
+     {
+      "kg": 10,
+      "r": 12
+     }
+    ],
+    "press_militar": [
+     {
+      "kg": 15,
+      "r": 10
+     },
+     {
+      "kg": 19,
+      "r": 7
+     },
+     {
+      "kg": 19,
+      "r": 7
+     },
+     {
+      "kg": 19,
+      "r": 7
+     }
+    ],
+    "tras_nuca_polea": [
+     {
+      "kg": 41,
+      "r": 10
+     },
+     {
+      "kg": 47,
+      "r": 10
+     },
+     {
+      "kg": 47,
+      "r": 10
+     }
+    ],
+    "triceps_barra": [
+     {
+      "kg": 59,
+      "r": 11
+     },
+     {
+      "kg": 65,
+      "r": 11
+     },
+     {
+      "kg": 65,
+      "r": 10
+     }
+    ]
+   },
+   "fecha": "2026-10-21",
+   "sust": {
+    "tras_nuca": "tras_nuca_polea",
+    "triceps_cuerda": "triceps_barra"
+   }
+  },
+  "2026-10-22_torsoB": {
+   "actualizado": 1792665248523,
+   "dia": "torsoB",
+   "ej": {
+    "aperturas": [
+     {
+      "kg": 15,
+      "r": 15
+     },
+     {
+      "kg": 15,
+      "r": 14
+     },
+     {
+      "kg": 15,
+      "r": 14
+     }
+    ],
+    "flexiones": [
+     {
+      "kg": null,
+      "r": 12
+     },
+     {
+      "kg": null,
+      "r": 12
+     },
+     {
+      "kg": null,
+      "r": 12
+     },
+     {
+      "kg": null,
+      "r": 12
+     }
+    ],
+    "pajaro": [
+     {
+      "kg": 10,
+      "r": 14
+     },
+     {
+      "kg": 10,
+      "r": 15
+     },
+     {
+      "kg": 10,
+      "r": 14
+     }
+    ],
+    "remo_mancuerna": [
+     {
+      "kg": 30,
+      "r": 10
+     },
+     {
+      "kg": 30,
+      "r": 10
+     },
+     {
+      "kg": 30,
+      "r": 10
+     },
+     {
+      "kg": 30,
+      "r": 10
+     }
+    ]
+   },
+   "fecha": "2026-10-22",
+   "sust": {
+    "cruzada_inversa": "pajaro",
+    "pec_fly": "aperturas",
+    "press_mancuernas": "flexiones",
+    "remo_landmine": "remo_mancuerna"
+   }
+  }
+ },
+ "diario": {
+  "2026-10-19": {
+   "actualizado": 1792447052248,
+   "items": [
+    {
+     "c": 23,
+     "g": 0.3,
+     "gr": 100,
+     "id": "579o3rwb",
+     "k": 89,
+     "n": "Plátano (pelado)",
+     "p": 1.1,
+     "src": "b:platano",
+     "t": "desayuno"
+    },
+    {
+     "c": 19.5,
+     "g": 0,
+     "gr": 150,
+     "id": "6p2ll0z0",
+     "k": 81,
+     "n": "Pitaya",
+     "p": 2.4,
+     "src": "m:cjn9og2j",
+     "t": "desayuno"
+    },
+    {
+     "c": 3.6,
+     "g": 0,
+     "gr": 20,
+     "id": "8lrshuhs",
+     "k": 13.8,
+     "n": "Uvas",
+     "p": 0.1,
+     "src": "b:uvas",
+     "t": "desayuno"
+    },
+    {
+     "c": 12,
+     "g": 0.1,
+     "gr": 80,
+     "id": "2ev5cwho",
+     "k": 45.6,
+     "n": "Pera",
+     "p": 0.3,
+     "src": "b:pera",
+     "t": "desayuno"
+    },
+    {
+     "c": 5.1,
+     "g": 0.1,
+     "gr": 50,
+     "id": "9np4077n",
+     "k": 23,
+     "n": "Ciruela roja",
+     "p": 0.3,
+     "src": "m:9j81eb99",
+     "t": "desayuno"
+    },
+    {
+     "c": 2.2,
+     "g": 0.1,
+     "gr": 20,
+     "id": "cdeicjrx",
+     "k": 9.2,
+     "n": "ciruela amarilla",
+     "p": 0.1,
+     "src": "m:ie61wg6f",
+     "t": "desayuno"
+    },
+    {
+     "c": 240,
+     "g": 40,
+     "gr": 400,
+     "id": "wi8o55ri",
+     "k": 500,
+     "n": "Paella de marisco",
+     "p": 40,
+     "src": "m:sk1dav5r",
+     "t": "almuerzo"
+    },
+    {
+     "c": 46.4,
+     "g": 0.4,
+     "gr": 200,
+     "id": "gdgue401",
+     "k": 224,
+     "n": "Cuscús Mercadona (cocido con agua y curry)",
+     "p": 7.6,
+     "src": "m:cusc_mc02",
+     "t": "cena"
+    },
+    {
+     "c": 0.8,
+     "g": 11.4,
+     "gr": 120,
+     "id": "u9yaxd4c",
+     "k": 171.6,
+     "n": "Huevo entero",
+     "p": 15.1,
+     "src": "b:huevo",
+     "t": "cena"
+    },
+    {
+     "c": 5.1,
+     "g": 6.4,
+     "gr": 300,
+     "id": "himsmaxa",
+     "k": 203.4,
+     "n": "Batido de proteínas",
+     "p": 31.2,
+     "src": "d:4wksv11y",
+     "t": "cena"
+    }
+   ]
+  },
+  "2026-10-20": {
+   "actualizado": 1792531524843,
+   "items": [
+    {
+     "c": 28.5,
+     "g": 0.4,
+     "gr": 124,
+     "id": "d89p0sw8",
+     "k": 110.4,
+     "n": "Plátano (pelado)",
+     "p": 1.4,
+     "src": "b:platano",
+     "t": "desayuno"
+    },
+    {
+     "c": 11.4,
+     "g": 0.1,
+     "gr": 76,
+     "id": "hkxedmur",
+     "k": 43.3,
+     "n": "Pera",
+     "p": 0.3,
+     "src": "b:pera",
+     "t": "desayuno"
+    },
+    {
+     "c": 5.1,
+     "g": 0.1,
+     "gr": 50,
+     "id": "yc2clv18",
+     "k": 23,
+     "n": "Ciruela roja",
+     "p": 0.3,
+     "src": "m:9j81eb99",
+     "t": "desayuno"
+    },
+    {
+     "c": 3.3,
+     "g": 0.1,
+     "gr": 30,
+     "id": "g06xcgov",
+     "k": 13.8,
+     "n": "ciruela amarilla",
+     "p": 0.2,
+     "src": "m:ie61wg6f",
+     "t": "desayuno"
+    },
+    {
+     "c": 2.1,
+     "g": 0,
+     "gr": 15,
+     "id": "biewawqr",
+     "k": 8.5,
+     "n": "Arándanos",
+     "p": 0.1,
+     "src": "b:arandanos",
+     "t": "desayuno"
+    },
+    {
+     "c": 3.6,
+     "g": 0,
+     "gr": 20,
+     "id": "hg9u0ajp",
+     "k": 13.8,
+     "n": "Uvas",
+     "p": 0.1,
+     "src": "b:uvas",
+     "t": "desayuno"
+    },
+    {
+     "c": 0,
+     "g": 5.6,
+     "gr": 156,
+     "id": "gj0v1yv7",
+     "k": 257.4,
+     "n": "Pechuga de pollo (a la plancha)",
+     "p": 48.4,
+     "src": "b:pollo_plancha",
+     "t": "almuerzo"
+    },
+    {
+     "c": 180,
+     "g": 30,
+     "gr": 300,
+     "id": "6s0p01dt",
+     "k": 375,
+     "n": "Paella de marisco",
+     "p": 30,
+     "src": "m:sk1dav5r",
+     "t": "almuerzo"
+    },
+    {
+     "c": 2.4,
+     "g": 1.8,
+     "gr": 400,
+     "id": "fpp76oeo",
+     "k": 117,
+     "n": "Batido de proteínas (agua)",
+     "p": 22.8,
+     "src": "d:43fde5nx",
+     "t": "merienda"
+    },
+    {
+     "c": 0.4,
+     "g": 5.7,
+     "gr": 60,
+     "id": "37ry0wk0",
+     "k": 85.8,
+     "n": "Huevo entero",
+     "p": 7.6,
+     "src": "b:huevo",
+     "t": "cena"
+    },
+    {
+     "c": 0,
+     "g": 0.6,
+     "gr": 56,
+     "id": "6leb778t",
+     "k": 65,
+     "n": "Atún al natural (escurrido)",
+     "p": 14.6,
+     "src": "b:atun_natural",
+     "t": "cena"
+    },
+    {
+     "c": 23.2,
+     "g": 0.2,
+     "gr": 100,
+     "id": "68ns8p75",
+     "k": 112,
+     "n": "Cuscús Mercadona (cocido con agua y curry)",
+     "p": 3.8,
+     "src": "m:cusc_mc02",
+     "t": "cena"
+    }
+   ]
+  },
+  "2026-10-21": {
+   "actualizado": 1792584289448,
+   "items": [
+    {
+     "c": 10.5,
+     "g": 0.1,
+     "gr": 70,
+     "id": "tv2o47f9",
+     "k": 39.9,
+     "n": "Pera",
+     "p": 0.3,
+     "src": "b:pera",
+     "t": "desayuno"
+    },
+    {
+     "c": 27.6,
+     "g": 0.4,
+     "gr": 120,
+     "id": "yydhhom0",
+     "k": 106.8,
+     "n": "Plátano (pelado)",
+     "p": 1.3,
+     "src": "b:platano",
+     "t": "desayuno"
+    },
+    {
+     "c": 7.7,
+     "g": 0.2,
+     "gr": 70,
+     "id": "w53havny",
+     "k": 32.2,
+     "n": "ciruela amarilla",
+     "p": 0.4,
+     "src": "m:ie61wg6f",
+     "t": "desayuno"
+    },
+    {
+     "c": 3.6,
+     "g": 0,
+     "gr": 20,
+     "id": "q3ghktpk",
+     "k": 13.8,
+     "n": "Uvas",
+     "p": 0.1,
+     "src": "b:uvas",
+     "t": "desayuno"
+    },
+    {
+     "c": 2.8,
+     "g": 0.1,
+     "gr": 20,
+     "id": "m1k0c2x6",
+     "k": 11.4,
+     "n": "Arándanos",
+     "p": 0.1,
+     "src": "b:arandanos",
+     "t": "desayuno"
+    },
+    {
+     "c": 80,
+     "g": 1.6,
+     "gr": 400,
+     "id": "1v51hqig",
+     "k": 464,
+     "n": "Lentejas (cocidas)",
+     "p": 36,
+     "src": "b:lentejas",
+     "t": "almuerzo"
+    },
+    {
+     "c": 0.8,
+     "g": 11.4,
+     "gr": 120,
+     "id": "7ljztke7",
+     "k": 171.6,
+     "n": "Huevo entero",
+     "p": 15.1,
+     "src": "b:huevo",
+     "t": "almuerzo"
+    }
+   ]
+  },
+  "2026-10-22": {
+   "actualizado": 1792672680577,
+   "items": [
+    {
+     "c": 13.8,
+     "g": 0.4,
+     "gr": 125,
+     "id": "modgquqf",
+     "k": 53.8,
+     "n": "Papaya",
+     "p": 0.6,
+     "src": "b:papaya",
+     "t": "desayuno"
+    },
+    {
+     "c": 23.2,
+     "g": 0.3,
+     "gr": 101,
+     "id": "o3q5gnjr",
+     "k": 89.9,
+     "n": "Plátano (pelado)",
+     "p": 1.1,
+     "src": "b:platano",
+     "t": "desayuno"
+    },
+    {
+     "c": 10.6,
+     "g": 0.1,
+     "gr": 71,
+     "id": "6dc30pak",
+     "k": 40.5,
+     "n": "Pera",
+     "p": 0.3,
+     "src": "b:pera",
+     "t": "desayuno"
+    },
+    {
+     "c": 7.6,
+     "g": 0.2,
+     "gr": 69,
+     "id": "ujf302rh",
+     "k": 31.7,
+     "n": "ciruela amarilla",
+     "p": 0.4,
+     "src": "m:ie61wg6f",
+     "t": "desayuno"
+    },
+    {
+     "c": 2.9,
+     "g": 0,
+     "gr": 16,
+     "id": "rf5ij2mt",
+     "k": 11,
+     "n": "Uvas",
+     "p": 0.1,
+     "src": "b:uvas",
+     "t": "desayuno"
+    },
+    {
+     "c": 1.4,
+     "g": 0,
+     "gr": 10,
+     "id": "nmufgmf4",
+     "k": 5.7,
+     "n": "Arándanos",
+     "p": 0.1,
+     "src": "b:arandanos",
+     "t": "desayuno"
+    },
+    {
+     "c": 80,
+     "g": 1.6,
+     "gr": 400,
+     "id": "3lky14b9",
+     "k": 464,
+     "n": "Lentejas (cocidas)",
+     "p": 36,
+     "src": "b:lentejas",
+     "t": "almuerzo"
+    },
+    {
+     "c": 0.4,
+     "g": 5.7,
+     "gr": 60,
+     "id": "jbozrax8",
+     "k": 85.8,
+     "n": "Huevo entero",
+     "p": 7.6,
+     "src": "b:huevo",
+     "t": "almuerzo"
+    }
+   ]
+  }
+ }
+}
