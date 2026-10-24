@@ -79,3 +79,6 @@ Para iPhone necesitas un Mac con Xcode; en un iPhone real, firma con tu Apple ID
 | Importar el cuaderno web | ✅ | — |
 
 Más detalle en el documento de arquitectura.
+=======
+# cuaderno-app
+App to track nutrition, gym excercises etc
