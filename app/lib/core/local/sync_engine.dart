@@ -27,8 +27,8 @@ class SyncEngine {
 
   /// Qué tipos sincroniza esta versión de la app. Al ampliarlo (Comidas, Entreno, Planes) lo que ya
   /// existía de los tipos nuevos no está en las descargas incrementales: se hace una completa.
-  /// 1 = Peso y perfil; 2 = + comidas.
-  static const scope = 2;
+  /// 1 = Peso y perfil; 2 = + comidas; 3 = + entreno (sesiones, ejercicios y planes propios).
+  static const scope = 3;
 
   // ---------------------------------------------------------------- escrituras locales
   Future<void> put(String entity, String id, Map<String, dynamic> data) => _write(entity, id, data, false);

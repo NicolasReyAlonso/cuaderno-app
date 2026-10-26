@@ -78,6 +78,9 @@ class Exercise(Base):
     default_rep_max: Mapped[int | None] = mapped_column(Integer)
     # Pose a y b del muñeco animado (mismo formato que el cuaderno web)
     figure: Mapped[dict] = mapped_column(JSON)
+    # Solo sube en los ejercicios propios (los del catálogo no se sincronizan por usuario)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
     media: Mapped[list["ExerciseMedia"]] = relationship(order_by="ExerciseMedia.position", cascade="all, delete-orphan")
 
 
@@ -117,6 +120,9 @@ class Program(Base):
     owner_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="CASCADE", use_alter=True))
     # Semanas que se repiten en bucle (1 = la misma semana siempre)
     weeks: Mapped[int] = mapped_column(Integer, default=1)
+    # Solo sube en los planes propios (las plantillas no se sincronizan por usuario)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
     days: Mapped[list["ProgramDay"]] = relationship(back_populates="program", order_by=lambda: (ProgramDay.week, ProgramDay.position),
                                                     cascade="all, delete-orphan")
 
@@ -172,6 +178,7 @@ class WorkoutSession(Base):
     # Plan y semana con los que se hizo; si se borra el plan, el historial se queda
     program_id: Mapped[str | None] = mapped_column(ForeignKey("programs.id", ondelete="SET NULL"))
     week: Mapped[int] = mapped_column(Integer, default=1)
+    version: Mapped[int] = mapped_column(Integer, default=1)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
     sets: Mapped[list["WorkoutSet"]] = relationship(back_populates="session", order_by="WorkoutSet.id", cascade="all, delete-orphan")
 

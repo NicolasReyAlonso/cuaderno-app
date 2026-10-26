@@ -6,7 +6,7 @@ import 'package:video_player/video_player.dart';
 import '../../core/api.dart';
 import '../figures/figure.dart' show kFigureH, kFigureW;
 import '../workout/models.dart';
-import '../workout/workout_repository.dart';
+import '../../core/local/sync_controller.dart';
 import 'media_repository.dart';
 
 /// Miniatura cuadrada: la foto o el GIF, o un icono de vídeo (no generamos fotogramas).
@@ -20,13 +20,15 @@ class MediaThumb extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final placeholder = ColoredBox(
       color: cs.surfaceContainerHighest,
-      child: Center(child: Icon(item.isVideo ? Icons.play_circle_outline : Icons.broken_image_outlined, color: cs.onSurfaceVariant)),
+      child: Center(
+          child: Icon(!item.hasUrl ? Icons.cloud_off_outlined : item.isVideo ? Icons.play_circle_outline : Icons.broken_image_outlined,
+              color: cs.onSurfaceVariant)),
     );
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: SizedBox.square(
         dimension: size,
-        child: item.isVideo
+        child: item.isVideo || !item.hasUrl
             ? placeholder
             : Image.network(item.url, fit: BoxFit.cover, errorBuilder: (_, __, ___) => placeholder),
       ),
@@ -115,6 +117,14 @@ class _MediaViewerState extends State<_MediaViewer> {
           onPageChanged: (i) => setState(() => _index = i),
           itemBuilder: (_, i) {
             final item = widget.items[i];
+            if (!item.hasUrl) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('Sin conexión con el servidor: las fotos y vídeos se ven cuando vuelve.', textAlign: TextAlign.center),
+                ),
+              );
+            }
             return item.isVideo
                 ? _VideoView(key: ValueKey(item.id), url: item.url)
                 : InteractiveViewer(
@@ -284,7 +294,7 @@ class _MediaManagerState extends ConsumerState<_MediaManager> {
           if (mounted) setState(() => _progress = p);
         });
         _items.add(item);
-        ref.invalidate(catalogProvider);
+        ref.read(syncControllerProvider.notifier).syncNow(); // trae el ejercicio con sus fotos y sus URL
       } catch (e) {
         _errors.add('«${f.name}»: ${apiMessage(e)}');
       }
@@ -318,7 +328,7 @@ class _MediaManagerState extends ConsumerState<_MediaManager> {
     if (ok != true) return;
     try {
       await ref.read(mediaRepositoryProvider).delete(item.id);
-      ref.invalidate(catalogProvider);
+      ref.read(syncControllerProvider.notifier).syncNow(); // trae el ejercicio con sus fotos y sus URL
       if (mounted) setState(() => _items.remove(item));
     } catch (e) {
       if (mounted) setState(() => _errors.add(apiMessage(e)));

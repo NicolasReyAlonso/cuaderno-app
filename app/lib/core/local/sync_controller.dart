@@ -40,11 +40,7 @@ class SyncStatus {
 class SyncController extends Notifier<SyncStatus> {
   Timer? _timer, _debounce;
   AppLifecycleListener? _life;
-  bool _running = false, _again = false;
-
-  /// Al acabar cada sincronización con cambios recibidos: los pasos siguientes (comidas, entreno)
-  /// registran aquí qué pantallas que aún leen del servidor hay que refrescar.
-  static final List<void Function(Ref ref, Set<String> changed)> afterPull = [];
+  Future<void>? _inFlight, _queued;
 
   @override
   SyncStatus build() {
@@ -70,32 +66,28 @@ class SyncController extends Notifier<SyncStatus> {
     _debounce = Timer(const Duration(seconds: 1), syncNow);
   }
 
-  Future<void> syncNow() async {
-    if (await ref.read(tokenStoreProvider).read() == null) return; // sin sesión
-    if (_running) {
-      _again = true;
-      return;
+  /// Sincroniza y espera a que termine. Si ya hay una en marcha, se encadena otra justo después
+  /// (lo que acaba de cambiar puede no estar en la que corre) y se espera a esa.
+  Future<void> syncNow() {
+    if (_inFlight == null) {
+      return _inFlight = _run().whenComplete(() => _inFlight = null);
     }
-    _running = true;
+    return _queued ??= _inFlight!.then((_) {
+      _queued = null;
+      return syncNow();
+    });
+  }
+
+  Future<void> _run() async {
+    if (await ref.read(tokenStoreProvider).read() == null) return; // sin sesión
     state = state.copyWith(syncing: true);
     try {
-      final report = await ref.read(syncEngineProvider).sync();
+      await ref.read(syncEngineProvider).sync();
       state = SyncStatus(online: true, lastSync: DateTime.now());
-      if (report.changedEntities.isNotEmpty) {
-        for (final f in afterPull) {
-          f(ref, report.changedEntities);
-        }
-      }
     } on OfflineException {
       state = state.copyWith(syncing: false, online: false);
     } catch (e) {
       state = state.copyWith(syncing: false, error: apiMessage(e));
-    } finally {
-      _running = false;
-      if (_again) {
-        _again = false;
-        unawaited(syncNow());
-      }
     }
   }
 

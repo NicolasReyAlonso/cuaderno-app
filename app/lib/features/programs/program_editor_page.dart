@@ -99,7 +99,6 @@ class _ProgramEditorPageState extends ConsumerState<ProgramEditorPage> {
     setState(() => _saving = true);
     try {
       final saved = await ref.read(programsRepositoryProvider).save(plan);
-      refreshAfterPlanChange(ref);
       if (!mounted) return;
       setState(() {
         _plan = saved;
@@ -120,7 +119,6 @@ class _ProgramEditorPageState extends ConsumerState<ProgramEditorPage> {
   Future<void> _duplicate(PlanDraft plan) async {
     try {
       final copy = await ref.read(programsRepositoryProvider).duplicate(plan.id!);
-      refreshAfterPlanChange(ref);
       if (mounted) {
         setState(() {
           _plan = copy;
@@ -143,7 +141,6 @@ class _ProgramEditorPageState extends ConsumerState<ProgramEditorPage> {
   Future<void> _createExercise(BuildContext sheet) async {
     final created = await showDialog<Exercise>(context: sheet, builder: (_) => const _NewExerciseDialog());
     if (created == null) return;
-    ref.invalidate(catalogProvider);
     if (sheet.mounted) Navigator.pop(sheet, created.id);
     // Recién creado: se ofrece añadir fotos o vídeos de cómo se hace (se puede cerrar sin añadir)
     if (mounted) await showMediaManager(context, created);

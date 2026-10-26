@@ -67,6 +67,22 @@ void main() {
     expect((diary['items'] as List).single['kcal'], 94.5);
     final row = ((await dio.get<Map<String, dynamic>>('/body/summary')).data!['entries'] as List).single;
     expect((row['from_diary'], row['kcal'], row['weight_kg']), (true, 94, 97.9)); // el diario manda sobre lo manual
+
+    // Entreno: catálogo para entrenar sin conexión, sesión guardada «sin conexión» y plan creado online
+    final ref = decode(await db.readMeta('ref_data'))!;
+    expect(((ref['exercises'] as List).length, (ref['templates'] as List).isNotEmpty), (61, true));
+    await engine.put('workout_session', '2026-10-20/piernaA', {
+      'date': '2026-10-20', 'day_key': 'piernaA', 'program_id': 'definicion-5d', 'week': 1,
+      'slots': [{'slot_exercise_id': 'sentadilla_smith', 'exercise_id': 'sentadilla_smith', 'sets': List.filled(4, {'load_kg': 60, 'reps': 10})}],
+    });
+    final plan = {'name': 'Mío', 'weeks': 1, 'days': [{'key': 'espalda', 'weekday': 2, 'name': 'Espalda', 'slots': [
+      {'exercise_id': 'remo_barra', 'sets': 3, 'rep_min': 8, 'rep_max': 12}]}]};
+    final created = (await dio.post<Map<String, dynamic>>('/programs', data: plan)).data!;
+    r = await engine.sync();
+    expect(r.rejected, 0);
+    final next = (await dio.get<Map<String, dynamic>>('/workouts/2026-10-27/piernaA/plan')).data!;
+    expect((next['slots'] as List).firstWhere((x) => x['slot_exercise_id'] == 'sentadilla_smith')['hint']['text'], 'Sube 2,5 kg');
+    expect(decodeData(await db.record('program', created['id'] as String))!['name'], 'Mío');
     await db.close();
   }, skip: base == null ? 'Pon CUADERNO_LIVE=http://localhost:8000 para probar contra el servidor' : null);
 }

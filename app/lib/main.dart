@@ -2,22 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/local/sync_controller.dart';
 import 'core/theme.dart';
 import 'features/auth/auth_controller.dart';
 import 'features/auth/login_page.dart';
 import 'features/home/home_shell.dart';
-import 'features/workout/workout_repository.dart' show catalogProvider, todayProvider;
 
 void main() {
-  // Pantallas que aún leen del servidor y dependen del perfil (plan activo):
-  // se refrescan cuando llega un cambio del perfil por la sincronización.
-  SyncController.afterPull.add((ref, changed) {
-    if (changed.contains('profile')) {
-      ref.invalidate(catalogProvider);
-      ref.invalidate(todayProvider);
-    }
-  });
   runApp(const ProviderScope(child: CuadernoApp()));
 }
 

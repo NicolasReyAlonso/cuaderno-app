@@ -3,6 +3,7 @@ import uuid
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from starlette.datastructures import UploadFile
@@ -77,6 +78,18 @@ async def upload_media(exercise_id: str, request: Request, user: CurrentUser, db
     data = await file.read()
     await form.close()
     return await run_in_threadpool(_store, db, user, exercise_id, data)
+
+
+class MediaUrlsIn(BaseModel):
+    ids: list[uuid.UUID] = Field(max_length=200)
+
+
+@router.post("/media/urls", response_model=dict[str, str])
+def media_urls(body: MediaUrlsIn, user: CurrentUser, db: DB):
+    """URL firmadas y frescas de tus fotos y vídeos. La app guarda sin conexión solo los id
+    (las URL caducan) y las pide aquí cuando hay servidor. Los id que no son tuyos se ignoran."""
+    rows = db.scalars(select(ExerciseMedia).where(ExerciseMedia.id.in_(body.ids), ExerciseMedia.owner_id == user.id)) if body.ids else []
+    return {str(r.id): m.signed_url(r.id) for r in rows}
 
 
 @router.delete("/media/{media_id}", status_code=status.HTTP_204_NO_CONTENT)

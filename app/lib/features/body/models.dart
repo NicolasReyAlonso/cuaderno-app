@@ -239,7 +239,9 @@ class Profile {
   final DateTime? startDate;
   final double? startWeightKg, startBodyFatPct;
   final int kcalTarget, proteinTargetG;
-  const Profile({this.startDate, this.startWeightKg, this.startBodyFatPct, required this.kcalTarget, required this.proteinTargetG});
+  final String? programId; // plan activo (null = el de por defecto)
+  final DateTime? programStartedOn; // marca la semana 1 del plan
+  const Profile({this.startDate, this.startWeightKg, this.startBodyFatPct, required this.kcalTarget, required this.proteinTargetG, this.programId, this.programStartedOn});
 
   bool get hasStart => startWeightKg != null && startBodyFatPct != null;
 
@@ -249,6 +251,8 @@ class Profile {
         startBodyFatPct: _n(j['start_body_fat_pct']),
         kcalTarget: j['kcal_target'] as int,
         proteinTargetG: j['protein_target_g'] as int,
+        programId: j['program_id'] as String?,
+        programStartedOn: _date(j['program_started_on']),
       );
 }
 

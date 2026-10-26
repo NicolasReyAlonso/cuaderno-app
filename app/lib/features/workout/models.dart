@@ -3,13 +3,24 @@ import '../figures/figure.dart';
 
 double? _d(dynamic v) => (v as num?)?.toDouble();
 
-/// Foto, GIF o vídeo de un ejercicio propio. [url] ya es absoluta y lleva firma temporal.
+/// Foto, GIF o vídeo de un ejercicio propio. [url] ya es absoluta y lleva firma temporal;
+/// vacía si aún no se ha podido pedir al servidor (sin conexión).
 class MediaItem {
   final String id, kind, contentType, url;
   final int sizeBytes;
   const MediaItem({required this.id, required this.kind, required this.contentType, required this.url, required this.sizeBytes});
 
   bool get isVideo => kind == 'video';
+  bool get hasUrl => url.isNotEmpty;
+
+  /// De la base local: sin URL (caduca); se completa con [urls] (id → URL relativa firmada).
+  factory MediaItem.fromSync(Map<String, dynamic> j, Map<String, String> urls) => MediaItem(
+        id: j['id'] as String,
+        kind: j['kind'] as String,
+        contentType: j['content_type'] as String,
+        url: urls[j['id']] == null ? '' : '$apiUrl${urls[j['id']]}',
+        sizeBytes: j['size_bytes'] as int,
+      );
 
   factory MediaItem.fromJson(Map<String, dynamic> j) => MediaItem(
         id: j['id'] as String,
@@ -26,6 +37,8 @@ class Exercise {
   final bool mine; // ejercicio propio (figura genérica)
   final FigureSpec figure;
   final List<MediaItem> media;
+  // Rango propio cuando cambia la unidad respecto al hueco que sustituye (p. ej. plancha en segundos)
+  final int? defaultRepMin, defaultRepMax;
 
   const Exercise({
     required this.id,
@@ -38,6 +51,8 @@ class Exercise {
     required this.figure,
     this.mine = false,
     this.media = const [],
+    this.defaultRepMin,
+    this.defaultRepMax,
   });
 
   bool get isSeconds => unit == 'seconds';
@@ -54,6 +69,24 @@ class Exercise {
         mine: j['mine'] as bool? ?? false,
         media: [for (final m in j['media'] as List? ?? const []) MediaItem.fromJson(m as Map<String, dynamic>)],
         figure: FigureSpec.fromJson(j['figure'] as Map<String, dynamic>),
+        defaultRepMin: j['default_rep_min'] as int?,
+        defaultRepMax: j['default_rep_max'] as int?,
+      );
+
+  /// De la base local (catálogo guardado o ejercicio propio sincronizado). [urls]: URL de sus fotos, si las hay.
+  factory Exercise.fromSync(String id, Map<String, dynamic> j, {required bool mine, Map<String, String> urls = const {}}) => Exercise(
+        id: id,
+        name: j['name'] as String,
+        muscleGroup: j['muscle_group'] as String,
+        cue: j['cue'] as String? ?? '',
+        unit: j['unit'] as String,
+        loadMode: j['load_mode'] as String,
+        isCompound: j['is_compound'] as bool,
+        mine: mine,
+        media: [for (final m in j['media'] as List? ?? const []) MediaItem.fromSync(m as Map<String, dynamic>, urls)],
+        figure: FigureSpec.fromJson(j['figure'] as Map<String, dynamic>),
+        defaultRepMin: j['default_rep_min'] as int?,
+        defaultRepMax: j['default_rep_max'] as int?,
       );
 }
 

@@ -16,6 +16,9 @@ const _titles = {
   'food': 'Alimento propio',
   'dish': 'Plato',
   'diary_item': 'Entrada del diario',
+  'workout_session': 'Sesión',
+  'exercise': 'Ejercicio propio',
+  'program': 'Plan',
 };
 const _fields = {
   'weight_kg': 'Peso (kg)',
@@ -40,9 +43,11 @@ const _fields = {
   'ingredients': 'Ingredientes',
   'meal': 'Comida',
   'grams': 'Gramos',
+  'week': 'Semana',
+  'slots': 'Ejercicios',
 };
 // Campos que la app guarda para mostrar pero que no decide el usuario
-const _hidden = {'date', 'weight_source', 'food_id', 'dish_id', 'created_at'};
+const _hidden = {'date', 'weight_source', 'food_id', 'dish_id', 'created_at', 'day_key', 'program_id'};
 
 String _dateText(String iso) {
   final d = DateTime.tryParse(iso);
@@ -53,6 +58,8 @@ String _dateText(String iso) {
 String describe(String entity, String id, [Map<String, dynamic>? data]) {
   final title = _titles[entity] ?? entity;
   if (RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(id)) return '$title del ${_dateText(id)}';
+  final session = RegExp(r'^(\d{4}-\d{2}-\d{2})/(.+)$').firstMatch(id);
+  if (session != null) return '$title «${session.group(2)}» del ${_dateText(session.group(1)!)}';
   final name = data?['name'];
   final date = data?['date'];
   if (name is String && name.isNotEmpty) return '$title: $name${date is String ? ' (${_dateText(date)})' : ''}';

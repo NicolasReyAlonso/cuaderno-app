@@ -17,7 +17,6 @@ class ProgramsPage extends ConsumerWidget {
   Future<void> _run(BuildContext context, WidgetRef ref, Future<void> Function() action, String done) async {
     try {
       await action();
-      refreshAfterPlanChange(ref);
       if (context.mounted) _show(context, done);
     } catch (e) {
       if (context.mounted) _show(context, apiMessage(e));
@@ -55,7 +54,6 @@ class ProgramsPage extends ConsumerWidget {
   Future<void> _duplicate(BuildContext context, WidgetRef ref, ProgramSummary p) async {
     try {
       final copy = await ref.read(programsRepositoryProvider).duplicate(p.id);
-      refreshAfterPlanChange(ref);
       if (context.mounted) await _open(context, copy.id);
     } catch (e) {
       if (context.mounted) _show(context, apiMessage(e));

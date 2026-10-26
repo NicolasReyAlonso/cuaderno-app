@@ -14,7 +14,8 @@ from dataclasses import dataclass
 from sqlalchemy import event, func, insert, select
 from sqlalchemy.orm import Session
 
-from ..models import Activity, BodyEntry, DailyMetric, DiaryItem, Dish, DishIngredient, Food, SyncLog, User, now_utc
+from ..models import (Activity, BodyEntry, DailyMetric, DiaryItem, Dish, DishIngredient, Exercise, ExerciseMedia, Food, Program,
+                      ProgramDay, ProgramSlot, SyncLog, User, WorkoutSession, WorkoutSet, now_utc)
 
 
 @dataclass(frozen=True)
@@ -34,12 +35,21 @@ TRACKED: dict[type, Tracked] = {
     Food: Tracked("food", lambda o: o.id, lambda o: o.owner_id, syncs=lambda o: o.owner_id is not None),
     Dish: Tracked("dish", lambda o: str(o.id), lambda o: o.owner_id),
     DiaryItem: Tracked("diary_item", lambda o: str(o.id), lambda o: o.user_id),
+    # La sesión se identifica por «fecha/día»: es su clave única. Dos dispositivos que entrenan el
+    # mismo día sin conexión chocan como conflicto, no como sesión duplicada.
+    WorkoutSession: Tracked("workout_session", lambda o: f"{o.date.isoformat()}/{o.day_key}", lambda o: o.user_id),
+    Exercise: Tracked("exercise", lambda o: o.id, lambda o: o.owner_id, syncs=lambda o: o.owner_id is not None),
+    Program: Tracked("program", lambda o: o.id, lambda o: o.owner_id, syncs=lambda o: o.owner_id is not None),
 }
 
 # Hijo → su padre sincronizable (el padre lleva a los hijos dentro de su JSON).
 # Un hijo quitado de la lista ya no apunta a su padre: se busca por la clave ajena.
 PARENTS: dict[type, Callable[[Session, object], object | None]] = {
     DishIngredient: lambda s, o: o.dish or (s.get(Dish, o.dish_id) if o.dish_id else None),
+    WorkoutSet: lambda s, o: o.session or (s.get(WorkoutSession, o.session_id) if o.session_id else None),
+    ExerciseMedia: lambda s, o: s.get(Exercise, o.exercise_id) if o.exercise_id else None,
+    ProgramSlot: lambda s, o: o.day or (s.get(ProgramDay, o.day_id) if o.day_id else None),
+    ProgramDay: lambda s, o: o.program or (s.get(Program, o.program_id) if o.program_id else None),
 }
 
 

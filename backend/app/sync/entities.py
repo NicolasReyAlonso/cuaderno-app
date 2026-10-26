@@ -13,10 +13,11 @@ from typing import Literal
 
 from fastapi import HTTPException
 from pydantic import AwareDatetime, BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
-from ..models import Activity, BodyEntry, DailyMetric, DiaryItem, Dish, DishIngredient, Food, Program, User, now_utc
+from ..models import (Activity, BodyEntry, DailyMetric, DiaryItem, Dish, DishIngredient, Exercise, Food, Program, User, WorkoutSession,
+                      WorkoutSet, now_utc)
 
 
 def _f(v):
@@ -37,6 +38,7 @@ class Entity:
     apply: Callable[[Session, User, str, BaseModel], object] | None = None
     delete: Callable[[Session, User, object], None] | None = None
     ignore_in_same: tuple[str, ...] = ()  # campos que no cuentan para decidir si es «lo mismo»
+    readonly_detail: str = "Estos datos solo se cambian desde la sincronización de salud."
 
     def normalize(self, data: dict) -> BaseModel:
         return self.schema.model_validate(data)
@@ -348,4 +350,125 @@ DIARY_ITEM = Entity(
 )
 
 
-REGISTRY: dict[str, Entity] = {e.name: e for e in (PROFILE, BODY_ENTRY, HEALTH_DAY, ACTIVITY, FOOD, DISH, DIARY_ITEM)}
+# ---------------------------------------------------------------- entreno: sesiones (id «AAAA-MM-DD/día»)
+class SetSync(BaseModel):
+    load_kg: float | None = Field(None, ge=0, le=500)
+    reps: int | None = Field(None, ge=0, le=300)
+
+
+class SlotLogSync(BaseModel):
+    slot_exercise_id: str = Field(max_length=64)
+    exercise_id: str = Field(max_length=64)  # igual al anterior si no hubo cambio
+    sets: list[SetSync] = Field(max_length=12)
+
+
+class SessionSync(BaseModel):
+    date: date
+    day_key: str = Field(min_length=1, max_length=40)
+    program_id: str | None = None
+    week: int = Field(1, ge=1, le=4)
+    slots: list[SlotLogSync] = Field(max_length=30)
+
+
+def _session_key(entity_id: str) -> tuple[date, str]:
+    d, sep, key = entity_id.partition("/")
+    if not sep or not key:
+        raise HTTPException(422, f"«{entity_id}» no es una sesión (AAAA-MM-DD/día).")
+    return _parse_date(d), key
+
+
+def _session_load(db: Session, user: User, entity_id: str):
+    try:
+        d, key = _session_key(entity_id)
+    except HTTPException:
+        return None
+    return db.scalar(select(WorkoutSession).where(WorkoutSession.user_id == user.id, WorkoutSession.date == d,
+                                                  WorkoutSession.day_key == key))
+
+
+def _session_json(s: WorkoutSession) -> dict:
+    slots: dict[str, dict] = {}
+    for st in sorted(s.sets, key=lambda x: (x.id or 0)):
+        so = slots.setdefault(st.slot_exercise_id, {"slot_exercise_id": st.slot_exercise_id, "exercise_id": st.exercise_id, "sets": []})
+        so["sets"].append({"load_kg": _f(st.load_kg), "reps": st.reps})
+    return {"date": s.date.isoformat(), "day_key": s.day_key, "program_id": s.program_id, "week": s.week, "slots": list(slots.values())}
+
+
+def _visible_exercise_ids(db: Session, user: User, ids: set[str]) -> set[str]:
+    return set(db.scalars(select(Exercise.id).where(Exercise.id.in_(ids), or_(Exercise.owner_id.is_(None), Exercise.owner_id == user.id))))
+
+
+def _session_apply(db: Session, user: User, entity_id: str, data: SessionSync) -> WorkoutSession:
+    d, key = _session_key(entity_id)
+    if (d, key) != (data.date, data.day_key):
+        raise HTTPException(422, "La fecha y el día de la sesión no coinciden con su identificador.")
+    ids = {x for sl in data.slots for x in (sl.slot_exercise_id, sl.exercise_id)}
+    missing = sorted(ids - _visible_exercise_ids(db, user, ids))
+    if missing:
+        raise HTTPException(422, f"El ejercicio «{missing[0]}» no existe. Puede que lo borraras en otro dispositivo.")
+    rows, seen = [], set()
+    for sl in data.slots:
+        if sl.exercise_id in seen:
+            raise HTTPException(422, f"«{sl.exercise_id}» aparece dos veces en la sesión.")
+        seen.add(sl.exercise_id)
+        for i, st in enumerate(x for x in sl.sets if x.load_kg is not None or x.reps is not None):
+            rows.append(WorkoutSet(slot_exercise_id=sl.slot_exercise_id, exercise_id=sl.exercise_id, set_index=i, load_kg=st.load_kg, reps=st.reps))
+    if not rows:
+        raise HTTPException(422, "Apunta al menos una serie antes de guardar.")
+    program = db.get(Program, data.program_id) if data.program_id else None
+    s = _session_load(db, user, entity_id) or WorkoutSession(user_id=user.id, date=d, day_key=key)
+    s.program_id = program.id if program is not None and program.owner_id in (None, user.id) else None
+    s.week = data.week
+    s.sets.clear()
+    s.sets.extend(rows)
+    db.add(s)
+    return s
+
+
+WORKOUT_SESSION = Entity(
+    name="workout_session",
+    load=_session_load,
+    snapshot=lambda db, user: db.scalars(select(WorkoutSession).where(WorkoutSession.user_id == user.id)).all(),
+    to_json=_session_json,
+    schema=SessionSync,
+    apply=_session_apply,
+    delete=lambda db, user, s: db.delete(s),
+)
+
+
+# ---------------------------------------------------------------- ejercicios y planes propios
+# De momento solo se descargan (para ver y entrenar sin conexión); se editan por la API.
+def exercise_json(e: Exercise) -> dict:
+    return {"name": e.name, "muscle_group": e.muscle_group, "cue": e.cue, "unit": e.unit, "load_mode": e.load_mode,
+            "is_compound": e.is_compound, "default_rep_min": e.default_rep_min, "default_rep_max": e.default_rep_max, "figure": e.figure,
+            # Sin URL: caduca. La app la pide con POST /media/urls cuando hay conexión
+            "media": [{"id": str(m.id), "kind": m.kind, "content_type": m.content_type, "size_bytes": m.size_bytes} for m in e.media]}
+
+
+def program_json(p: Program) -> dict:
+    return {"name": p.name, "weeks": p.weeks, "days": [
+        {"week": d.week, "key": d.key, "position": d.position, "weekday": d.weekday, "name": d.name, "short": d.short, "focus": d.focus,
+         "color": d.color, "slots": [{"exercise_id": s.exercise_id, "sets": s.sets, "rep_min": s.rep_min, "rep_max": s.rep_max,
+                                      "rest": s.rest, "is_core": s.is_core} for s in d.slots]}
+        for d in p.days]}
+
+
+EXERCISE = Entity(
+    name="exercise",
+    load=_load_owned(Exercise, "owner_id"),
+    snapshot=lambda db, user: db.scalars(select(Exercise).where(Exercise.owner_id == user.id)).all(),
+    to_json=exercise_json,
+    readonly_detail="Por ahora los ejercicios propios se crean y cambian con conexión.",
+)
+
+PROGRAM = Entity(
+    name="program",
+    load=_load_owned(Program, "owner_id"),
+    snapshot=lambda db, user: db.scalars(select(Program).where(Program.owner_id == user.id)).all(),
+    to_json=program_json,
+    readonly_detail="Por ahora los planes se crean y cambian con conexión.",
+)
+
+
+REGISTRY: dict[str, Entity] = {e.name: e for e in (PROFILE, BODY_ENTRY, HEALTH_DAY, ACTIVITY, FOOD, DISH, DIARY_ITEM, WORKOUT_SESSION,
+                                                     EXERCISE, PROGRAM)}

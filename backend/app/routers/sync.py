@@ -13,10 +13,10 @@ from pydantic import ValidationError
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from ..models import Food, SyncLog, SyncOp, User
+from ..models import Exercise, ExerciseAlternative, Food, Program, SyncLog, SyncOp, User
 from ..schemas import PullOut, PushChangeIn, PushIn, PushOut, PushResult, SyncRecord
 from ..security import DB, CurrentUser
-from ..sync.entities import REGISTRY, Entity
+from ..sync.entities import REGISTRY, Entity, exercise_json, program_json
 from ..sync.tracking import TRACKED, last_logged_version
 
 router = APIRouter(prefix="/sync", tags=["sincronización"])
@@ -35,14 +35,20 @@ def _max_seq(db: Session, user: User) -> int:
 
 @router.get("/reference")
 def reference(user: CurrentUser, db: DB, known: str | None = None):
-    """Datos de consulta comunes a todos (alimentos del catálogo) para buscar sin conexión.
+    """Datos de consulta comunes a todos, para usar la app sin conexión: alimentos y ejercicios del
+    catálogo, alternativas de cada ejercicio y plantillas de planes.
 
     Con known=<hash> que coincide devuelve solo {"hash", "unchanged": true}.
     """
     foods = [{"id": f.id, "name": f.name, "category": f.category, "kcal": float(f.kcal), "protein": float(f.protein),
               "carbs": float(f.carbs), "fat": float(f.fat), "default_portion_g": f.default_portion_g}
              for f in db.scalars(select(Food).where(Food.owner_id.is_(None)).order_by(Food.id))]
-    body = {"foods": foods}
+    exercises = [{"id": e.id, **exercise_json(e)} for e in db.scalars(select(Exercise).where(Exercise.owner_id.is_(None)).order_by(Exercise.id))]
+    alternatives: dict[str, list[str]] = {}
+    for a in db.scalars(select(ExerciseAlternative).order_by(ExerciseAlternative.exercise_id, ExerciseAlternative.position)):
+        alternatives.setdefault(a.exercise_id, []).append(a.alternative_id)
+    templates = [{"id": p.id, **program_json(p)} for p in db.scalars(select(Program).where(Program.owner_id.is_(None)).order_by(Program.id))]
+    body = {"foods": foods, "exercises": exercises, "alternatives": alternatives, "templates": templates}
     h = hashlib.sha1(json.dumps(body, sort_keys=True).encode()).hexdigest()
     if known == h:
         return {"hash": h, "unchanged": True}
@@ -85,7 +91,7 @@ def _apply(db: Session, user: User, c: PushChangeIn) -> PushResult:
     if ent is None:
         return PushResult(op_id=c.op_id, status="rejected", detail=f"«{c.entity}» no se sincroniza.")
     if ent.apply is None:
-        return PushResult(op_id=c.op_id, status="rejected", detail="Estos datos solo se cambian desde la sincronización de salud.")
+        return PushResult(op_id=c.op_id, status="rejected", detail=ent.readonly_detail)
     try:
         with db.begin_nested():
             obj = ent.load(db, user, c.id)
