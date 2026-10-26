@@ -72,5 +72,9 @@
 	<string>Para hacer una foto o grabar un vídeo de cómo se hace un ejercicio.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Para grabar el sonido de los vídeos de tus ejercicios.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Para leer pasos, calorías activas, sueño, pulso, peso y actividades de tu pulsera y báscula.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>La app no escribe datos en Salud; este texto lo pide el sistema.</string>
 </dict>
 </plist>

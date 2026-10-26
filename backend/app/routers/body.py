@@ -3,7 +3,7 @@ from datetime import date
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 
-from ..models import BodyEntry, DiaryItem
+from ..models import BodyEntry, DailyMetric, DiaryItem
 from ..schemas import BodyIn, BodyOut, BodySummaryOut, WeekOut
 from ..security import DB, CurrentUser
 from ..services import body as svc
@@ -26,15 +26,18 @@ def _rows(db, user) -> list[BodyOut]:
         out.append(BodyOut(date=d, weight_kg=_f(e.weight_kg) if e else None, waist_cm=_f(e.waist_cm) if e else None,
                            kcal=round(float(di.kcal)) if di else (e.kcal if e else None),
                            protein_g=round(float(di.protein)) if di else (e.protein_g if e else None),
-                           from_diary=di is not None))
+                           from_diary=di is not None, weight_from_health=bool(e and e.weight_source == "health")))
     return out
 
 
 @router.put("/{d}", response_model=BodyOut)
 def upsert(d: date, body: BodyIn, user: CurrentUser, db: DB):
     e = db.get(BodyEntry, (user.id, d)) or BodyEntry(user_id=user.id, date=d)
-    for k, v in body.model_dump(exclude_unset=True).items():
+    data = body.model_dump(exclude_unset=True)
+    for k, v in data.items():
         setattr(e, k, v)
+    if "weight_kg" in data:  # a mano: la sincronización ya no lo cambiará
+        e.weight_source = "manual" if data["weight_kg"] is not None else None
     db.add(e)
     db.commit()
     return next(r for r in _rows(db, user) if r.date == d)
@@ -58,8 +61,12 @@ def summary(user: CurrentUser, db: DB):
     sbf = _f(user.start_body_fat_pct)
     lbm = svc.lean_mass(sw, sbf) if sw and sbf else None
     ref = current or sw
-    weeks = svc.weekly([{"date": r.date, "weight": r.weight_kg, "waist": r.waist_cm, "kcal": r.kcal, "protein": r.protein_g}
-                        for r in rows], sw, user.start_date)
+    by_date = {r.date: {"date": r.date, "weight": r.weight_kg, "waist": r.waist_cm, "kcal": r.kcal, "protein": r.protein_g}
+               for r in rows}
+    for m in db.scalars(select(DailyMetric).where(DailyMetric.user_id == user.id)):
+        by_date.setdefault(m.date, {"date": m.date}).update(
+            steps=m.steps, active_kcal=m.active_kcal, sleep_minutes=m.sleep_minutes, resting_hr=m.resting_hr)
+    weeks = svc.weekly(list(by_date.values()), sw, user.start_date)
     return BodySummaryOut(
         current_weight=round(current, 2) if current else None,
         current_weight_date=weights[-1][0] if weights else None,

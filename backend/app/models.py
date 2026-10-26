@@ -192,10 +192,46 @@ class BodyEntry(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     date: Mapped[date] = mapped_column(Date, primary_key=True)
     weight_kg: Mapped[Decimal | None] = mapped_column(Numeric(5, 1))
+    # None o 'manual' = apuntado a mano; 'health' = de la báscula vía Health Connect / Salud.
+    # La sincronización solo rellena o actualiza pesos 'health': nunca pisa uno manual.
+    weight_source: Mapped[str | None] = mapped_column(String(10))
     waist_cm: Mapped[Decimal | None] = mapped_column(Numeric(5, 1))
     # Solo se usan si ese día no hay diario de comidas
     kcal: Mapped[int | None] = mapped_column(Integer)
     protein_g: Mapped[int | None] = mapped_column(Integer)
+
+
+# ---------------------------------------------------------------- salud (pulsera, báscula)
+class DailyMetric(Base):
+    """Resumen de un día leído de Health Connect / Salud. Cada campo es None si no hay dato."""
+
+    __tablename__ = "daily_metrics"
+
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    date: Mapped[date] = mapped_column(Date, primary_key=True)
+    steps: Mapped[int | None] = mapped_column(Integer)
+    active_kcal: Mapped[int | None] = mapped_column(Integer)
+    sleep_minutes: Mapped[int | None] = mapped_column(Integer)  # la noche que termina ese día
+    resting_hr: Mapped[int | None] = mapped_column(Integer)  # pulsaciones por minuto
+    hrv_ms: Mapped[Decimal | None] = mapped_column(Numeric(5, 1))  # variabilidad de la frecuencia cardiaca
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
+
+
+class Activity(Base):
+    """Actividad registrada por la pulsera (caminar, correr, bici…). external_id evita duplicados al resincronizar."""
+
+    __tablename__ = "activities"
+    __table_args__ = (UniqueConstraint("user_id", "external_id"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    external_id: Mapped[str] = mapped_column(String(120))
+    kind: Mapped[str] = mapped_column(String(40))  # tipo tal como lo da Health Connect / Salud (RUNNING, WALKING…)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    ended_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    kcal: Mapped[int | None] = mapped_column(Integer)
+    distance_m: Mapped[int | None] = mapped_column(Integer)
+    source: Mapped[str] = mapped_column(String(80), default="")  # app que lo registró (Zepp, Mi Fitness…)
 
 
 # ---------------------------------------------------------------- comidas

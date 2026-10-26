@@ -37,6 +37,10 @@ class Week:
     delta_kg: float | None = None
     delta_pct: float | None = None
     pace: str | None = None  # 'fast' | 'on_track' | 'slow' | 'stalled'
+    avg_steps: float | None = None
+    avg_active_kcal: float | None = None
+    avg_sleep_minutes: float | None = None
+    avg_resting_hr: float | None = None
 
 
 def classify(pct: float | None) -> str | None:
@@ -52,7 +56,7 @@ def classify(pct: float | None) -> str | None:
 
 
 def weekly(rows: list[dict], start_weight: float | None, start_date: date | None) -> list[Week]:
-    """rows: dicts con date, weight, waist, kcal, protein (cualquiera puede ser None)."""
+    """rows: dicts con date y, si los hay, weight, waist, kcal, protein, steps, active_kcal, sleep_minutes, resting_hr."""
     groups: dict[date, list[dict]] = {}
     for r in sorted(rows, key=lambda r: r["date"]):
         groups.setdefault(monday(r["date"]), []).append(r)
@@ -68,7 +72,12 @@ def weekly(rows: list[dict], start_weight: float | None, start_date: date | None
         k, _ = avg(rs, "kcal")
         p, _ = avg(rs, "protein")
         waists = [float(r["waist"]) for r in rs if r.get("waist") is not None]
-        weeks.append(Week(m, w, n, k, p, waists[-1] if waists else None))
+        wk = Week(m, w, n, k, p, waists[-1] if waists else None)
+        wk.avg_steps, _ = avg(rs, "steps")
+        wk.avg_active_kcal, _ = avg(rs, "active_kcal")
+        wk.avg_sleep_minutes, _ = avg(rs, "sleep_minutes")
+        wk.avg_resting_hr, _ = avg(rs, "resting_hr")
+        weeks.append(wk)
 
     prev = None
     for wk in weeks:

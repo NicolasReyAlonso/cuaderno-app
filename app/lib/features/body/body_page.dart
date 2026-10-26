@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/api.dart';
 import '../../core/theme.dart';
 import '../workout/exercise_card.dart' show fmtNum, shortDate;
+import '../health/health_widgets.dart';
 import 'body_repository.dart';
 import 'models.dart';
 import 'profile_sheet.dart';
@@ -85,9 +86,12 @@ class _BodyPageState extends ConsumerState<BodyPage> {
                 const SizedBox(height: 16),
                 _Stats(s: s, onProfile: _openProfile),
                 const SizedBox(height: 16),
+                const HealthPanel(),
+                const SizedBox(height: 16),
                 _chartPanel(context, s),
                 const SizedBox(height: 16),
                 if (s.weeks.isNotEmpty) ...[_WeeksPanel(weeks: s.weeks), const SizedBox(height: 16)],
+                const ActivitiesPanel(),
                 _entriesPanel(context, s),
               ]),
             ),
@@ -170,7 +174,7 @@ class _BodyPageState extends ConsumerState<BodyPage> {
                 Expanded(
                   child: Text(
                     [
-                      if (e.weightKg != null) '${fmtNum(e.weightKg!)} kg',
+                      if (e.weightKg != null) '${fmtNum(e.weightKg!)} kg${e.weightFromHealth ? ' (báscula)' : ''}',
                       if (e.waistCm != null) 'cintura ${fmtNum(e.waistCm!)} cm',
                       if (e.kcal != null) '${fmtNum(e.kcal!)} kcal${e.fromDiary ? ' (diario)' : ''}',
                       if (e.proteinG != null) '${fmtNum(e.proteinG!)} g prot.',
@@ -406,6 +410,8 @@ class _WeeksPanel extends StatelessWidget {
                     ].join(' · '),
                     style: muted?.copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
                   ),
+                  if (bandLine(w).isNotEmpty)
+                    Text(bandLine(w), style: muted?.copyWith(fontFeatures: const [FontFeature.tabularFigures()])),
                 ]),
               ),
               if (w.pace != null) _PaceChip(pace: w.pace!),
@@ -436,3 +442,19 @@ class _PaceChip extends StatelessWidget {
     );
   }
 }
+
+/// Medias de la pulsera en la semana: «8.950 pasos/día · 420 kcal activas · sueño 7 h 05 · pulso 58».
+String bandLine(BodyWeek w) => [
+      if (w.avgSteps != null) '${_thousands(w.avgSteps!.round())} pasos/día',
+      if (w.avgActiveKcal != null) '${w.avgActiveKcal!.round()} kcal activas',
+      if (w.avgSleepMinutes != null) 'sueño ${sleepText(w.avgSleepMinutes!)}',
+      if (w.avgRestingHr != null) 'pulso ${w.avgRestingHr!.round()}',
+    ].join(' · ');
+
+/// 425 min → «7 h 05».
+String sleepText(double minutes) {
+  final m = minutes.round();
+  return '${m ~/ 60} h ${(m % 60).toString().padLeft(2, '0')}';
+}
+
+String _thousands(int n) => n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => '.');

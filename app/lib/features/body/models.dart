@@ -8,7 +8,8 @@ class BodyEntry {
   final DateTime date;
   final double? weightKg, waistCm, kcal, proteinG;
   final bool fromDiary; // kcal y proteína salen del diario de comidas
-  const BodyEntry({required this.date, this.weightKg, this.waistCm, this.kcal, this.proteinG, this.fromDiary = false});
+  final bool weightFromHealth; // el peso vino de la báscula
+  const BodyEntry({required this.date, this.weightKg, this.waistCm, this.kcal, this.proteinG, this.fromDiary = false, this.weightFromHealth = false});
 
   factory BodyEntry.fromJson(Map<String, dynamic> j) => BodyEntry(
         date: DateTime.parse(j['date'] as String),
@@ -17,6 +18,7 @@ class BodyEntry {
         kcal: _n(j['kcal']),
         proteinG: _n(j['protein_g']),
         fromDiary: j['from_diary'] as bool,
+        weightFromHealth: j['weight_from_health'] as bool? ?? false,
       );
 }
 
@@ -26,9 +28,11 @@ const paceLabels = {'fast': 'Rápido', 'on_track': 'En ritmo', 'slow': 'Lento', 
 class BodyWeek {
   final DateTime monday;
   final double? avgWeight, avgKcal, avgProtein, waistCm, deltaKg, deltaPct;
+  final double? avgSteps, avgActiveKcal, avgSleepMinutes, avgRestingHr; // de la pulsera
   final int nWeights;
   final String? pace;
-  const BodyWeek({required this.monday, required this.nWeights, this.avgWeight, this.avgKcal, this.avgProtein, this.waistCm, this.deltaKg, this.deltaPct, this.pace});
+  const BodyWeek({required this.monday, required this.nWeights, this.avgWeight, this.avgKcal, this.avgProtein, this.waistCm, this.deltaKg, this.deltaPct, this.pace,
+      this.avgSteps, this.avgActiveKcal, this.avgSleepMinutes, this.avgRestingHr});
 
   factory BodyWeek.fromJson(Map<String, dynamic> j) => BodyWeek(
         monday: DateTime.parse(j['monday'] as String),
@@ -40,6 +44,10 @@ class BodyWeek {
         deltaKg: _n(j['delta_kg']),
         deltaPct: _n(j['delta_pct']),
         pace: j['pace'] as String?,
+        avgSteps: _n(j['avg_steps']),
+        avgActiveKcal: _n(j['avg_active_kcal']),
+        avgSleepMinutes: _n(j['avg_sleep_minutes']),
+        avgRestingHr: _n(j['avg_resting_hr']),
       );
 }
 

@@ -1,5 +1,6 @@
 package es.nico.cuaderno
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// FlutterFragmentActivity: el paquete health lo necesita para pedir permisos en Android 14+
+class MainActivity : FlutterFragmentActivity()

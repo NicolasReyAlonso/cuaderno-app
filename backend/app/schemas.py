@@ -1,8 +1,8 @@
 import uuid
-from datetime import date
+from datetime import date, datetime, timedelta
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, EmailStr, Field, model_validator
 from pydantic_core import PydanticCustomError
 
 Meal = Literal["desayuno", "almuerzo", "merienda", "cena", "picoteo"]
@@ -297,6 +297,7 @@ class BodyOut(BaseModel):
     kcal: float | None
     protein_g: float | None
     from_diary: bool
+    weight_from_health: bool = False  # el peso vino de la báscula (Health Connect / Salud)
 
 
 class WeekOut(BaseModel):
@@ -309,6 +310,11 @@ class WeekOut(BaseModel):
     delta_kg: float | None
     delta_pct: float | None
     pace: str | None
+    # Medias de los días con dato de la pulsera
+    avg_steps: float | None = None
+    avg_active_kcal: float | None = None
+    avg_sleep_minutes: float | None = None
+    avg_resting_hr: float | None = None
 
 
 class BodySummaryOut(BaseModel):
@@ -320,6 +326,74 @@ class BodySummaryOut(BaseModel):
     goal_20_weight: float | None
     weeks: list[WeekOut]
     entries: list[BodyOut]
+
+
+# ---------------------------------------------------------------- salud (pulsera, báscula)
+class HealthDayIn(BaseModel):
+    """Resumen de un día. Lo que no se sabe va como null y no borra lo ya guardado."""
+    date: date
+    steps: int | None = Field(None, ge=0, le=200_000)
+    active_kcal: int | None = Field(None, ge=0, le=10_000)
+    sleep_minutes: int | None = Field(None, ge=0, le=1440)
+    resting_hr: int | None = Field(None, ge=20, le=250)
+    hrv_ms: float | None = Field(None, ge=1, le=500)
+    weight_kg: float | None = Field(None, ge=30, le=300)
+
+
+class ActivityIn(BaseModel):
+    external_id: str = Field(min_length=1, max_length=120)
+    kind: str = Field(min_length=1, max_length=40)
+    started_at: AwareDatetime
+    ended_at: AwareDatetime
+    kcal: int | None = Field(None, ge=0, le=10_000)
+    distance_m: int | None = Field(None, ge=0, le=1_000_000)
+    source: str = Field("", max_length=80)
+
+    @model_validator(mode="after")
+    def _times(self):
+        if self.ended_at < self.started_at:
+            raise _invalid("Una actividad termina antes de empezar. Revisa la hora del reloj del móvil.")
+        if self.ended_at - self.started_at > timedelta(hours=24):
+            raise _invalid("Una actividad dura más de 24 horas.")
+        return self
+
+
+class HealthSyncIn(BaseModel):
+    days: list[HealthDayIn] = Field(default_factory=list, max_length=120)
+    activities: list[ActivityIn] = Field(default_factory=list, max_length=1000)
+
+    @model_validator(mode="after")
+    def _unique_days(self):
+        if len({d.date for d in self.days}) != len(self.days):
+            raise _invalid("Hay dos resúmenes del mismo día.")
+        return self
+
+
+class HealthSyncOut(BaseModel):
+    days: int
+    activities_new: int
+    activities_updated: int
+    weights_set: int
+    weights_kept_manual: int  # días en los que ya habías apuntado el peso a mano
+
+
+class HealthDayOut(ORM):
+    date: date
+    steps: int | None
+    active_kcal: int | None
+    sleep_minutes: int | None
+    resting_hr: int | None
+    hrv_ms: float | None
+
+
+class ActivityOut(ORM):
+    id: uuid.UUID
+    kind: str
+    started_at: datetime
+    ended_at: datetime
+    kcal: int | None
+    distance_m: int | None
+    source: str
 
 
 # ---------------------------------------------------------------- comidas

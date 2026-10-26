@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth/auth_controller.dart';
 import '../body/body_page.dart';
+import '../health/health_repository.dart';
 import '../nutrition/nutrition_page.dart';
 import '../programs/programs_page.dart';
 import '../workout/workout_page.dart';
@@ -16,6 +17,13 @@ class HomeShell extends ConsumerStatefulWidget {
 
 class _HomeShellState extends ConsumerState<HomeShell> {
   int _tab = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Si la pulsera está conectada, al abrir la app se leen los últimos 30 días sin avisar
+    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(healthProvider.notifier).syncIfConnected());
+  }
 
   static const _titles = ['Entreno', 'Comidas', 'Peso y medidas', 'Guía'];
 
