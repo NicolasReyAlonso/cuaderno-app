@@ -27,7 +27,7 @@ def _own(db: Session, user: User, program_id: str) -> Program:
     return prog
 
 
-def _check_exercises(db: Session, user: User, body: ProgramIn) -> None:
+def check_exercises(db: Session, user: User, body: ProgramIn) -> None:
     ids = {s.exercise_id for d in body.days for s in d.slots}
     found = set(db.scalars(select(Exercise.id).where(Exercise.id.in_(ids), visible_exercises(user))))
     missing = sorted(ids - found)
@@ -35,7 +35,7 @@ def _check_exercises(db: Session, user: User, body: ProgramIn) -> None:
         raise HTTPException(422, f"El ejercicio «{missing[0]}» no existe. Elige uno del catálogo o crea uno propio.")
 
 
-def _fill(db: Session, prog: Program, body: ProgramIn) -> None:
+def fill_program(db: Session, prog: Program, body: ProgramIn) -> None:
     """Sustituye nombre, semanas y días. La posición es el orden dentro de cada semana."""
     prog.name, prog.weeks = body.name, body.weeks
     prog.days.clear()
@@ -64,10 +64,10 @@ def list_programs(user: CurrentUser, db: DB):
 
 @router.post("", response_model=ProgramOut, status_code=status.HTTP_201_CREATED)
 def create_program(body: ProgramIn, user: CurrentUser, db: DB):
-    _check_exercises(db, user, body)
+    check_exercises(db, user, body)
     prog = Program(id="u:" + uuid.uuid4().hex[:12], owner_id=user.id, name=body.name)
     db.add(prog)
-    _fill(db, prog, body)
+    fill_program(db, prog, body)
     db.commit()
     return _out(db, prog, user)
 
@@ -80,8 +80,8 @@ def get_program(program_id: str, user: CurrentUser, db: DB):
 @router.put("/{program_id}", response_model=ProgramOut)
 def update_program(program_id: str, body: ProgramIn, user: CurrentUser, db: DB):
     prog = _own(db, user, program_id)
-    _check_exercises(db, user, body)
-    _fill(db, prog, body)
+    check_exercises(db, user, body)
+    fill_program(db, prog, body)
     db.commit()
     return _out(db, prog, user)
 

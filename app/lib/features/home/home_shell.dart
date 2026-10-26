@@ -5,6 +5,8 @@ import '../../core/local/sync_controller.dart';
 import '../../core/local/sync_widgets.dart';
 import '../auth/auth_controller.dart';
 import '../body/body_page.dart';
+import '../guide/guide_page.dart';
+import '../health/health_page.dart';
 import '../health/health_repository.dart';
 import '../nutrition/nutrition_page.dart';
 import '../programs/programs_page.dart';
@@ -50,7 +52,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
     await ref.read(authProvider.notifier).logout();
   }
 
-  static const _titles = ['Entreno', 'Comidas', 'Peso y medidas', 'Guía'];
+  static const _titles = ['Entreno', 'Comidas', 'Peso y medidas', 'Salud', 'Guía'];
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +61,14 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       const WorkoutPage(),
       const NutritionPage(),
       const BodyPage(),
-      const _NextPhase(icon: Icons.menu_book_outlined, title: 'Guía', text: 'Cómo progresar y cuándo ajustar calorías. Llega en la fase 3.'),
+      const HealthPage(),
+      const GuidePage(),
     ];
     final destinations = const [
       (Icons.fitness_center, 'Entreno'),
       (Icons.restaurant, 'Comidas'),
       (Icons.monitor_weight_outlined, 'Peso'),
+      (Icons.favorite_outline, 'Salud'),
       (Icons.menu_book_outlined, 'Guía'),
     ];
     final body = IndexedStack(index: _tab, children: pages);
@@ -104,32 +108,6 @@ class _HomeShellState extends ConsumerState<HomeShell> {
               onDestinationSelected: (i) => setState(() => _tab = i),
               destinations: [for (final d in destinations) NavigationDestination(icon: Icon(d.$1), label: d.$2)],
             ),
-    );
-  }
-}
-
-class _NextPhase extends StatelessWidget {
-  const _NextPhase({required this.icon, required this.title, required this.text});
-  final IconData icon;
-  final String title, text;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 420),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Icon(icon, size: 40, color: t.colorScheme.primary),
-            const SizedBox(height: 12),
-            Text(title, style: t.textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text(text, textAlign: TextAlign.center, style: t.textTheme.bodyMedium?.copyWith(color: t.colorScheme.onSurfaceVariant)),
-          ]),
-        ),
-      ),
     );
   }
 }

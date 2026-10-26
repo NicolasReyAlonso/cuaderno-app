@@ -74,11 +74,13 @@ def _root(session: Session, obj):
 @event.listens_for(Session, "before_flush")
 def _bump_versions(session: Session, _ctx, _instances):
     deleted = {id(o) for o in session.deleted}
+    # Una cuenta que se borra se lleva su registro de cambios: no hay a quién avisar
+    gone_users = {o.id for o in session.deleted if isinstance(o, User)}
     roots: dict[int, tuple[object, bool]] = {}
 
     def touch(obj, is_deleted: bool):
         r = obj if type(obj) in TRACKED else _root(session, obj)
-        if r is None or not TRACKED[type(r)].syncs(r):
+        if r is None or not TRACKED[type(r)].syncs(r) or TRACKED[type(r)].owner(r) in gone_users:
             return
         if id(r) in deleted and not is_deleted:
             return  # el padre se borra entero: basta con anotar su borrado
@@ -93,8 +95,14 @@ def _bump_versions(session: Session, _ctx, _instances):
         touch(o, type(o) in TRACKED)
 
     now = now_utc()
+    # Una versión por cambio: si en la misma transacción hay varios flush (p. ej. borrar los días
+    # viejos de un plan y luego añadir los nuevos), la versión sube solo en el primero.
+    bumped: set[int] = session.info.setdefault("_bumped", set())
     for obj, is_deleted in roots.values():
         t = TRACKED[type(obj)]
+        if id(obj) in bumped and not is_deleted:
+            continue
+        bumped.add(id(obj))
         if obj in session.new:
             # Un registro con la misma clave pudo existir y borrarse: sigue su numeración
             key = _safe_key(t, obj)
@@ -112,6 +120,13 @@ def _safe_key(t: Tracked, obj) -> str | None:
         return t.key(obj)
     except (AttributeError, TypeError):
         return None  # id aún sin asignar (uuid por defecto): no puede tener historial
+
+
+@event.listens_for(Session, "after_commit")
+@event.listens_for(Session, "after_soft_rollback")
+def _forget_bumped(session: Session, *_):
+    # Tras confirmar, o si algo se deshace (también un savepoint), la siguiente modificación vuelve a subir la versión
+    session.info.pop("_bumped", None)
 
 
 @event.listens_for(Session, "after_flush")

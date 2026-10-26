@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/api.dart';
 import '../../core/theme.dart';
 import '../workout/exercise_card.dart' show fmtNum, shortDate;
-import '../health/health_widgets.dart';
 import '../../core/local/sync_controller.dart';
 import 'body_repository.dart';
 import 'models.dart';
@@ -80,12 +79,9 @@ class _BodyPageState extends ConsumerState<BodyPage> {
                 const SizedBox(height: 16),
                 _Stats(s: s, onProfile: _openProfile),
                 const SizedBox(height: 16),
-                const HealthPanel(),
-                const SizedBox(height: 16),
                 _chartPanel(context, s),
                 const SizedBox(height: 16),
                 if (s.weeks.isNotEmpty) ...[_WeeksPanel(weeks: s.weeks), const SizedBox(height: 16)],
-                const ActivitiesPanel(),
                 _entriesPanel(context, s),
               ]),
             ),

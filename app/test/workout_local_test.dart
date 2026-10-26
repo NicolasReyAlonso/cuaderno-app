@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cuaderno/core/local/local_db.dart';
 import 'package:cuaderno/core/local/sync_controller.dart';
+import 'package:cuaderno/features/programs/models.dart';
 import 'package:cuaderno/features/programs/programs_repository.dart';
 import 'package:cuaderno/features/workout/models.dart';
 import 'package:cuaderno/features/workout/workout_repository.dart';
@@ -123,5 +124,41 @@ void main() {
     final draft = await c.read(programsRepositoryProvider).get('definicion-5d');
     expect((draft.mine, draft.days.length), (false, 5)); // las plantillas se ven sin conexión
     expect(decodeData(await db.record('profile', 'me'))!['program_started_on'], '2026-10-19');
+  });
+
+  test('planes y ejercicios propios se crean, duplican y borran sin servidor', () async {
+    await db.setMeta('ref_data', jsonEncode(_reference()));
+    await settle();
+    final repo = c.read(programsRepositoryProvider);
+
+    final ex = await repo.createExercise(name: 'Remo en máquina', muscleGroup: 'Espalda', unit: 'reps', loadMode: 'kg', isCompound: true);
+    expect((ex.id.startsWith('u:'), ex.mine), (true, true));
+    await settle();
+    expect(c.read(catalogProvider).value!.exercises[ex.id]!.name, 'Remo en máquina'); // ya se puede usar en un plan
+
+    final draft = PlanDraft(name: 'Mío', weeks: 2)
+      ..addDay(2, 'Pierna').slots.add(SlotDraftData(exerciseId: 'sentadilla_smith'))
+      ..addDay(1, 'Espalda').slots.add(SlotDraftData(exerciseId: ex.id))
+      ..addDay(1, 'Brazos').slots.add(SlotDraftData(exerciseId: 'curl_barra'));
+    final saved = await repo.save(draft);
+    final data = decodeData(await db.record('program', saved.id!))!;
+    // Ordenados por semana y con su posición dentro de cada una, como fill_program del backend
+    expect([for (final d in data['days'] as List) (d['week'], d['key'], d['position'])], [(1, 'espalda', 0), (1, 'brazos', 1), (2, 'pierna', 0)]);
+    await expectLater(repo.save(PlanDraft(name: 'Malo')..addDay(1, 'X').slots.add(SlotDraftData(exerciseId: 'no_existe'))),
+        throwsA(predicate((e) => '$e'.startsWith('El ejercicio «no_existe» no existe'))));
+
+    final copy = await repo.duplicate(saved.id!);
+    expect((copy.name, copy.mine, copy.id != saved.id, copy.days.length), ('Mío (copia)', true, true, 3));
+
+    await repo.activate(saved.id!, DateTime(2026, 10, 19));
+    await settle();
+    expect(c.read(todayProvider(DateTime(2026, 10, 19))).value!.dayKey, null); // lunes: en este plan no hay día
+    await expectLater(repo.delete(saved.id!), throwsA(predicate((e) => '$e' == 'Es tu plan activo. Activa otro antes de borrarlo.')));
+    await repo.delete(copy.id!);
+    await settle();
+    expect(c.read(programsProvider).value!.map((p) => p.name), ['Mío', _catalog['program']['name']]);
+
+    // Todo en la cola, en el orden en que se hizo: el ejercicio antes que el plan que lo usa
+    expect((await db.select(db.outbox).get()).map((o) => o.entity), ['exercise', 'program', 'profile']);
   });
 }

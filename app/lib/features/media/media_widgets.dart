@@ -266,8 +266,18 @@ class _MediaManagerState extends ConsumerState<_MediaManager> {
 
   int get _left => maxMediaPerExercise - _items.length;
 
+  /// Las fotos se suben al servidor: el ejercicio tiene que estar ya allí (si se creó sin conexión, se envía antes).
+  Future<bool> _onServer() async {
+    if ((await ref.read(localDbProvider).opsOf('exercise', widget.exercise.id)).isEmpty) return true;
+    await ref.read(syncControllerProvider.notifier).syncNow();
+    if ((await ref.read(localDbProvider).opsOf('exercise', widget.exercise.id)).isEmpty) return true;
+    if (mounted) setState(() => _errors.add('Este ejercicio aún no ha llegado al servidor. Las fotos y vídeos se añaden cuando haya conexión.'));
+    return false;
+  }
+
   Future<void> _pick(Future<List<XFile>> Function() pick) async {
     setState(_errors.clear);
+    if (!await _onServer()) return;
     final List<XFile> files;
     try {
       files = await pick();

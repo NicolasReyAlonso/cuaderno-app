@@ -1,22 +1,24 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/api.dart';
 import '../../core/local/local_db.dart';
+import '../../core/local/sync_api.dart' show uuidV4;
 import '../../core/local/sync_controller.dart';
+import '../../core/local/sync_engine.dart';
 import '../body/body_repository.dart';
 import '../workout/models.dart';
 import '../workout/planner.dart' show PlanError;
 import '../workout/workout_repository.dart';
 import 'models.dart';
 
-/// Ver y activar planes funciona sin conexión (base local). Crear, editar, duplicar y borrar
-/// planes o ejercicios, por ahora, con conexión: tras cada cambio se espera a la sincronización
-/// para que ya esté en local.
+/// Planes y ejercicios propios: todo en la base local, también sin conexión.
+/// La sincronización los envía en orden (el ejercicio antes que el plan que lo usa).
 class ProgramsRepository {
-  ProgramsRepository(this._dio, this._ref);
-  final Dio _dio;
+  ProgramsRepository(this._ref);
   final Ref _ref;
+
+  SyncEngine get _engine => _ref.read(syncEngineProvider);
+  void _changed() => _ref.read(syncControllerProvider.notifier).changed();
+  static String _newId() => 'u:${uuidV4().replaceAll('-', '').substring(0, 12)}';
 
   /// Un plan tuyo (de la base local) o una plantilla (de los datos de consulta guardados).
   Future<PlanDraft> get(String id) async {
@@ -29,46 +31,84 @@ class ProgramsRepository {
     throw const PlanError('Ese plan ya no existe. Puede que lo borraras en otro dispositivo.');
   }
 
-  /// Pasa a usar este plan; [startedOn] marca la semana 1. Es un cambio del perfil: va sin conexión.
+  /// Pasa a usar este plan; [startedOn] marca la semana 1. Es un cambio del perfil.
   Future<void> activate(String id, DateTime startedOn) =>
       _ref.read(bodyRepositoryProvider).saveProfile({'program_id': id, 'program_started_on': isoDate(startedOn)});
 
-  Future<void> _synced() => _ref.read(syncControllerProvider.notifier).syncNow();
-
   /// Crea el plan si no tiene id; si lo tiene, lo sustituye entero.
   Future<PlanDraft> save(PlanDraft plan) async {
-    final r = plan.id == null
-        ? await _dio.post<Map<String, dynamic>>('/programs', data: plan.toJson())
-        : await _dio.put<Map<String, dynamic>>('/programs/${plan.id}', data: plan.toJson());
-    await _synced();
-    return PlanDraft.fromJson(r.data!);
+    final exercises = _ref.read(exercisesProvider).valueOrNull ?? const {};
+    final missing = {for (final d in plan.days) for (final s in d.slots) s.exerciseId}.where((e) => !exercises.containsKey(e));
+    if (missing.isNotEmpty) throw PlanError('El ejercicio «${missing.first}» no existe. Elige uno del catálogo o crea uno propio.');
+    final id = plan.id ?? _newId();
+    final data = programData(plan);
+    await _engine.put('program', id, data);
+    _changed();
+    return PlanDraft.fromJson({...data, 'id': id, 'mine': true});
   }
 
   Future<void> delete(String id) async {
-    await _dio.delete<void>('/programs/$id');
-    await _synced();
+    final active = _ref.read(profileProvider).valueOrNull?.programId;
+    if (active == id) throw const PlanError('Es tu plan activo. Activa otro antes de borrarlo.');
+    await _engine.remove('program', id);
+    _changed();
   }
 
+  /// Copia como tuya, con el nombre «… (copia)».
   Future<PlanDraft> duplicate(String id) async {
-    final r = await _dio.post<Map<String, dynamic>>('/programs/$id/duplicate');
-    await _synced();
-    return PlanDraft.fromJson(r.data!);
+    final src = await get(id);
+    final name = '${src.name} (copia)';
+    final copy = PlanDraft(name: name.length > 120 ? name.substring(0, 120) : name, weeks: src.weeks, days: [for (final d in src.days) d.copyTo(d.week)]);
+    return save(copy);
   }
 
   Future<Exercise> createExercise({required String name, required String muscleGroup, required String unit, required String loadMode, required bool isCompound}) async {
-    final r = await _dio.post<Map<String, dynamic>>('/exercises', data: {
+    final id = _newId();
+    final data = {
       'name': name.trim(),
       'muscle_group': muscleGroup.trim(),
+      'cue': '',
       'unit': unit,
       'load_mode': loadMode,
       'is_compound': isCompound,
-    });
-    await _synced();
-    return Exercise.fromJson(r.data!);
+      'default_rep_min': null,
+      'default_rep_max': null,
+      'figure': genericFigure, // la misma que pone el servidor
+      'media': <Map<String, dynamic>>[],
+    };
+    await _engine.put('exercise', id, data);
+    _changed();
+    return Exercise.fromSync(id, data, mine: true);
   }
 }
 
-final programsRepositoryProvider = Provider<ProgramsRepository>((ref) => ProgramsRepository(ref.watch(dioProvider), ref));
+/// JSON del registro «program»: días ordenados por semana y su posición dentro de cada una
+/// (como fill_program del backend).
+Map<String, dynamic> programData(PlanDraft plan) {
+  final json = plan.toJson();
+  final days = [...(json['days'] as List).cast<Map<String, dynamic>>()]..sort((a, b) => (a['week'] as int).compareTo(b['week'] as int));
+  final pos = <int, int>{};
+  return {
+    ...json,
+    'days': [
+      for (final d in days) {...d, 'position': pos.update(d['week'] as int, (v) => v + 1, ifAbsent: () => 0)},
+    ],
+  };
+}
+
+/// Figura de los ejercicios propios: de pie, de frente, brazos de abajo a la altura de los hombros.
+/// Copia de GENERIC_FIGURE (backend/app/routers/catalog.py).
+const genericFigure = <String, dynamic>{
+  'front': true,
+  'a': {'hip': [100, 84], 't': 90, 'hand': [86, 90], 'hand2': [114, 90], 'foot': [93, 156], 'foot2': [107, 156]},
+  'b': {'hip': [100, 84], 't': 90, 'hand': [44, 42], 'hand2': [156, 42], 'foot': [93, 156], 'foot2': [107, 156]},
+  'eb': 1,
+  'eb2': -1,
+  'kb': -1,
+  'kb2': 1,
+};
+
+final programsRepositoryProvider = Provider<ProgramsRepository>((ref) => ProgramsRepository(ref));
 
 /// Tus planes primero y luego las plantillas, de la base local. Activo = el del perfil.
 final programsProvider = Provider<AsyncValue<List<ProgramSummary>>>((ref) {

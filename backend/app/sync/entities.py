@@ -4,6 +4,7 @@ Cada tipo se identifica por un nombre (entity) y un id de texto. El JSON es el m
 en /sync/pull y en /sync/push. Los de solo lectura (datos de la pulsera) no aceptan push:
 llegan por /health/sync.
 """
+import copy
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -18,6 +19,9 @@ from sqlalchemy.orm import Session
 
 from ..models import (Activity, BodyEntry, DailyMetric, DiaryItem, Dish, DishIngredient, Exercise, Food, Program, User, WorkoutSession,
                       WorkoutSet, now_utc)
+from ..routers.catalog import GENERIC_FIGURE
+from ..routers.programs import check_exercises, fill_program
+from ..schemas import ExerciseIn, ProgramIn
 
 
 def _f(v):
@@ -436,8 +440,12 @@ WORKOUT_SESSION = Entity(
 )
 
 
-# ---------------------------------------------------------------- ejercicios y planes propios
-# De momento solo se descargan (para ver y entrenar sin conexión); se editan por la API.
+# ---------------------------------------------------------------- ejercicios y planes propios (id «u:…»)
+def _own_id(entity_id: str, what: str) -> None:
+    if not entity_id.startswith("u:") or len(entity_id) > 64:
+        raise HTTPException(422, f"Los {what} propios llevan un id que empieza por «u:».")
+
+
 def exercise_json(e: Exercise) -> dict:
     return {"name": e.name, "muscle_group": e.muscle_group, "cue": e.cue, "unit": e.unit, "load_mode": e.load_mode,
             "is_compound": e.is_compound, "default_rep_min": e.default_rep_min, "default_rep_max": e.default_rep_max, "figure": e.figure,
@@ -453,20 +461,56 @@ def program_json(p: Program) -> dict:
         for d in p.days]}
 
 
+def _exercise_apply(db: Session, user: User, entity_id: str, data: ExerciseIn) -> Exercise:
+    _own_id(entity_id, "ejercicios")
+    # La figura y las fotos no las cambia la app: la figura es la genérica y las fotos van por /exercises/{id}/media
+    e = _get_for_write(db, user, Exercise, entity_id, "owner_id") or Exercise(id=entity_id, owner_id=user.id, figure=copy.deepcopy(GENERIC_FIGURE))
+    for k, v in data.model_dump().items():
+        setattr(e, k, v)
+    db.add(e)
+    return e
+
+
+def _exercise_delete(*_):
+    raise HTTPException(422, "Los ejercicios propios no se borran: pueden estar en tus planes o en tu historial.")
+
+
 EXERCISE = Entity(
     name="exercise",
     load=_load_owned(Exercise, "owner_id"),
     snapshot=lambda db, user: db.scalars(select(Exercise).where(Exercise.owner_id == user.id)).all(),
     to_json=exercise_json,
-    readonly_detail="Por ahora los ejercicios propios se crean y cambian con conexión.",
+    schema=ExerciseIn,
+    apply=_exercise_apply,
+    delete=_exercise_delete,
 )
+
+
+def _program_apply(db: Session, user: User, entity_id: str, data: ProgramIn) -> Program:
+    _own_id(entity_id, "planes")
+    prog = _get_for_write(db, user, Program, entity_id, "owner_id")
+    check_exercises(db, user, data)  # los ejercicios creados sin conexión llegan antes en la cola
+    if prog is None:
+        prog = Program(id=entity_id, owner_id=user.id, name=data.name)
+        db.add(prog)
+    fill_program(db, prog, data)
+    return prog
+
+
+def _program_delete(db: Session, user: User, prog: Program) -> None:
+    if user.program_id == prog.id:
+        raise HTTPException(422, "Es tu plan activo. Activa otro antes de borrarlo.")
+    db.delete(prog)
+
 
 PROGRAM = Entity(
     name="program",
     load=_load_owned(Program, "owner_id"),
     snapshot=lambda db, user: db.scalars(select(Program).where(Program.owner_id == user.id)).all(),
     to_json=program_json,
-    readonly_detail="Por ahora los planes se crean y cambian con conexión.",
+    schema=ProgramIn,
+    apply=_program_apply,
+    delete=_program_delete,
 )
 
 

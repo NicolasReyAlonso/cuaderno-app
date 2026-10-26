@@ -90,9 +90,6 @@ def test_own_exercises_and_programs_are_downloaded(auth):
     assert urls[media["id"]].startswith(f"/media/{media['id']}?sig=")
     assert other.post("/media/urls", json={"ids": [media["id"]]}).json() == {}
 
-    # Por ahora se editan solo por la API
-    res = _push(auth, _op("program", p["id"], 2, {}), _op("exercise", ex["id"], 2, {}))
-    assert [r["status"] for r in res] == ["rejected"] * 2 and "con conexión" in res[0]["detail"]
 
 
 def test_reference_has_exercises_alternatives_and_templates(auth):

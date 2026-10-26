@@ -45,9 +45,18 @@ const _fields = {
   'grams': 'Gramos',
   'week': 'Semana',
   'slots': 'Ejercicios',
+  'weeks': 'Semanas',
+  'days': 'Días',
+  'muscle_group': 'Grupo muscular',
+  'cue': 'Técnica',
+  'unit': 'Unidad',
+  'load_mode': 'Carga',
+  'is_compound': 'Básico',
+  'default_rep_min': 'Rango mínimo',
+  'default_rep_max': 'Rango máximo',
 };
 // Campos que la app guarda para mostrar pero que no decide el usuario
-const _hidden = {'date', 'weight_source', 'food_id', 'dish_id', 'created_at', 'day_key', 'program_id'};
+const _hidden = {'date', 'weight_source', 'food_id', 'dish_id', 'created_at', 'day_key', 'program_id', 'figure', 'media'};
 
 String _dateText(String iso) {
   final d = DateTime.tryParse(iso);
@@ -68,6 +77,7 @@ String describe(String entity, String id, [Map<String, dynamic>? data]) {
 
 String _value(Object? v) {
   if (v == null) return '—';
+  if (v is bool) return v ? 'Sí' : 'No';
   if (v is num) {
     final s = v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toString();
     return s.replaceAll('.', ',');

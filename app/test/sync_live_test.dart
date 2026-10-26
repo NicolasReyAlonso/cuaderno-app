@@ -83,6 +83,19 @@ void main() {
     final next = (await dio.get<Map<String, dynamic>>('/workouts/2026-10-27/piernaA/plan')).data!;
     expect((next['slots'] as List).firstWhere((x) => x['slot_exercise_id'] == 'sentadilla_smith')['hint']['text'], 'Sube 2,5 kg');
     expect(decodeData(await db.record('program', created['id'] as String))!['name'], 'Mío');
+
+    // Ejercicio y plan que lo usa creados «sin conexión», y activado: llegan en orden en un envío
+    final exId = 'u:${uuidV4().replaceAll('-', '').substring(0, 12)}';
+    final progId = 'u:${uuidV4().replaceAll('-', '').substring(0, 12)}';
+    await engine.put('exercise', exId, {'name': 'Remo en máquina', 'muscle_group': 'Espalda', 'cue': '', 'unit': 'reps', 'load_mode': 'kg',
+      'is_compound': true, 'default_rep_min': null, 'default_rep_max': null, 'figure': {}, 'media': []});
+    await engine.put('program', progId, {'name': 'Offline', 'weeks': 1, 'days': [{'week': 1, 'key': 'espalda', 'position': 0, 'weekday': 2,
+      'name': 'Espalda', 'short': '', 'focus': '', 'color': 'blue', 'slots': [{'exercise_id': exId, 'sets': 3, 'rep_min': 8, 'rep_max': 12, 'rest': '', 'is_core': false}]}]});
+    await engine.put('profile', 'me', {...decodeData(await db.record('profile', 'me'))!, 'program_id': progId, 'program_started_on': '2026-10-19'});
+    r = await engine.sync();
+    expect((r.applied, r.rejected, r.conflicts), (3, 0, 0));
+    expect((await dio.get<Map<String, dynamic>>('/workouts/2026-10-27/today')).data!['day_key'], 'espalda');
+    expect(decodeData(await db.record('exercise', exId))!['figure'], contains('a')); // la figura genérica, del servidor
     await db.close();
   }, skip: base == null ? 'Pon CUADERNO_LIVE=http://localhost:8000 para probar contra el servidor' : null);
 }
