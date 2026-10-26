@@ -5,6 +5,7 @@ import '../../core/api.dart';
 import '../../core/theme.dart';
 import '../workout/exercise_card.dart' show fmtNum, shortDate;
 import '../health/health_widgets.dart';
+import '../../core/local/sync_controller.dart';
 import 'body_repository.dart';
 import 'models.dart';
 import 'profile_sheet.dart';
@@ -46,14 +47,7 @@ class _BodyPageState extends ConsumerState<BodyPage> {
   }
 
   Future<void> _openProfile() async {
-    final Profile profile;
-    try {
-      profile = await ref.read(profileProvider.future);
-    } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiMessage(e))));
-      return;
-    }
-    if (!mounted) return;
+    final profile = ref.read(profileProvider).valueOrNull ?? Profile.fromJson(defaultProfileData);
     final saved = await showProfileSheet(context, profile);
     if (saved == true && mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Punto de partida y objetivos guardados.')));
   }
@@ -74,7 +68,7 @@ class _BodyPageState extends ConsumerState<BodyPage> {
                 const SizedBox(height: 32),
                 Text(apiMessage(e), textAlign: TextAlign.center),
                 const SizedBox(height: 12),
-                FilledButton.tonal(onPressed: () => ref.invalidate(bodySummaryProvider), child: const Text('Reintentar')),
+                FilledButton.tonal(onPressed: () => ref.invalidate(localRecordsProvider), child: const Text('Reintentar')),
               ]),
               data: (s) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 _EntryPanel(
@@ -244,7 +238,6 @@ class _EntryPanelState extends ConsumerState<_EntryPanel> {
     setState(() => _saving = true);
     try {
       await ref.read(bodyRepositoryProvider).saveEntry(widget.date, input.json!);
-      ref.invalidate(bodySummaryProvider);
       if (mounted) {
         setState(() => _saving = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Guardado: ${shortDate(widget.date)}.')));
@@ -260,7 +253,6 @@ class _EntryPanelState extends ConsumerState<_EntryPanel> {
   Future<void> _delete() async {
     try {
       await ref.read(bodyRepositoryProvider).deleteEntry(widget.date);
-      ref.invalidate(bodySummaryProvider);
     } catch (e) {
       if (mounted) _say(apiMessage(e), error: true);
     }

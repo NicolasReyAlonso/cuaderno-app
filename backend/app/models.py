@@ -9,11 +9,13 @@ from decimal import Decimal
 
 from sqlalchemy import (
     JSON,
+    BigInteger,
     Boolean,
     CheckConstraint,
     Date,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
     Numeric,
     String,
@@ -48,6 +50,9 @@ class User(Base):
     program_id: Mapped[str | None] = mapped_column(ForeignKey("programs.id"))
     # Día en que empezó el plan activo: semana = (días desde aquí ÷ 7) mód weeks + 1
     program_started_on: Mapped[date | None] = mapped_column(Date)
+    # Sincronización del perfil (ver app/sync): sube en cada cambio
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
 
 
 # ---------------------------------------------------------------- catálogo
@@ -199,6 +204,8 @@ class BodyEntry(Base):
     # Solo se usan si ese día no hay diario de comidas
     kcal: Mapped[int | None] = mapped_column(Integer)
     protein_g: Mapped[int | None] = mapped_column(Integer)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
 
 
 # ---------------------------------------------------------------- salud (pulsera, báscula)
@@ -214,6 +221,7 @@ class DailyMetric(Base):
     sleep_minutes: Mapped[int | None] = mapped_column(Integer)  # la noche que termina ese día
     resting_hr: Mapped[int | None] = mapped_column(Integer)  # pulsaciones por minuto
     hrv_ms: Mapped[Decimal | None] = mapped_column(Numeric(5, 1))  # variabilidad de la frecuencia cardiaca
+    version: Mapped[int] = mapped_column(Integer, default=1)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
 
 
@@ -232,6 +240,8 @@ class Activity(Base):
     kcal: Mapped[int | None] = mapped_column(Integer)
     distance_m: Mapped[int | None] = mapped_column(Integer)
     source: Mapped[str] = mapped_column(String(80), default="")  # app que lo registró (Zepp, Mi Fitness…)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
 
 
 # ---------------------------------------------------------------- comidas
@@ -247,6 +257,9 @@ class Food(Base):
     carbs: Mapped[Decimal] = mapped_column(Numeric(5, 1), default=0)
     fat: Mapped[Decimal] = mapped_column(Numeric(5, 1), default=0)
     default_portion_g: Mapped[int] = mapped_column(Integer, default=100)
+    # Solo sube en los alimentos propios (los del catálogo no se sincronizan por usuario)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
 
 
 class Dish(Base):
@@ -257,6 +270,8 @@ class Dish(Base):
     name: Mapped[str] = mapped_column(String(160))
     servings: Mapped[int] = mapped_column(Integer, default=1)
     cooked_weight_g: Mapped[Decimal | None] = mapped_column(Numeric(7, 1))
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
     ingredients: Mapped[list["DishIngredient"]] = relationship(back_populates="dish", cascade="all, delete-orphan", order_by="DishIngredient.position")
 
 
@@ -295,3 +310,36 @@ class DiaryItem(Base):
     carbs: Mapped[Decimal] = mapped_column(Numeric(6, 1))
     fat: Mapped[Decimal] = mapped_column(Numeric(6, 1))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+
+
+# ---------------------------------------------------------------- sincronización (ver app/sync)
+class SyncLog(Base):
+    """Un cambio en un registro sincronizable. seq crece siempre: la app pide «lo que cambió desde seq»."""
+
+    __tablename__ = "sync_log"
+    __table_args__ = (Index("ix_sync_log_user_seq", "user_id", "seq"),)
+
+    seq: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    entity: Mapped[str] = mapped_column(String(30))
+    entity_id: Mapped[str] = mapped_column(String(80))
+    version: Mapped[int] = mapped_column(Integer)
+    deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+
+
+class SyncOp(Base):
+    """Cambio ya aplicado que llegó de la app: si se reenvía (p. ej. se cortó la red), se devuelve el mismo resultado."""
+
+    __tablename__ = "sync_ops"
+
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    op_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    result: Mapped[dict] = mapped_column(JSON)
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+
+
+# Registra los ganchos que anotan cada cambio en sync_log (al final: necesita los modelos ya definidos)
+from .sync import tracking  # noqa: E402,F401

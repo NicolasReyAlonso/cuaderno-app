@@ -1,7 +1,7 @@
 from datetime import date, datetime, time, timedelta, timezone
 
 from fastapi import APIRouter, HTTPException, Query, Response, status
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from ..models import Activity, BodyEntry, DailyMetric
 from ..schemas import ActivityOut, HealthDayOut, HealthSyncIn, HealthSyncOut
@@ -84,8 +84,10 @@ def activities(user: CurrentUser, db: DB, date_from: date | None = Query(None, a
 @router.delete("", status_code=status.HTTP_204_NO_CONTENT)
 def forget(user: CurrentUser, db: DB):
     """Borra todo lo que vino de Health Connect / Salud, incluidos los pesos de la báscula. Lo apuntado a mano se queda."""
-    db.execute(delete(DailyMetric).where(DailyMetric.user_id == user.id))
-    db.execute(delete(Activity).where(Activity.user_id == user.id))
+    # Uno a uno y no con un DELETE masivo: así la sincronización anota cada borrado (ver app/sync/tracking.py)
+    for model in (DailyMetric, Activity):
+        for row in db.scalars(select(model).where(model.user_id == user.id)):
+            db.delete(row)
     for e in db.scalars(select(BodyEntry).where(BodyEntry.user_id == user.id, BodyEntry.weight_source == "health")):
         e.weight_kg, e.weight_source = None, None
         if e.waist_cm is None and e.kcal is None and e.protein_g is None:

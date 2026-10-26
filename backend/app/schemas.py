@@ -490,3 +490,43 @@ class ImportReport(BaseModel):
     foods: int
     diary_items: int
     skipped: list[str]
+
+
+# ---------------------------------------------------------------- sincronización (app sin conexión)
+class SyncRecord(BaseModel):
+    entity: str
+    id: str
+    version: int
+    deleted: bool = False
+    data: dict | None = None  # None si está borrado
+
+
+class PullOut(BaseModel):
+    cursor: int  # se manda como «since» en la siguiente llamada
+    more: bool  # quedan cambios: volver a llamar con el nuevo cursor
+    changes: list[SyncRecord]
+
+
+class PushChangeIn(BaseModel):
+    op_id: uuid.UUID  # lo genera la app: reenviar el mismo cambio no lo aplica dos veces
+    entity: str = Field(max_length=30)
+    id: str = Field(min_length=1, max_length=80)
+    base_version: int = Field(ge=0)  # versión que tenía la app al cambiarlo (0 = nuevo)
+    data: dict | None = None
+    delete: bool = False
+
+
+class PushIn(BaseModel):
+    changes: list[PushChangeIn] = Field(max_length=500)
+
+
+class PushResult(BaseModel):
+    op_id: uuid.UUID
+    status: Literal["applied", "conflict", "rejected"]
+    version: int | None = None
+    server: SyncRecord | None = None  # en «applied», cómo quedó; en «conflict», lo que hay en el servidor
+    detail: str | None = None  # en «rejected», por qué
+
+
+class PushOut(BaseModel):
+    results: list[PushResult]

@@ -17,8 +17,9 @@ class BodyEntry {
         waistCm: _n(j['waist_cm']),
         kcal: _n(j['kcal']),
         proteinG: _n(j['protein_g']),
-        fromDiary: j['from_diary'] as bool,
-        weightFromHealth: j['weight_from_health'] as bool? ?? false,
+        fromDiary: j['from_diary'] as bool? ?? false,
+        // Del servidor llega weight_from_health; de la base local, weight_source
+        weightFromHealth: j['weight_from_health'] as bool? ?? j['weight_source'] == 'health',
       );
 }
 
@@ -108,7 +109,132 @@ List<WeightPoint> weightSeries(List<BodyEntry> entries) {
   ];
 }
 
-/// Punto de partida y objetivos (GET/PATCH /me).
+// ---------------------------------------------------------------- resumen calculado en el móvil
+// Mismas cuentas que backend/app/services/body.py, para que Peso funcione sin servidor.
+
+double leanMass(double startWeight, double startBfPct) => startWeight * (1 - startBfPct / 100);
+double weightForBf(double lbm, double bfPct) => lbm / (1 - bfPct / 100);
+double bfAt(double lbm, double weight) => ((1 - lbm / weight) * 100).clamp(0, 100).toDouble();
+DateTime mondayOf(DateTime d) => DateTime(d.year, d.month, d.day - (d.weekday - 1));
+
+String? classifyPace(double? pct) => switch (pct) {
+      null => null,
+      <= -1.1 => 'fast',
+      <= -0.4 => 'on_track',
+      <= -0.15 => 'slow',
+      _ => 'stalled',
+    };
+
+/// Como round() de Python: los .5 van al par (94,5 → 94; 95,5 → 96). Así Peso da lo mismo con y sin servidor.
+double roundHalfEven(double v) {
+  final f = v.floorToDouble();
+  final d = v - f;
+  if (d != 0.5) return d > 0.5 ? f + 1 : f;
+  return f % 2 == 0 ? f : f + 1;
+}
+
+double _round(double v, int decimals) {
+  final f = decimals == 1 ? 10 : 100;
+  return (v * f).round() / f;
+}
+
+/// [entries]: registros de Peso; [healthDays]: resúmenes de la pulsera tal como los da /sync
+/// (date, steps, active_kcal, sleep_minutes, resting_hr); [diary]: kcal (a) y proteína (b) del
+/// diario por día AAAA-MM-DD. Si un día tiene diario, sus totales mandan sobre lo escrito a mano.
+BodySummary computeSummary(List<BodyEntry> entries, Profile? profile, List<Map<String, dynamic>> healthDays,
+    {Map<String, ({double a, double b})> diary = const {}}) {
+  final byDay = {for (final e in entries) _iso(e.date): e};
+  for (final MapEntry(key: day, value: t) in diary.entries) {
+    final e = byDay[day];
+    byDay[day] = BodyEntry(
+      date: e?.date ?? DateTime.parse(day),
+      weightKg: e?.weightKg,
+      waistCm: e?.waistCm,
+      kcal: roundHalfEven(t.a),
+      proteinG: roundHalfEven(t.b),
+      fromDiary: true,
+      weightFromHealth: e?.weightFromHealth ?? false,
+    );
+  }
+  final sorted = byDay.values.toList()..sort((a, b) => a.date.compareTo(b.date));
+  final series = weightSeries(sorted);
+  final current = series.isEmpty ? null : series.last.avg7;
+  final sw = profile?.startWeightKg, sbf = profile?.startBodyFatPct;
+  final lbm = sw != null && sbf != null && sw > 0 && sbf > 0 ? leanMass(sw, sbf) : null;
+  final ref = current ?? sw;
+
+  // Filas por día: registros de Peso más los datos de la pulsera
+  final rows = <DateTime, Map<String, double?>>{};
+  for (final e in sorted) {
+    rows[DateTime(e.date.year, e.date.month, e.date.day)] = {'weight': e.weightKg, 'waist': e.waistCm, 'kcal': e.kcal, 'protein': e.proteinG};
+  }
+  for (final h in healthDays) {
+    final d = DateTime.parse(h['date'] as String);
+    rows.putIfAbsent(d, () => {}).addAll({
+      'steps': _n(h['steps']),
+      'active_kcal': _n(h['active_kcal']),
+      'sleep_minutes': _n(h['sleep_minutes']),
+      'resting_hr': _n(h['resting_hr']),
+    });
+  }
+  final groups = <DateTime, List<(DateTime, Map<String, double?>)>>{};
+  for (final d in rows.keys.toList()..sort()) {
+    groups.putIfAbsent(mondayOf(d), () => []).add((d, rows[d]!));
+  }
+  (double?, int) avg(List<(DateTime, Map<String, double?>)> rs, String k) {
+    final xs = [for (final r in rs) if (r.$2[k] != null) r.$2[k]!];
+    return xs.isEmpty ? (null, 0) : (xs.reduce((a, b) => a + b) / xs.length, xs.length);
+  }
+
+  final weeks = <BodyWeek>[];
+  BodyWeek? prev;
+  final startMonday = profile?.startDate == null ? null : mondayOf(profile!.startDate!);
+  for (final m in groups.keys.toList()..sort()) {
+    final rs = groups[m]!;
+    final (w, n) = avg(rs, 'weight');
+    final waists = [for (final r in rs) if (r.$2['waist'] != null) r.$2['waist']!];
+    double? base;
+    if (w != null) {
+      if (prev != null) {
+        base = prev.avgWeight;
+      } else if (sw != null && (startMonday == null || startMonday != m)) {
+        base = sw;
+      }
+    }
+    final delta = base != null && base > 0 ? w! - base : null;
+    final pct = delta == null ? null : delta / base! * 100;
+    final wk = BodyWeek(
+      monday: m,
+      nWeights: n,
+      avgWeight: w,
+      avgKcal: avg(rs, 'kcal').$1,
+      avgProtein: avg(rs, 'protein').$1,
+      waistCm: waists.isEmpty ? null : waists.last,
+      deltaKg: delta,
+      deltaPct: pct,
+      pace: classifyPace(pct),
+      avgSteps: avg(rs, 'steps').$1,
+      avgActiveKcal: avg(rs, 'active_kcal').$1,
+      avgSleepMinutes: avg(rs, 'sleep_minutes').$1,
+      avgRestingHr: avg(rs, 'resting_hr').$1,
+    );
+    weeks.add(wk);
+    if (w != null) prev = wk;
+  }
+
+  return BodySummary(
+    currentWeight: current == null ? null : _round(current, 2),
+    currentWeightDate: series.isEmpty ? null : series.last.date,
+    bodyFatEst: lbm != null && ref != null ? _round(bfAt(lbm, ref), 1) : null,
+    leanMass: lbm == null ? null : _round(lbm, 1),
+    goal25Weight: lbm == null ? null : _round(weightForBf(lbm, 25), 1),
+    goal20Weight: lbm == null ? null : _round(weightForBf(lbm, 20), 1),
+    weeks: weeks,
+    entries: sorted,
+  );
+}
+
+/// Punto de partida y objetivos (registro «profile» de la sincronización).
 class Profile {
   final DateTime? startDate;
   final double? startWeightKg, startBodyFatPct;

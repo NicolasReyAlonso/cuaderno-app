@@ -58,7 +58,6 @@ class _NutritionPageState extends ConsumerState<NutritionPage> {
     if (ok != true) return;
     try {
       await ref.read(nutritionRepositoryProvider).deleteItem(i.id);
-      ref.invalidate(diaryDayProvider(_date));
     } catch (e) {
       if (mounted) _show(apiMessage(e));
     }

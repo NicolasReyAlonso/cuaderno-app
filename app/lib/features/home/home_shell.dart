@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/local/sync_controller.dart';
+import '../../core/local/sync_widgets.dart';
 import '../auth/auth_controller.dart';
 import '../body/body_page.dart';
 import '../health/health_repository.dart';
@@ -21,8 +23,31 @@ class _HomeShellState extends ConsumerState<HomeShell> {
   @override
   void initState() {
     super.initState();
-    // Si la pulsera está conectada, al abrir la app se leen los últimos 30 días sin avisar
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(healthProvider.notifier).syncIfConnected());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(syncControllerProvider.notifier).syncNow();
+      // Si la pulsera está conectada, al abrir la app se leen los últimos 30 días sin avisar
+      ref.read(healthProvider.notifier).syncIfConnected();
+    });
+  }
+
+  Future<void> _logout() async {
+    final ops = ref.read(outboxProvider).valueOrNull ?? const [];
+    if (ops.isNotEmpty) {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: const Text('Hay cambios sin enviar'),
+          content: Text('${ops.length} ${ops.length == 1 ? 'cambio no ha llegado' : 'cambios no han llegado'} al servidor. '
+              'Se quedan en este dispositivo y se enviarán si vuelves a entrar con esta cuenta; con otra cuenta se borrarán.'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancelar')),
+            FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Cerrar sesión')),
+          ],
+        ),
+      );
+      if (ok != true) return;
+    }
+    await ref.read(authProvider.notifier).logout();
   }
 
   static const _titles = ['Entreno', 'Comidas', 'Peso y medidas', 'Guía'];
@@ -47,6 +72,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       appBar: AppBar(
         title: Text(_titles[_tab]),
         actions: [
+          const SyncStatusButton(),
           IconButton(
             tooltip: 'Planes',
             icon: const Icon(Icons.calendar_view_week),
@@ -55,7 +81,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           IconButton(
             tooltip: 'Cerrar sesión',
             icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authProvider.notifier).logout(),
+            onPressed: _logout,
           ),
         ],
       ),

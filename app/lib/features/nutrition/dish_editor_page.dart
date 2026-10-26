@@ -47,7 +47,6 @@ class _DishEditorPageState extends ConsumerState<DishEditorPage> {
     setState(() => _saving = true);
     try {
       await ref.read(nutritionRepositoryProvider).saveDish(_d);
-      refreshFoods(ref);
       if (!mounted) return;
       _dirty = false;
       Navigator.pop(context, true);
@@ -138,10 +137,10 @@ class _DishEditorPageState extends ConsumerState<DishEditorPage> {
                       child: Row(children: [
                         Expanded(
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text(i.name, style: i.foodId == null ? TextStyle(color: cs.error) : null),
+                            Text(i.name),
                             Text(
-                              i.foodId == null ? 'Este alimento ya no existe.' : '${_kcal(i.kcal)} kcal · ${_g(i.protein)} g prot.',
-                              style: t.textTheme.bodySmall?.copyWith(color: i.foodId == null ? cs.error : cs.onSurfaceVariant),
+                              '${_kcal(i.kcal)} kcal · ${_g(i.protein)} g prot.${i.foodId == null ? ' · copia guardada (el alimento ya no existe)' : ''}',
+                              style: t.textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant),
                             ),
                           ]),
                         ),

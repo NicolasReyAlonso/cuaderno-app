@@ -37,7 +37,6 @@ class MyFoodsPage extends ConsumerWidget {
     if (!await _confirm(context, title, 'Lo que ya apuntaste en el diario se queda como está.')) return;
     try {
       await action();
-      refreshFoods(ref);
     } catch (e) {
       if (context.mounted) _show(context, apiMessage(e));
     }

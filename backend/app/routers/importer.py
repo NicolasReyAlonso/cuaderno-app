@@ -7,7 +7,7 @@ import hashlib
 from datetime import date
 
 from fastapi import APIRouter, HTTPException
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from ..models import BodyEntry, DiaryItem, Dish, DishIngredient, Exercise, Food, WorkoutSession, WorkoutSet
 from ..schemas import ImportReport
@@ -72,7 +72,9 @@ def import_cuaderno(payload: dict, user: CurrentUser, db: DB):
     # --- diario
     for ds, day in (payload.get("diario") or {}).items():
         d = date.fromisoformat(ds)
-        db.execute(delete(DiaryItem).where(DiaryItem.user_id == user.id, DiaryItem.date == d))
+        # Uno a uno: un DELETE masivo no lo vería la sincronización (ver app/sync/tracking.py)
+        for old_item in db.scalars(select(DiaryItem).where(DiaryItem.user_id == user.id, DiaryItem.date == d)):
+            db.delete(old_item)
         for it in day.get("items") or []:
             meal = it.get("t")
             if meal not in MEALS:

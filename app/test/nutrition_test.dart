@@ -48,11 +48,20 @@ void main() {
       'default_portion_g': 150, 'mine': false,
     });
     expect((f.per100.kcal, f.defaultPortionG, f.mine), (63.0, 150, false));
-    final d = Dish.fromJson({
-      'id': 'x', 'name': 'Arroz marisco', 'servings': 3, 'cooked_weight_g': 1200, 'ingredients': [], 'total_kcal': 1377,
-      'total_protein': 90, 'per100_kcal': 114.8, 'per100_protein': 7.5, 'per100_carbs': 18, 'per100_fat': 2, 'serving_g': 400,
+  });
+
+  test('Dish.fromSync hace las mismas cuentas que dish_out (test_nutrition_flow del backend)', () {
+    // Arroz 300 g (350 kcal) + gambas 300 g (109 kcal), 3 raciones, 1200 g cocinado
+    final d = Dish.fromSync('x', {
+      'name': 'Arroz marisco', 'servings': 3, 'cooked_weight_g': 1200,
+      'ingredients': [
+        {'food_id': 'b:arroz_crudo', 'name': 'Arroz', 'grams': 300, 'kcal': 350, 'protein': 7, 'carbs': 78, 'fat': 0.6},
+        {'food_id': 'b:gambas', 'name': 'Gambas', 'grams': 300, 'kcal': 109, 'protein': 24, 'carbs': 0, 'fat': 1.7},
+      ],
     });
-    expect((d.servingG, d.per100.kcal), (400, 114.8));
+    expect((d.totalKcal, d.servingG), (1377.0, 400));
+    expect(d.per100.kcal, closeTo(114.8, 0.05));
+    expect(d.ingredients.first.per100.carbs, 78);
   });
 
   test('DishDraft calcula la ración como el backend: peso cocinado o, si no, crudo', () {
@@ -67,28 +76,49 @@ void main() {
     expect(d.kcalPerServing, closeTo(459, 0.001));
     expect(d.problem(), isNull);
     expect(d.toJson()['ingredients'], [
-      {'food_id': 'b:arroz_crudo', 'grams': 300.0},
-      {'food_id': 'b:gambas', 'grams': 300.0},
+      {'food_id': 'b:arroz_crudo', 'name': 'Arroz', 'grams': 300.0, 'kcal': 350.0, 'protein': 7.0, 'carbs': 0.0, 'fat': 0.0},
+      {'food_id': 'b:gambas', 'name': 'Gambas', 'grams': 300.0, 'kcal': 109.0, 'protein': 24.0, 'carbs': 0.0, 'fat': 0.0},
     ]);
     d.cookedWeightG = -1; // lo que deja un texto no válido
     expect(d.servingG, 200);
     expect(d.problem(), 'Revisa el peso cocinado.');
   });
 
-  test('DishDraft.fromDish recupera los valores por 100 g de cada ingrediente', () {
-    final dish = Dish.fromJson({
-      'id': 'x', 'name': 'Tortilla', 'servings': 2, 'cooked_weight_g': null, 'total_kcal': 300, 'total_protein': 20,
-      'per100_kcal': 150, 'per100_protein': 10, 'per100_carbs': 1, 'per100_fat': 11, 'serving_g': 100,
+  test('DishDraft.fromDish conserva los valores por 100 g y la copia de un alimento borrado', () {
+    final dish = Dish.fromSync('x', {
+      'name': 'Tortilla', 'servings': 2, 'cooked_weight_g': null,
       'ingredients': [
-        {'food_id': 'b:huevo', 'name': 'Huevo', 'grams': 200, 'kcal': 286, 'protein': 25},
-        {'food_id': null, 'name': 'Aceite viejo', 'grams': 5, 'kcal': 45, 'protein': 0},
+        {'food_id': 'b:huevo', 'name': 'Huevo', 'grams': 200, 'kcal': 143, 'protein': 12.5, 'carbs': 0.7, 'fat': 9.5},
+        {'food_id': null, 'name': 'Aceite viejo', 'grams': 5, 'kcal': 900, 'protein': 0, 'carbs': 0, 'fat': 100},
       ],
     });
     final d = DishDraft.fromDish(dish);
-    expect(d.ingredients.first.kcalPer100, closeTo(143, 0.001));
+    expect((d.ingredients.first.kcalPer100, d.ingredients.last.fatPer100), (143.0, 100.0));
     d.ingredients.first.grams = 100;
     expect(d.ingredients.first.protein, closeTo(12.5, 0.001));
-    expect(d.problem(), '«Aceite viejo» ya no existe como alimento. Quítalo o añádelo de nuevo.');
+    expect(d.problem(), isNull); // el servidor acepta la copia: el plato se puede seguir editando
+    expect(d.toJson()['ingredients'][1]['food_id'], isNull);
+  });
+
+  test('búsqueda sin servidor: sin tildes, «empieza por» antes que «contiene» y los tuyos primero', () {
+    Food f(String id, String name, {bool mine = false}) =>
+        Food(id: id, name: name, category: '', per100: const Per100(1, 1, 1, 1), defaultPortionG: 100, mine: mine);
+    final catalog = [f('b:platano', 'Plátano'), f('b:pan', 'Pan integral'), f('b:batido', 'Batido de plátano')];
+    final own = [f('u:1', 'Plátano de Canarias', mine: true)];
+    expect(searchFoods(own, catalog, 'platano').map((x) => x.id), ['u:1', 'b:platano', 'b:batido']);
+    expect(searchFoods(own, catalog, 'PAN').map((x) => x.id), ['b:pan']);
+    expect(searchFoods(own, catalog, '').map((x) => x.id), ['u:1', 'b:batido', 'b:pan', 'b:platano']);
+    expect(searchFoods(own, catalog, '', limit: 2).length, 2);
+  });
+
+  test('una entrada del diario copia los valores para esos gramos, redondeados como el servidor', () {
+    expect(const Per100(89, 1.1, 22.8, 0.3).entryValues(120), {'kcal': 106.8, 'protein': 1.3, 'carbs': 27.4, 'fat': 0.4});
+    final day = DiaryDay.build(DateTime(2026, 10, 20), [
+      DiaryItem(id: 'b', meal: 'cena', name: 'B', grams: 1, kcal: 100.04, protein: 1, carbs: 0, fat: 0, createdAt: DateTime.utc(2026, 10, 20, 20)),
+      DiaryItem(id: 'a', meal: 'desayuno', name: 'A', grams: 1, kcal: 200.03, protein: 2, carbs: 0, fat: 0, createdAt: DateTime.utc(2026, 10, 20, 7)),
+    ], kcalTarget: 2000, proteinTarget: 160);
+    expect(day.items.map((i) => i.id), ['a', 'b']); // en el orden en que se apuntó
+    expect(day.kcal, 300.1);
   });
 
   test('foodInput valida como el backend y acepta coma decimal', () {

@@ -44,7 +44,6 @@ class _FoodFormState extends ConsumerState<_FoodForm> {
     setState(() => _saving = true);
     try {
       final f = await ref.read(nutritionRepositoryProvider).createFood(input.json!);
-      refreshFoods(ref);
       if (mounted) Navigator.pop(context, f);
     } catch (e) {
       if (mounted) {

@@ -57,7 +57,6 @@ class _ProfileSheetState extends ConsumerState<_ProfileSheet> {
     setState(() => _saving = true);
     try {
       await ref.read(bodyRepositoryProvider).saveProfile(input.json!);
-      refreshAfterProfileChange(ref);
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) {

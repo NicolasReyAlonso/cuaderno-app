@@ -82,8 +82,7 @@ class _AddItemSheetState extends ConsumerState<_AddItemSheet> {
     }
     setState(() => _saving = true);
     try {
-      await ref.read(nutritionRepositoryProvider).addItem(widget.date, _meal, g, foodId: p.foodId, dishId: p.dishId);
-      ref.invalidate(diaryDayProvider(widget.date));
+      await ref.read(nutritionRepositoryProvider).addItem(widget.date, _meal, g, name: p.name, per100: p.per100, foodId: p.foodId, dishId: p.dishId);
       if (mounted) Navigator.pop(context, 'Apuntado: ${p.name}, ${fmtNum(g)} g en ${meals.firstWhere((m) => m.$1 == _meal).$2.toLowerCase()}.');
     } catch (e) {
       if (mounted) {

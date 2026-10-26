@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/api.dart';
+import '../../core/local/sync_controller.dart';
 
 /// true = hay sesión iniciada. login() y register() lanzan el error si fallan;
 /// la pantalla de login lo muestra con apiMessage().
@@ -38,6 +41,8 @@ class AuthController extends AsyncNotifier<bool> {
   Future<void> _signedIn(String token) async {
     await ref.read(tokenStoreProvider).write(token);
     state = const AsyncData(true);
+    // Primera descarga (y base local vacía si antes la usaba otra cuenta)
+    unawaited(ref.read(syncControllerProvider.notifier).onLogin());
   }
 }
 

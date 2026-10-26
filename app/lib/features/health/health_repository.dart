@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../core/api.dart';
-import '../body/body_repository.dart' show bodySummaryProvider;
+import '../../core/local/sync_controller.dart';
 import 'health_models.dart';
 import 'health_reader.dart';
 
@@ -16,19 +16,18 @@ class HealthRepository {
     return r.data!;
   }
 
-  Future<List<ActivityRecord>> activities() async {
-    final r = await _dio.get<List<dynamic>>('/health/activities');
-    return [for (final a in r.data!) ActivityRecord.fromJson(a as Map<String, dynamic>)];
-  }
-
   Future<void> forget() => _dio.delete<void>('/health');
 }
 
 final healthRepositoryProvider = Provider<HealthRepository>((ref) => HealthRepository(ref.watch(dioProvider)));
 final healthReaderProvider = Provider<HealthReader>((ref) => HealthReader());
 
-/// Actividades de los últimos 30 días ya guardadas en el servidor (se ven también en Mac y web).
-final healthActivitiesProvider = FutureProvider.autoDispose<List<ActivityRecord>>((ref) => ref.watch(healthRepositoryProvider).activities());
+/// Actividades de los últimos 30 días, de la base local (llegan con la sincronización; se ven también en Mac y web).
+final healthActivitiesProvider = Provider<AsyncValue<List<ActivityRecord>>>((ref) {
+  final since = DateTime.now().subtract(const Duration(days: 30));
+  return ref.watch(localRecordsProvider('activity')).whenData((rows) =>
+      [for (final a in rows.values) ActivityRecord.fromJson(a)].where((a) => a.start.isAfter(since)).toList()..sort((a, b) => b.start.compareTo(a.start)));
+});
 
 class HealthState {
   final bool supported, connected, syncing;
@@ -95,8 +94,7 @@ class HealthController extends AsyncNotifier<HealthState> {
     try {
       final data = await _reader.read();
       final r = await ref.read(healthRepositoryProvider).sync(data.days, data.activities);
-      ref.invalidate(bodySummaryProvider);
-      ref.invalidate(healthActivitiesProvider);
+      await ref.read(syncControllerProvider.notifier).syncNow(); // lo nuevo baja a la base local
       state = AsyncData(_s.copyWith(syncing: false, lastSync: DateTime.now(), message: silent ? null : syncMessage(r)));
     } catch (e) {
       state = AsyncData(_s.copyWith(syncing: false, message: silent ? null : apiMessage(e), messageIsError: !silent));
@@ -114,8 +112,7 @@ class HealthController extends AsyncNotifier<HealthState> {
       await ref.read(healthRepositoryProvider).forget();
       await _reader.disconnect();
       await _store.delete(key: _key);
-      ref.invalidate(bodySummaryProvider);
-      ref.invalidate(healthActivitiesProvider);
+      await ref.read(syncControllerProvider.notifier).syncNow();
       state = AsyncData(_s.copyWith(
           connected: false,
           message: _reader.isAndroid ? 'Desconectado y datos de salud borrados.' : 'Datos borrados. Quita el permiso en Salud → Apps → cuaderno.'));
