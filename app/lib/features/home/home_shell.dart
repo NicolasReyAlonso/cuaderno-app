@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/local/sync_controller.dart';
 import '../../core/local/sync_widgets.dart';
 import '../auth/auth_controller.dart';
+import '../auth/delete_account_dialog.dart';
 import '../body/body_page.dart';
 import '../guide/guide_page.dart';
 import '../health/health_page.dart';
@@ -82,10 +83,14 @@ class _HomeShellState extends ConsumerState<HomeShell> {
             icon: const Icon(Icons.calendar_view_week),
             onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ProgramsPage())),
           ),
-          IconButton(
-            tooltip: 'Cerrar sesión',
-            icon: const Icon(Icons.logout),
-            onPressed: _logout,
+          PopupMenuButton<String>(
+            tooltip: 'Cuenta',
+            icon: const Icon(Icons.account_circle_outlined),
+            onSelected: (v) => v == 'logout' ? _logout() : showDeleteAccountDialog(context),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'logout', child: Text('Cerrar sesión')),
+              PopupMenuItem(value: 'delete', child: Text('Borrar cuenta')),
+            ],
           ),
         ],
       ),

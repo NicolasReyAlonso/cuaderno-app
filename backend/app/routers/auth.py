@@ -1,13 +1,15 @@
+import shutil
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 
 from ..models import User
-from ..schemas import RegisterIn, TokenOut, UserOut, UserPatch
+from ..schemas import DeleteAccountIn, RegisterIn, TokenOut, UserOut, UserPatch
 from ..security import DB, CurrentUser, create_access_token, hash_password, verify_password
 from ..seed import DEFAULT_PROGRAM
+from ..services import media
 
 router = APIRouter(tags=["cuenta"])
 
@@ -42,3 +44,15 @@ def update_me(body: UserPatch, user: CurrentUser, db: DB):
         setattr(user, k, v)
     db.commit()
     return user
+
+
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_me(body: DeleteAccountIn, user: CurrentUser, db: DB):
+    """Borra la cuenta con todos sus datos y sus fotos y vídeos del disco. No se puede deshacer."""
+    if not verify_password(body.password, user.password_hash):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "La contraseña no es correcta. Escríbela de nuevo para borrar la cuenta.")
+    folder = media.media_root() / str(user.id)
+    db.delete(user)  # el resto (planes, series, comidas, peso, pulsera, fotos…) se va con ON DELETE CASCADE
+    db.commit()
+    shutil.rmtree(folder, ignore_errors=True)  # después de confirmar: si falla la base, no se pierden los archivos
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

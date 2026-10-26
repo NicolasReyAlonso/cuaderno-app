@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     # Fotos y vídeos de los ejercicios propios
     media_dir: str = "media"
     media_url_hours: int = 12  # validez de las URL firmadas
+    # Correo que aparece en la política de privacidad (GET /privacidad)
+    contact_email: str = ""
 
 
 @lru_cache

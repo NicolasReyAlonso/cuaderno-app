@@ -16,7 +16,7 @@ App personal de gimnasio para una fase de definición: entrenos con sugerencias 
 
 ```
 backend/app/
-  config.py        Settings con prefijo CUADERNO_ (DATABASE_URL, JWT_SECRET, CORS_ORIGINS, SEED_ON_STARTUP, MEDIA_DIR, MEDIA_URL_HOURS)
+  config.py        Settings con prefijo CUADERNO_ (DATABASE_URL, JWT_SECRET, CORS_ORIGINS, SEED_ON_STARTUP, MEDIA_DIR, MEDIA_URL_HOURS, CONTACT_EMAIL)
   db.py            engine, SessionLocal, Base con naming_convention (no la quites: Alembic la necesita)
   models.py        todas las tablas; al final importa sync/tracking (registra el gancho de sincronización)
   schemas.py       modelos Pydantic de entrada/salida; errores de validador con _invalid() (mensaje sin «Value error,»)
@@ -105,7 +105,7 @@ cd app && flutter run --dart-define=API_URL=http://<ip-tailscale-del-pc>:8000
 - **Para sincronizar un tipo nuevo**: `version` + `updated_at` en el modelo (con migración), su entrada en `TRACKED` (y en `PARENTS` si sus hijos van dentro de su JSON), su `Entity` en `sync/entities.py`, tests; en la app, sube `SyncEngine.scope` (fuerza una descarga completa), añade sus etiquetas en `sync_widgets.dart` y, si el servidor calculaba algo, su versión en Dart.
 - **Lógica duplicada en Dart, que tiene que coincidir con el backend** (los tests usan los mismos casos y el catálogo real): `planner.dart` ↔ `progression.py`, `schedule.py` y `routers/workouts.py`; `computeSummary` en `body/models.dart` ↔ `services/body.py`; `Dish.fromSync`/`DishDraft` ↔ `dish_out`; `searchFoods` ↔ `GET /foods`; `roundHalfEven` = `round()` de Python. Si cambias una, cambia la otra.
 - Datos comunes (alimentos y ejercicios del catálogo, alternativas, plantillas) llegan por `GET /sync/reference` con hash y se guardan en `Meta`.
-- Necesitan conexión: iniciar sesión, subir fotos y vídeos, leer la pulsera (envía a `/health/sync`) e importar el cuaderno web.
+- Necesitan conexión: iniciar sesión, borrar la cuenta, subir fotos y vídeos, leer la pulsera (envía a `/health/sync`) e importar el cuaderno web.
 
 ## Convenciones
 
@@ -123,11 +123,13 @@ Hecho, backend y app, con tests: cuentas; entreno con alternativas, sugerencias 
 
 Pendiente:
 - Probar en un móvil real: lectura de Health Connect con la pulsera, modo sin conexión y pantallas a mano.
-- Para Google Play: borrar la cuenta desde la app (la base ya lo permite; falta endpoint, opción en la app y borrar sus fotos del disco), política de privacidad (el enlace de Health Connect hoy abre la app) y declaración de datos de salud, versión release (nombre, icono, firma, `applicationId`), https.
+- Para Google Play: que el enlace de Health Connect (`ViewPermissionUsageActivity` y la pantalla de permisos en `AndroidManifest.xml`) lleve a `/privacidad` en vez de abrir la app, declaración de datos de salud, versión release (nombre, icono, firma, `applicationId`), https. Antes de publicar: poner `CUADERNO_CONTACT_EMAIL` (la política no lleva ningún correo hasta entonces), revisar que `privacidad.html` sigue siendo cierta (dice que la conexión va cifrada con HTTPS) y, cuando haya copias de seguridad, decir cuánto tardan en desaparecer los datos borrados.
 - Servidor: `CUADERNO_JWT_SECRET` propio, copias de seguridad de Postgres y del volumen `media`, limpieza periódica de `sync_ops`/`sync_log`.
 - iPhone: activar HealthKit en Xcode y probar una compilación iOS.
 - Mejoras: cola de fotos y vídeos sin conexión, editar entradas del diario y alimentos propios, más de 30 días de historial de la pulsera, miniaturas de vídeo, CI en GitHub.
 
 ## Siguiente tarea
 
-Por decidir. Propuesta: probarlo en el móvil de Nico y, después, borrar la cuenta y la política de privacidad, que son requisito para publicar.
+Hecho: borrar la cuenta (`DELETE /me` con contraseña, borra también `media/<id>`; en la app, menú Cuenta → «Borrar cuenta», `AuthController.deleteAccount`) y la política de privacidad (`GET /privacidad`, texto en `backend/app/data/privacidad.html`).
+
+Siguiente: que Health Connect abra la política (en Android hace falta una actividad que abra la URL, o `url_launcher`: **pregunta antes de añadir el paquete**), y un enlace a la política dentro de la app. Probar en el móvil de Nico sigue pendiente (lo hace él).

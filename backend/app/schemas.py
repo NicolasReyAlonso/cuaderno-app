@@ -51,6 +51,10 @@ class UserPatch(BaseModel):
     protein_target_g: int | None = Field(None, ge=20, le=400)
 
 
+class DeleteAccountIn(BaseModel):
+    password: str = Field(max_length=128)
+
+
 # ---------------------------------------------------------------- catálogo
 class MediaOut(BaseModel):
     id: uuid.UUID

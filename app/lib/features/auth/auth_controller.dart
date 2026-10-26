@@ -38,6 +38,15 @@ class AuthController extends AsyncNotifier<bool> {
     state = const AsyncData(false);
   }
 
+  /// Borra la cuenta en el servidor (pide la contraseña; si falla, lanza el error) y deja el dispositivo limpio.
+  Future<void> deleteAccount(String password) async {
+    await ref.read(dioProvider).delete<void>('/me', data: {'password': password});
+    // Primero el token, para que ninguna sincronización en marcha vuelva a llenar la base
+    await ref.read(tokenStoreProvider).clear();
+    await ref.read(localDbProvider).wipe();
+    state = const AsyncData(false);
+  }
+
   Future<void> _signedIn(String token) async {
     await ref.read(tokenStoreProvider).write(token);
     state = const AsyncData(true);
